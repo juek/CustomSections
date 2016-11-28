@@ -34,7 +34,7 @@ $section['attributes'] = array(
 
 // Required: Predefined section content
 // use {{value key}} for simple value placeholders/replacements
-// use $section['values']['xyz'], e.g. for contitional rendering whole elements 
+// use $section['values']['xyz'], e.g. for conditional rendering * whole elements 
 $section['content'] = 
 '<div class="shop-item-box">
   <div class="image-clip"><img alt="Image of {{title}}" src="{{image}}" />';
