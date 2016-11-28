@@ -27,7 +27,11 @@ function gp_init_inline_edit(area_id, section_object){
     selectUsingFinder : function(){},
     setImage          : function(){},
     updateSection     : function(){},
+    CKfield			  : function(){},
+    updateCKfield	  : function(){},
+    destroyCK		  : function(){},
     ui                : {}
+  
   }; 
 
 
@@ -73,7 +77,33 @@ function gp_init_inline_edit(area_id, section_object){
     gp_editor.ui.controls.find(input_selector).val(fileUrl);
   };
 
+  gp_editor.CKfield = function(callback_fn, input_selector, label) {
+    var content = gp_editor.ui.controls.find("#"+input_selector).val();//.html();
+	var boxHtml = '<div class="inline_box">'
+    + '<h3>'+label+'</h3>'
+    + '<textarea id="ck_field" name="ck_field" data-inp-selector="'+input_selector+'" cols="50" rows="3">'+$gp.htmlchars(content)+'</textarea>'
+    + '<p><input class="gpsubmit" type="submit" name="" onclick="gp_editor.updateCKfield()" value="'+gplang.up+'" /> '
+    + '<input class="gpcancel gp_admin_box_close" data-cmd="admin_box_close" onclick="gp_editor.destroyCK()" type="button" name="" value="'+gplang.ca+'" /></p>'
+    + '</div>';
+    $gp.AdminBoxC(boxHtml);
+    CKEDITOR.config.baseFloatZIndex = 12000;
+    CKEDITOR
+      .replace("ck_field",CS_ckconfig);
+  
+  }; 
+  
+  gp_editor.destroyCK = function() {
+    CKEDITOR.instances['ck_field'].destroy();
+  };
+	
+  gp_editor.updateCKfield = function() {
+	gp_editor.destroyCK();
+	var caption = $("#ck_field").val();
+	var input_selector = $("#ck_field").attr("data-inp-selector")
+	gp_editor.ui.controls.find("#"+input_selector).val(caption);
+	$gp.CloseAdminBox();
 
+  };		
   gp_editor.updateSection = function(){
     var href = jPrep(window.location.href) 
       + '&cmd=save_custom_section' 
@@ -212,6 +242,21 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.selectUsingFinder(gp_editor.setFile, "#editor-ctl-" + item);
         });
         break;
+		
+		case "ck_editor":
+		 var control = $(
+            '<div class="editor-ctl-box editor-ctl-ckedit">'
+          +   '<label>'
+          +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
+          +     '<input id="editor-ctl-ckedit' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
+          +   '</label>' 
+          + '</div>'
+        );
+        control.find("#editor-btn-ckedit-"+ item).on("click", function(){
+			gp_editor.CKfield(gp_editor.setFile, "editor-ctl-ckedit" + item, control_map['label']);
+		});
+		break;
+		
     }
 
     if( $.isPlainObject(control_map['on']) ){ 
@@ -276,6 +321,10 @@ function gp_init_inline_edit(area_id, section_object){
 
         case "finder-select":
           gp_editor.ui.controls.append( gp_editor.getControl("finder-select", control_map, item, value) );
+          break;  
+		
+		case "ck_editor":
+          gp_editor.ui.controls.append( gp_editor.getControl("ck_editor", control_map, item, value) );
           break;
 
       }
