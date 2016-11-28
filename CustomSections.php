@@ -202,6 +202,25 @@ class CustomSections {
       $editor_css = $editor['custom_css'] != false ? $addonBasePath . '/_types/' . $type . '/' . $editor['custom_css'] : $addonBasePath . '/universal_editor/editor.css' ;
       */
 
+	  
+	  foreach ($editor['controls'] as $field) {
+		  if($field['control_type'] == "ck_editor"){
+				// ckeditor basepath and configuration
+				$options = array();
+				$ckeditor_basepath = common::GetDir('/include/thirdparty/ckeditor_34/');
+				echo 'CKEDITOR_BASEPATH = ' . gpAjax::quote($ckeditor_basepath) . '; ';
+				echo 'var CS_ckconfig = ' . gp_edit::CKConfig($options, 'json', $plugins) . '; ';
+				// extra plugins
+			//	echo 'var gp_add_plugins = ' . json_encode( $plugins ) . ';';
+				$scripts[] = '/include/thirdparty/ckeditor_34/ckeditor.js';
+				$scripts[] = '/include/js/ckeditor_config.js';
+				break;
+		 }
+		  
+	  }
+	  
+	  	  
+	  
       $editor_css = $editor['custom_css'] != false ? $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_css'] : $addonRelativeCode . '/universal_editor/editor.css' ;
       $code = 'var CustomSections_editor = { ';
       $code .=  'base : "' . $addonRelativeCode . '", ';
