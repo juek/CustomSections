@@ -23,6 +23,8 @@ $section['content'] = '<h1>{{text}}</h1>';
 
 $section['gp_color'] = '#E5B906';
 
+$section['always_process_values'] = true;
+
 // $components = 'fontawesome'; 
 
 $css_files = array( 'style.css', 'overruling_style.css' );

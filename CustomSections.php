@@ -157,8 +157,10 @@ class CustomSections {
 
   static function SectionToContent($section_data){
     $section_types  = self::SectionTypes();
-    if( array_key_exists($section_data['type'], $section_types) ){ 
-      return self::GetSection($section_data);
+    if( array_key_exists($section_data['type'], $section_types) ){
+      if( \gp\tool::LoggedIn() || !empty($section_data['always_process_values']) ){
+        return self::GetSection($section_data);
+      }
     }
     return $section_data;
   }
@@ -185,6 +187,7 @@ class CustomSections {
     if( array_key_exists($type, $section_types) ){ 
       global $page;
       $page->file_sections[$section]['values'] = & $_POST['values'];
+      $page->file_sections[$section]['content'] = & $_POST['gpcontent'];
       return true;
     }
     return $return;

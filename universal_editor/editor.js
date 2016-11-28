@@ -12,7 +12,7 @@ function gp_init_inline_edit(area_id, section_object){
 
   console.log("section_object = ", section_object);
 
-  $gp.LoadStyle( CustomSections_editor.editor_css, true ); // true for (boolean)already_prefixed
+  $gp.LoadStyle( CustomSections_editor.editor_css, true ); // true for (boolean)alreadyprefixed
   gp_editing.editor_tools();
 
   gp_editor = {
@@ -33,7 +33,8 @@ function gp_init_inline_edit(area_id, section_object){
 
   gp_editor.SaveData = function(){
     var values = gp_editor.ui.controls.find("input:not([type='checkbox'],[type='radio']),select,textarea").serialize();
-    return '&' + values;
+    var content = encodeURIComponent( gp_editor.edit_section.html() );
+    return 'gpcontent=' + content + '&' + values;
   };
 
 
