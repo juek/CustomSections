@@ -1,0 +1,1 @@
+Modified by J. Krausz for smaller size

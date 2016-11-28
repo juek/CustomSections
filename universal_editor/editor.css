@@ -1,0 +1,177 @@
+/*
+###################################################################################
+Universal Editor Stylesheet for Typesetter CMS developer plugin - 'Custom Sections'
+Author: J. Krausz and a2exfr
+Date: 2016-11-28
+Version 1.0b1
+###################################################################################
+*/
+
+:invalid {
+outline:1px solid #F2664B!important;
+outline-offset:-4px!important;
+}
+
+.no-margin{
+margin:0!important;
+}
+
+/* EDITOR */
+
+#option_area,
+#option_area * {
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+-ms-box-sizing:border-box;
+-o-box-sizing:border-box;
+box-sizing:border-box;
+}
+
+.editor-ctl-box {
+display:block;
+position:relative;
+overflow:hidden;
+background:#fff;
+border:1px solid rgba(0,0,0,0.175);
+border-radius:3px;
+margin:3px 0 0;
+vertical-align:baseline;
+color:#555;
+}
+
+.editor-ctl-box label {}
+
+.editor-ctl-box.editor-ctl-input span.label-text,
+.editor-ctl-box.editor-ctl-select span.label-text,
+.editor-ctl-box.editor-ctl-textarea span.label-text,
+.editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text {
+display:block;
+border-bottom:1px solid rgba(0,0,0,0.125);
+background:#f8f8f8;
+padding:4px;
+}
+
+
+.editor-ctl-box input[type="color"],
+.editor-ctl-box input[type="date"],
+.editor-ctl-box input[type="datetime"],
+.editor-ctl-box input[type="datetime-local"],
+.editor-ctl-box input[type="email"],
+.editor-ctl-box input[type="number"],
+.editor-ctl-box input[type="month"],
+.editor-ctl-box input[type="password"],
+.editor-ctl-box input[type="range"],
+.editor-ctl-box input[type="search"],
+.editor-ctl-box input[type="tel"],
+.editor-ctl-box input[type="text"],
+.editor-ctl-box input[type="time"],
+.editor-ctl-box input[type="url"],
+.editor-ctl-box input[type="week"],
+.editor-ctl-box select,
+.editor-ctl-box button,
+.editor-ctl-box textarea {
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+-ms-box-sizing:border-box;
+-o-box-sizing:border-box;
+box-sizing:border-box;
+background-color:none;
+border:none;
+padding:4px 6px;
+width:100%!important;
+}
+
+.editor-ctl-box button {
+background:#f1f1f1;
+background:-moz-linear-gradient(top, #fff 0%, #f1f1f1 100%);
+background:-webkit-linear-gradient(top, #fff 0%,#f1f1f1 100%);
+background:linear-gradient(to bottom, #fff 0%,#f1f1f1 100%);
+}
+
+.editor-ctl-box select {
+-webkit-appearance:none;
+-moz-appearance:none;
+appearance:none;
+background:transparent url(img/select_arr.png) right center no-repeat;
+background-size:22px 16px;
+padding:4px 26px 4px 0;
+}
+
+.editor-ctl-box select::-ms-expand { display:none; }
+
+.editor-ctl-box textarea {
+white-space:normal;
+word-wrap:break-all;
+word-wrap:break-word;
+min-height:4em;
+resize:vertical;
+overflow-y:auto;
+height:8em;
+}
+
+.editor-ctl-box input[type='checkbox'],
+.editor-ctl-box input[type='radio'] {
+margin:6px;
+}
+
+.editor-ctl-box input[type='checkbox'],
+.editor-ctl-box input[type='radio'] {
+margin-left:-20px;
+}
+
+.editor-ctl-box input[type='checkbox'] + span,
+.editor-ctl-box input[type='radio'] + span {
+font-family:FontAwesome!important;
+display:inline-block;
+margin:0 2px 0 6px;
+}
+.editor-ctl-box input[type='checkbox'] + span {
+font-size:120%!important;
+}
+
+.editor-ctl-box input[type='checkbox'] + span:before { 
+content:"\f204"; 
+}
+.editor-ctl-box input[type='checkbox']:checked + span:before { 
+content:"\f205"; 
+}
+
+.editor-ctl-box input[type='radio'] + span:before { 
+content:"\f1db"; 
+}
+.editor-ctl-box input[type='radio']:checked + span:before { 
+content:"\f111"; 
+}
+
+.editor-ctl-box button,
+.editor-ctl-box.editor-ctl-checkbox label,
+.editor-ctl-box.editor-ctl-radio-group label {
+cursor:pointer;
+}
+
+.editor-ctl-box input:disabled,
+.editor-ctl-box select:disabled {
+color:#ccc;
+background:none;
+}
+
+.editor-ctl-box label {
+margin:0;
+display:inline-block;
+width:100%!important;
+}
+.editor-ctl-box label.ctl-half-width { width:50%!important; }
+.editor-ctl-box label.ctl-third-width { width:33.333%!important; }
+
+.editor-ctl-box label.has-icon {
+padding-left:24px;
+}
+
+.editor-ctl-box i.fa {
+display:inline-block;
+width:20px;
+margin-left:-20px;
+color:#888;
+}
+
+
