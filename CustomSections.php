@@ -38,7 +38,6 @@ class CustomSections {
       $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
       if( file_exists($section_file) ){
         // needed to avoid warnings -start
-        global $sectionRelativeCode, $sectionCurrentValues;
         $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
         $sectionCurrentValues = array();
         // needed to avoid warning --end
