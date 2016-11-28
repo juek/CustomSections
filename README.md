@@ -15,7 +15,7 @@ Until the plugin is released on typesettercms.com, you need to download and inst
 
 1. Download the master ZIP
 
-2. Upload the extracted folder 'CustomSections' to your server into the /addons directory
+2. Upload the extracted folder 'CustomSections-master' to your server into the /addons directory
 
 3. Install using Typesetter's Admin Toolbox -> Plugins -> Manage -> Available -> Custom Sections
 
