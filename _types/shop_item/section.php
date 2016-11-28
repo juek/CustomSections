@@ -64,9 +64,12 @@ $section['content'] .=
 </div>
 ';
 
-// Optional: Admin UI values. These are sole internal display properties for editor's section manager ('Page' mode)
-$section['gp_label'] = 'Shop Item'; // optional: Custom default label
-$section['gp_color'] = '#DE3265'; // optional: Custom default color label
+
+// Recommended: Section Label. If not defined, it will be generated from the folder name.
+$section['gp_label'] = 'Shop Item';
+
+// Optional: Admin UI color label. This is solely used in the editor's section manager ('Page' mode)
+$section['gp_color'] = '#DE3265';
 
 
 // Optional: Loadable Components, see https://github.com/Typesetter/Typesetter/blob/master/include/tool/Output/Combine.php#L111

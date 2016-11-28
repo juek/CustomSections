@@ -14,20 +14,24 @@ defined('is_running') or die('Not an entry point...');
 class CustomSections {
 
   static function SectionTypes( $section_types=array() ){
-	global $addonPathCode;
-	$sections=gp\tool\Files::ReadDir($addonPathCode . '/_types/',1);
-	foreach($sections as $type){
-		$section_file = $addonPathCode . '/_types/' . $type . '/section.php';	
-		  if( file_exists($section_file) ){
-				include $section_file;
-				if (array_key_exists('gp_label',$section)){
-					$section_types[$type] = array( 'label' => $section['gp_label'] );
-				} else {
-					$section_types[$type] = array( 'label' => $type );
-				}
-		  }
-	}
-	
+    global $addonRelativeCode, $addonPathCode;
+    $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
+    foreach( $sections as $type ){
+      $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
+      if( file_exists($section_file) && strpos($type, '!') !== 0 ){
+        // needed to avoid warnings -start
+        $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
+        $sectionCurrentValues = array();
+        // needed to avoid warning --end
+        include $section_file;
+        if( isset($section) ){
+          $section_types[$type] = array( 
+            'label' => ( !empty($section['gp_label']) ? $section['gp_label'] : ucwords(str_replace("_", " ", $type)) ) 
+          );
+        }
+      }
+    }
+    //*DEBUG*/ msg("section_types=" . pre($section_types));
     return $section_types;
   }
 

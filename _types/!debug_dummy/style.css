@@ -1,0 +1,7 @@
+/* #### custom styles for demo section type 'debug_dummy' ### */
+
+.filetype-debug_dummy { 
+text-align:center; 
+padding:2em 4em; 
+background:red; 
+}
