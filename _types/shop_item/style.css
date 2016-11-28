@@ -25,8 +25,8 @@ height:auto;
 position:absolute;
 top:0;
 left:0;
--webkit-transition:all 0.6s ease-out;
-transition:all 0.4s ease-out-quad;
+-webkit-transition:all cubic-bezier(0.25, 0.46, 0.45, 0.94);
+transition:all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .filetype-shop_item div.image-clip:hover>img {
@@ -52,8 +52,8 @@ color:#fff;
 background-color:#ABD117;
 box-shadow:0 1px 5px rgba(0,0,0,0.5);
 border-radius:50%;
--webkit-transition:all 0.6s ease-out;
-transition:all 0.6s ease-out;
+-webkit-transition:all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+transition:all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .filetype-shop_item div.item-badge.item-badge-top-left {
