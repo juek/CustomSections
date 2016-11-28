@@ -77,7 +77,7 @@ class CustomSections {
           $page->jQueryCode .= "\n/* -- from Custom Section [" . $type . "]: */\n" . $jQueryCode . "\n"; 
         }
       }
-      unset($css_files, $style, $js_files, $javascript, $jQueryCode);
+      unset($components, $css_files, $style, $js_files, $javascript, $jQueryCode);
     }
   }
 
