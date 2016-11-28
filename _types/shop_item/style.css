@@ -31,9 +31,9 @@ transition:all 0.4s ease-out-quad;
 
 .filetype-shop_item div.image-clip:hover>img {
 -webkit-transform:scale(1.5) rotate(12.5deg);
--moz-transform:scale(1.55) rotate(12.5deg);
--ms-transform:scale(1.55) rotate(12.5deg);
-transform:scale(1.55) rotate(12.5deg);
+-moz-transform:scale(1.5) rotate(12.5deg);
+-ms-transform:scale(1.5) rotate(12.5deg);
+transform:scale(1.5) rotate(12.5deg);
 }
 
 
