@@ -19,6 +19,11 @@ Until the plugin is released on typesettercms.com, you need to download and inst
 
 3. Install using Typesetter's Admin Toolbox -> Plugins -> Manage -> Available -> Custom Sections
 
+## Screenshot
+Demo section type "Shop Item" using the universal editor component.
+
+![Screenshot](/screenshot-01.png?raw=true)
+
 ## Credits
 [a2exfr](http://my-sitelab.com/), [juergen](https://www.typesettercms.com/User/789)
 
