@@ -2,7 +2,7 @@
 
 
 ##About
-Developer plugin for rapid prototyping of scustom section types.
+Developer plugin for rapid prototyping of custom section types.
 Current version 1.0b1 
 
 See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
