@@ -83,7 +83,7 @@ class CustomSections {
   
   
   static function GetSection($current_section){
-    // to get a default section, passin $current_section only with 'type' defined
+    // to get a default section, pass a $current_section array only with a 'type' key defined
     global $addonPathCode, $addonRelativeCode;
     if( empty($current_section['type']) ){
        return array(
@@ -100,7 +100,7 @@ class CustomSections {
       // if file is missing, return a text section with error msg
       return array(
         'type' => 'text',
-        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> in dot defined!</h2>',
+        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> is not defined!</h2>',
         'gp_label' => 'Error', 'gp_color' => '#D32625',
         'attributes' => array( 'class' => 'alert alert-danger' ),
       );
