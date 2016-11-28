@@ -14,8 +14,20 @@ defined('is_running') or die('Not an entry point...');
 class CustomSections {
 
   static function SectionTypes( $section_types=array() ){
-    /* define new --type --------------------------- label */
-    $section_types['shop_item'] = array( 'label' => 'Shop Item' );
+	global $addonPathCode;
+	$sections=gp\tool\Files::ReadDir($addonPathCode . '/_types/',1);
+	foreach($sections as $type){
+		$section_file = $addonPathCode . '/_types/' . $type . '/section.php';	
+		  if( file_exists($section_file) ){
+				include $section_file;
+				if (array_key_exists('gp_label',$section)){
+					$section_types[$type] = array( 'label' => $section['gp_label'] );
+				} else {
+					$section_types[$type] = array( 'label' => $type );
+				}
+		  }
+	}
+	
     return $section_types;
   }
 
