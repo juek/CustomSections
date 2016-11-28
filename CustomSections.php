@@ -83,7 +83,7 @@ class CustomSections {
   
   
   static function GetSection($current_section){
-    // to get a default section, pass a $current_section array only with a 'type' key defined
+    // to get a default section, passin $current_section only with 'type' defined
     global $addonPathCode, $addonRelativeCode;
     if( empty($current_section['type']) ){
        return array(
@@ -100,7 +100,7 @@ class CustomSections {
       // if file is missing, return a text section with error msg
       return array(
         'type' => 'text',
-        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> is not defined!</h2>',
+        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> in dot defined!</h2>',
         'gp_label' => 'Error', 'gp_color' => '#D32625',
         'attributes' => array( 'class' => 'alert alert-danger' ),
       );
@@ -182,13 +182,17 @@ class CustomSections {
     if( array_key_exists($type, $section_types) ){ 
       include $addonPathCode . '/_types/' . $type . '/editor.php';
 
+      /* 
+      // we don't need this anymore since there is (boolean)already_prefixed in $gp.LoadStyle since TS 5
       $addonBasePath = (strpos($addonRelativeCode, 'addons/') > 0) 
         ? '/addons/' . $addonFolderName 
         : '/data/_addoncode/' . $addonFolderName;
       $editor_css = $editor['custom_css'] != false ? $addonBasePath . '/_types/' . $type . '/' . $editor['custom_css'] : $addonBasePath . '/universal_editor/editor.css' ;
+      */
 
+      $editor_css = $editor['custom_css'] != false ? $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_css'] : $addonRelativeCode . '/universal_editor/editor.css' ;
       $code = 'var CustomSections_editor = { ';
-      $code .=  'base : "' . $addonBasePath . '", ';
+      $code .=  'base : "' . $addonRelativeCode . '", ';
       $code .=  'editor_css : "' . $editor_css . '"';
       if( $editor['custom_script'] == false ){
         $code .= ', controls : ' . json_encode($editor['controls']);

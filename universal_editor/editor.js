@@ -12,7 +12,7 @@ function gp_init_inline_edit(area_id, section_object){
 
   console.log("section_object = ", section_object);
 
-  $gp.LoadStyle( CustomSections_editor.editor_css);
+  $gp.LoadStyle( CustomSections_editor.editor_css, true ); // true for (boolean)already_prefixed
   gp_editing.editor_tools();
 
   gp_editor = {
