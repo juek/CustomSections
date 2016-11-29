@@ -14,23 +14,32 @@ defined('is_running') or die('Not an entry point...');
 class CustomSections {
 
   static function SectionTypes( $section_types=array() ){
-    global $addonRelativeCode, $addonPathCode;
-    $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
-    foreach( $sections as $type ){
-      $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
-      if( file_exists($section_file) && strpos($type, '!') !== 0 ){
-        // needed to avoid warnings -start
-        $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
-        $sectionCurrentValues = array();
-        // needed to avoid warning --end
-        include $section_file;
-        if( isset($section) ){
-          $section_types[$type] = array( 
-            'label' => ( !empty($section['gp_label']) ? $section['gp_label'] : ucwords(str_replace("_", " ", $type)) ) 
-          );
+    global $addonRelativeCode, $addonPathCode, $addonPathData;
+    $types_cache = $addonPathData . '/types.php';
+    if( \gp\tool::LoggedIn() || !file_exists($types_cache) ){
+      $types = array();
+      $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
+      foreach( $sections as $type ){
+        $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
+        if( file_exists($section_file) && strpos($type, '!') !== 0 ){
+          // needed to avoid warnings -start
+          $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
+          $sectionCurrentValues = array();
+          // needed to avoid warning --end
+          include $section_file;
+          if( isset($section) ){
+            $types[$type] = array( 
+              'label' => ( !empty($section['gp_label']) ? $section['gp_label'] : ucwords(str_replace("_", " ", $type)) ) 
+            );
+          }
         }
       }
+      \gp\tool\Files::SaveData($types_cache, 'types', $types);
+      // @chmod($types_cache, gp_chmod_file);
+    }else{
+      include $types_cache;
     }
+    $section_types += $types;
     //*DEBUG*/ msg("section_types=" . pre($section_types));
     return $section_types;
   }
