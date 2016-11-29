@@ -101,12 +101,27 @@ $editor = array(
 
 
     // value 'description' --start
+    /* 
     'description' => array(
       'label' => 'Description',
       'control_type' => 'textarea',
       'attributes' => array(
         // 'class' => '',
         'placeholder' => 'A short description',
+      ),
+      'on' => array(),
+    ), 
+    */
+    // value 'description' --end
+
+
+    // value 'description' --start
+    'description' => array(
+      'label' => 'Edit Description',
+      'control_type' => 'ck_editor',
+      'attributes' => array(
+        // 'class' => '',
+        // 'placeholder' => 'A short description',
       ),
       'on' => array(),
     ), 

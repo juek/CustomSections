@@ -242,21 +242,21 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.selectUsingFinder(gp_editor.setFile, "#editor-ctl-" + item);
         });
         break;
-		
-		case "ck_editor":
-		 var control = $(
-            '<div class="editor-ctl-box editor-ctl-ckedit">'
-          +   '<label>'
-          +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
-          +     '<input id="editor-ctl-ckedit' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
-          +   '</label>' 
-          + '</div>'
-        );
-        control.find("#editor-btn-ckedit-"+ item).on("click", function(){
-			gp_editor.CKfield(gp_editor.setFile, "editor-ctl-ckedit" + item, control_map['label']);
-		});
-		break;
-		
+        
+        case "ck_editor":
+         var control = $(
+              '<div class="editor-ctl-box editor-ctl-ckedit">'
+            +   '<label>'
+            +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
+            +     '<input id="editor-ctl-ckedit' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
+            +   '</label>' 
+            + '</div>'
+          );
+          control.find("#editor-btn-ckedit-"+ item).on("click", function(){
+          gp_editor.CKfield(gp_editor.setFile, "editor-ctl-ckedit" + item, control_map['label']);
+        });
+        break;
+        
     }
 
     if( $.isPlainObject(control_map['on']) ){ 
