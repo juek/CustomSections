@@ -16,6 +16,12 @@ class CustomSections {
   static function SectionTypes( $section_types=array() ){
     global $addonRelativeCode, $addonPathCode, $addonPathData;
     $types_cache = $addonPathData . '/types.php';
+		static $cache_call;
+		if($cache_call == 1){
+			include $types_cache;
+			$section_types += $types;
+			return $section_types;
+		}
     if( \gp\tool::LoggedIn() || !file_exists($types_cache) ){
       $types = array();
       $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
@@ -35,6 +41,7 @@ class CustomSections {
         }
       }
       \gp\tool\Files::SaveData($types_cache, 'types', $types);
+			++$cache_call;
       // @chmod($types_cache, gp_chmod_file);
     }else{
       include $types_cache;
