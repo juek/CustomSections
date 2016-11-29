@@ -14,8 +14,8 @@ function gp_init_inline_edit(area_id, section_object){
   if( CustomSections_editor.debug_level > 2) {
     console.log("section_object = ", section_object);
   }
-
-  $.each(CustomSections_editor.css, function(i, css_file){
+ 
+ $.each(CustomSections_editor.css, function(i, css_file){
     $gp.LoadStyle( css_file, true ); // true for (boolean)alreadyprefixed
   });
 
@@ -361,6 +361,8 @@ function gp_init_inline_edit(area_id, section_object){
   // define ajaxResponse callback
   $gp.response.updateContent = function(arg){
     gp_editor.edit_section.html(arg.CONTENT);
+	 //use js on loaded content
+	 eval(CustomSections_editor.js_on_content);
   };
 
 
