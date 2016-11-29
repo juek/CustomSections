@@ -11,7 +11,7 @@ Version 1.0b1
 function gp_init_inline_edit(area_id, section_object){
 
   /* DEBUG */
-  if( CustomSections_editor.debug_level > 2) {
+  if( CustomSections_editor.debug_level > 1) {
     console.log("section_object = ", section_object);
   }
 
@@ -51,7 +51,7 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editor.checkDirty = function(){
 
     /* DEBUG */
-    if( CustomSections_editor.debug_level > 2) {
+    if( CustomSections_editor.debug_level > 1) {
       console.log("SD=" + gp_editor.SaveData());
       console.log("cV=" + gp_editor.cacheValue);
     }
@@ -134,7 +134,7 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editor.getControl = function(input_type, control_map, item, value){
 
     /* DEBUG */
-    if( CustomSections_editor.debug_level > 2) {
+    if( CustomSections_editor.debug_level > 1) {
       console.log("input_type:" + input_type);
       console.log("control_map: ", control_map);
       console.log("value: " + value);
@@ -304,7 +304,7 @@ function gp_init_inline_edit(area_id, section_object){
       var control_type = control_map['control_type'];
 
       /* DEBUG */
-      if( CustomSections_editor.debug_level > 2) {
+      if( CustomSections_editor.debug_level > 1) {
         console.log("control_map:", control_map);
         console.log("control_type:" + control_type);
       }
