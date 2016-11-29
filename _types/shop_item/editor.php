@@ -39,7 +39,7 @@ $editor = array(
 
     // value 'image' --start
     'image' => array(
-      'label' => 'Select Image',
+      'label' => '<i class="fa fa-image"></i> Select Image',
       'control_type' => 'finder-select',
       'attributes' => array(),
       'on' => array(
@@ -61,7 +61,7 @@ $editor = array(
 
     // value 'badge_position' --start
     'badge_position' => array(
-      'label' => 'Badge Position',
+      'label' => '<i class="fa fa-arrows-alt"></i> Badge Position',
       'control_type' => 'radio-group',
       'radio-buttons' => array( 
         // radio value => radio label
@@ -78,7 +78,7 @@ $editor = array(
 
     // value 'badge_color' --start
     'badge_color' => array(
-      'label' => 'Badge Color',
+      'label' => '<i class="fa fa-paint-brush"></i> Badge Color',
       'control_type' => 'colorpicker', // 'color' for HTML5 color input
       'attributes' => array(
         'placeholder' => '#123ABC',
@@ -90,7 +90,7 @@ $editor = array(
 
     // value 'title' --start
     'title' => array(
-      'label' => 'Title',
+      'label' => '<i class="fa fa-font"></i> Title',
       'control_type' => 'text',
       'attributes' => array(
         // 'class' => '',
@@ -121,7 +121,7 @@ $editor = array(
 
     // value 'description' --start
     'description' => array(
-      'label' => 'Edit Description',
+      'label' => '<i class="fa fa-align-left"></i> Edit Description',
       'control_type' => 'ck_editor',
       'attributes' => array(
         // 'class' => '',
@@ -134,7 +134,7 @@ $editor = array(
 
     // value 'price' --start
     'price' => array(
-      'label' => 'Price',
+      'label' => '<i class="fa fa-dollar"></i> Price',
       'control_type' => 'number',
       'attributes' => array(
         // 'class' => '',
@@ -151,7 +151,7 @@ $editor = array(
 
     // value 'available' --start
     'available' => array(
-      'label' => 'Available',
+      'label' => '<i class="fa fa-truck"></i> Available',
       'control_type' => 'select',
       'options' => array( 
         // option value => option text
@@ -169,7 +169,7 @@ $editor = array(
 
     // value 'button_link' --start
     'button_link' => array(
-      'label' => 'Button Link',
+      'label' => '<i class="fa fa-globe"></i> Button Link',
       'control_type' => 'link-field',
       'attributes' => array(
         // 'class' => '',
@@ -185,7 +185,7 @@ $editor = array(
 
     // value 'button_text' --start
     'button_text' => array(
-      'label' => 'Button Text',
+      'label' => '<i class="fa fa-cc-stripe"></i> Button Text',
       'control_type' => 'text',
       'attributes' => array(
         // 'class' => '',
