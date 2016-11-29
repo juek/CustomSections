@@ -13,15 +13,32 @@ defined('is_running') or die('Not an entry point...');
 
 class CustomSections {
 
+  static $custom_types = false;   // will be set at first call of SectionTypes()
+  static $debug_level = 1;        // 0 = silence, 1 = only error/warning msgs, 2 = all messages, 3 = also write debug files to $addonPathCode/!debug/*.php (needs write permissions!)
+  static $debug_counter = 0;      // to prevent stripping of duplicate messages
+
+
   static function SectionTypes( $section_types=array() ){
+
+    /* DEBUG */ if( self::$debug_level > 1 ){ self::$debug_counter++; msg('SectionTypes - fn call (' . self::$debug_counter . ')'); }
+
+    if( self::$custom_types ){
+      /* DEBUG */ if( self::$debug_level > 1 ){ self::$debug_counter++; msg('SectionTypes - using static $custom_types (' . self::$debug_counter  .')'); }
+      $section_types += self::$custom_types;
+      return $section_types;
+    }
     global $addonRelativeCode, $addonPathCode, $addonPathData;
     $types_cache = $addonPathData . '/types.php';
-		static $cache_call;
-		if($cache_call == 1){
-			include $types_cache;
-			$section_types += $types;
-			return $section_types;
-		}
+
+    /*
+    static $cache_call;
+    if($cache_call == 1){
+      include $types_cache;
+      $section_types += $types;
+      return $section_types;
+    }
+    */
+
     if( \gp\tool::LoggedIn() || !file_exists($types_cache) ){
       $types = array();
       $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
@@ -41,12 +58,21 @@ class CustomSections {
         }
       }
       \gp\tool\Files::SaveData($types_cache, 'types', $types);
-			++$cache_call;
-      // @chmod($types_cache, gp_chmod_file);
+
+      /* DEBUG */ if( self::$debug_level > 1 ){ self::$debug_counter++; msg('SectionTypes - writing cache file (' . self::$debug_counter . ')'); }
+
+      /*
+      ++$cache_call;
+      */
     }else{
       include $types_cache;
+
+      /* DEBUG */ if( self::$debug_level > 1 ){ self::$debug_counter++; msg('SectionTypes - loading cache file (' . self::$debug_counter  .')'); }
     }
+
+    self::$custom_types = $types;
     $section_types += $types;
+
     //*DEBUG*/ msg("section_types=" . pre($section_types));
     return $section_types;
   }
@@ -132,7 +158,7 @@ class CustomSections {
       // if file is missing, return a text section with error msg
       return array(
         'type' => 'text',
-        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> in dot defined!</h2>',
+        'content' => '<h2>Error: Section file for type <em>' . $type . '</em> is not defined!</h2>',
         'gp_label' => 'Error', 'gp_color' => '#D32625',
         'attributes' => array( 'class' => 'alert alert-danger' ),
       );
@@ -153,7 +179,7 @@ class CustomSections {
       $replace[] =  $val;
     }
     $current_section['content'] = str_replace($search, $replace, $section['content']);
-    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/current_section.php', 'current_section', $current_section);
+    /* DEBUG */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/current_section.php', 'current_section', $current_section); }
     return $current_section;
   }
 
@@ -185,7 +211,7 @@ class CustomSections {
 
   static function NewSections($links){
     global $addonRelativeCode;
-    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/debug_NewSections.php','links',$links);
+    /* DEBUG */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/debug_NewSections.php','links',$links); }
     $section_types  = self::SectionTypes(); 
     foreach( $links as $key => $section_type_arr ){
       $type = $section_type_arr[0];
@@ -271,15 +297,16 @@ class CustomSections {
       $css = $get_modules['css'];
     }
 
-    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/modules.php','modules',$modules);
-    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/css.php','css',$css);
+    /* DEBUG */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/modules.php','modules',$modules); }
+    /* DEBUG */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/css.php','css',$css); }
     
     $code = 'var CustomSections_editor = { ';
     $code .=  'base : "' . $addonRelativeCode . '", ';
     if( empty($editor['custom_scripts']) ){
       $code .= 'controls : ' . json_encode($editor['controls']) . ', ';
     }
-    $code .=  'css : ' . json_encode($css);
+    $code .=  'css : ' . json_encode($css) . ', ';
+    $code .=  'debug_level : "' . self::$debug_level . '", ';
     $code .= ' };';
     $scripts[] = array( 'code' => $code );
 
@@ -296,7 +323,7 @@ class CustomSections {
     }else{
       $scripts[] = $addonRelativeCode . '/universal_editor/editor.js';
     }
-    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/scripts.php','scripts',$scripts);
+    /* DEBUG */  if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/scripts.php','scripts',$scripts); }
     return $scripts;
   }
 
@@ -314,7 +341,7 @@ class CustomSections {
           $scripts[] = array( 'code' => 'CKEDITOR_BASEPATH = ' . gpAjax::quote($ckeditor_basepath) . '; ' ); 
           $scripts[] = array( 'code' => 'var CS_ckconfig = ' . gp_edit::CKConfig($options, 'json', $plugins) . '; ');
           // extra plugins
-          // echo 'var gp_add_plugins = ' . json_encode( $plugins ) . ';';
+          echo 'var gp_add_plugins = ' . json_encode( $plugins ) . ';';
           $scripts[] = '/include/thirdparty/ckeditor_34/ckeditor.js';
           $scripts[] = '/include/js/ckeditor_config.js';
           break;

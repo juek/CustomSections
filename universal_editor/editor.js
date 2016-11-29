@@ -10,7 +10,10 @@ Version 1.0b1
 
 function gp_init_inline_edit(area_id, section_object){
 
-  // console.log("section_object = ", section_object);
+  /* DEBUG */
+  if( CustomSections_editor.debug_level > 2) {
+    console.log("section_object = ", section_object);
+  }
 
   $.each(CustomSections_editor.css, function(i, css_file){
     $gp.LoadStyle( css_file, true ); // true for (boolean)alreadyprefixed
@@ -44,9 +47,15 @@ function gp_init_inline_edit(area_id, section_object){
   };
 
 
+
   gp_editor.checkDirty = function(){
-    //console.log("SD=" + gp_editor.SaveData());
-    //console.log("cV=" + gp_editor.cacheValue);
+
+    /* DEBUG */
+    if( CustomSections_editor.debug_level > 2) {
+      console.log("SD=" + gp_editor.SaveData());
+      console.log("cV=" + gp_editor.cacheValue);
+    }
+
     var curr_val = gp_editor.SaveData();
     if( curr_val != gp_editor.cacheValue ){
       gp_editor.updateSection();
@@ -81,6 +90,11 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.CKfield = function(callback_fn, input_selector, label) {
+    if( typeof(gp_add_plugins) == 'object' ){
+      $.each(gp_add_plugins,function(name,path){
+        CKEDITOR.plugins.addExternal(name,path);
+      });
+    }
     var content = gp_editor.ui.controls.find("#" + input_selector).val(); //.html();
     var boxHtml = '<div class="inline_box">'
     + '<h3>' + label + '</h3>'
@@ -118,9 +132,14 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.getControl = function(input_type, control_map, item, value){
-    console.log("input_type:" + input_type);
-    console.log("control_map: ", control_map);
-    //console.log("value: " + value);
+
+    /* DEBUG */
+    if( CustomSections_editor.debug_level > 2) {
+      console.log("input_type:" + input_type);
+      console.log("control_map: ", control_map);
+      console.log("value: " + value);
+    }
+
     var attributes = '';
     var type_attr = control_map['control_type'];
     if( $.isPlainObject(control_map['attributes']) ){ 
@@ -283,8 +302,13 @@ function gp_init_inline_edit(area_id, section_object){
     if( item in CustomSections_editor.controls ){
       var control_map = CustomSections_editor.controls[item];
       var control_type = control_map['control_type'];
-      //console.log("control_map:", control_map);
-      //console.log("control_type:" + control_type);
+
+      /* DEBUG */
+      if( CustomSections_editor.debug_level > 2) {
+        console.log("control_map:", control_map);
+        console.log("control_type:" + control_type);
+      }
+
       switch( control_type ){
         case "color": // provides a system color picker as of Edge 14, Firefox 29, Chrome 20, Safari 10, Opera 17 and some mobile browsers
         case "date":
