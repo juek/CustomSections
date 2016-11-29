@@ -32,7 +32,7 @@ display:block;
 position:relative;
 overflow:hidden;
 background:#fff;
-border:1px solid rgba(0,0,0,0.175);
+border:1px solid rgba(0,0,0,0.25);
 border-radius:3px;
 margin:3px 0 0;
 vertical-align:baseline;
@@ -40,6 +40,17 @@ color:#555;
 }
 
 .editor-ctl-box label {}
+
+.editor-ctl-box button,
+.editor-ctl-box.editor-ctl-checkbox label,
+.editor-ctl-box.editor-ctl-radio-group label:not(:first-child),
+.editor-ctl-box.editor-ctl-link-field label:not(:first-child) {
+cursor:pointer;
+}
+
+.editor-ctl-box.editor-ctl-link-field label:last-child {
+border-top:1px solid rgba(0,0,0,0.125);
+}
 
 .editor-ctl-box.editor-ctl-input span.label-text,
 .editor-ctl-box.editor-ctl-select span.label-text,
@@ -51,8 +62,8 @@ display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);
 background:#f8f8f8;
 padding:4px;
+color:#555;
 }
-
 
 .editor-ctl-box input[type="color"],
 .editor-ctl-box input[type="date"],
@@ -77,6 +88,7 @@ padding:4px;
 -ms-box-sizing:border-box;
 -o-box-sizing:border-box;
 box-sizing:border-box;
+box-shadow:none;
 background-color:none;
 border:none;
 padding:4px 6px;
@@ -88,6 +100,7 @@ background:#f1f1f1;
 background:-moz-linear-gradient(top, #fff 0%, #f1f1f1 100%);
 background:-webkit-linear-gradient(top, #fff 0%,#f1f1f1 100%);
 background:linear-gradient(to bottom, #fff 0%,#f1f1f1 100%);
+color:#555;
 }
 
 .editor-ctl-box select {
@@ -143,13 +156,6 @@ content:"\f1db";
 }
 .editor-ctl-box input[type='radio']:checked + span:before { 
 content:"\f111"; 
-}
-
-.editor-ctl-box button,
-.editor-ctl-box.editor-ctl-checkbox label,
-.editor-ctl-box.editor-ctl-radio-group label:not(:first-child),
-.editor-ctl-box.editor-ctl-link-field label:not(:first-child) {
-cursor:pointer;
 }
 
 .editor-ctl-box input:disabled,
