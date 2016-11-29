@@ -165,5 +165,38 @@ $editor = array(
     ), 
     // value 'available' --end
 
+
+    // value 'button_link' --start
+    'button_link' => array(
+      'label' => 'Button Link',
+      'control_type' => 'link-field',
+      'attributes' => array(
+        // 'class' => '',
+        'placeholder' => '#top, /MyPage or http://some.website.com',
+        // 'pattern' => '', // regex for validation
+      ),
+      'on' => array(
+        'focus' => 'function(){ $(this).select(); }',
+      ),
+    ), 
+    // value 'button_link' --end
+
+
+    // value 'button_text' --start
+    'button_text' => array(
+      'label' => 'Button Text',
+      'control_type' => 'text',
+      'attributes' => array(
+        // 'class' => '',
+        'placeholder' => 'Click me!',
+        // 'pattern' => '', // regex for validation
+      ),
+      'on' => array(
+        'focus' => 'function(){ $(this).select(); }',
+      ),
+    ), 
+    // value 'button_text' --end
+
+
   ),
 );

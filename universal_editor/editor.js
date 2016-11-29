@@ -10,8 +10,8 @@ Version 1.0b1
 
 function gp_init_inline_edit(area_id, section_object){
 
-  /* DEBUG */
-  if( CustomSections_editor.debug_level > 1) {
+  /* DEBUG level 3 */
+  if( CustomSections_editor.debug_level > 2) {
     console.log("section_object = ", section_object);
   }
 
@@ -41,7 +41,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.SaveData = function(){
-    var values = gp_editor.ui.controls.find("input:not([type='checkbox'],[type='radio']),select,textarea").serialize();
+    var values = gp_editor.ui.controls.find("input:not(.editor-ctl-no-submit, [type='checkbox'],[type='radio']),select,textarea").serialize();
     var content = encodeURIComponent( gp_editor.edit_section.html() );
     return 'gpcontent=' + content + '&' + values;
   };
@@ -50,8 +50,8 @@ function gp_init_inline_edit(area_id, section_object){
 
   gp_editor.checkDirty = function(){
 
-    /* DEBUG */
-    if( CustomSections_editor.debug_level > 1) {
+    /* DEBUG level 3 */
+    if( CustomSections_editor.debug_level > 2) {
       console.log("SD=" + gp_editor.SaveData());
       console.log("cV=" + gp_editor.cacheValue);
     }
@@ -85,7 +85,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.setFile = function(fileUrl, input_selector){
-    gp_editor.ui.controls.find(input_selector).val(fileUrl);
+    gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
   };
 
 
@@ -133,8 +133,8 @@ function gp_init_inline_edit(area_id, section_object){
 
   gp_editor.getControl = function(input_type, control_map, item, value){
 
-    /* DEBUG */
-    if( CustomSections_editor.debug_level > 1) {
+    /* DEBUG level 3 */
+    if( CustomSections_editor.debug_level > 2) {
       console.log("input_type:" + input_type);
       console.log("control_map: ", control_map);
       console.log("value: " + value);
@@ -160,6 +160,7 @@ function gp_init_inline_edit(area_id, section_object){
         );
         break;
 
+
       case "select":
         var options = '';
         if( $.isPlainObject(control_map['options']) ){ 
@@ -181,6 +182,7 @@ function gp_init_inline_edit(area_id, section_object){
         );
         break;
 
+
       case "textarea":
         var control = $(
             '<div class="editor-ctl-box editor-ctl-textarea">'
@@ -190,6 +192,7 @@ function gp_init_inline_edit(area_id, section_object){
           + '</div>'
         );
         break;
+
 
       case "checkbox":
         var checked = value ? ' checked="checked"' : '';
@@ -207,6 +210,7 @@ function gp_init_inline_edit(area_id, section_object){
           $("#editor-ctl-" + item).val(v);
         });
         break;
+
 
       case "radio-group":
         var radio_group = '<div class="editor-ctl-box editor-ctl-radio-group" id="editor-ctl-' + item + '-radio-group">';
@@ -232,6 +236,7 @@ function gp_init_inline_edit(area_id, section_object){
         });
         break;
 
+
       case "finder-select":
         var control = $(
             '<div class="editor-ctl-box editor-ctl-finder-select">'
@@ -245,6 +250,71 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.selectUsingFinder(gp_editor.setFile, "#editor-ctl-" + item);
         });
         break;
+
+
+      case "link-field":
+        var checked = value.indexOf("##!newtab") != -1 ? ' checked="checked"' : '';
+        var url = value.split("##!newtab")[0];
+        var control = $(
+            '<div class="editor-ctl-box editor-ctl-link-field">'
+          +   '<label><span class="label-text">' + control_map['label'] + '</span> '
+          +     '<input class="editor-ctl-no-submit" type="text" value="' + url + '"' + attributes + '/>'  // type="url" only accepts http://absolute ones >:(
+          +     '<button title="Select File"><i class="fa fa-file-o"></i></button>'
+          +   '</label>' 
+          +   '<label>' 
+          +     '<input type="checkbox"' + checked + '/><span></span> <span class="label-text">open in new tab\/window</span>'
+          +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/></div>'
+          +   '</label>' 
+          + '</div>'
+        );
+        /* DEBUG level 3 */ 
+        if( CustomSections_editor.debug_level > 2) {
+          control.find("#editor-ctl-" + item).on("change", function(){ 
+            console.log("link value = " + $(this).val() ); 
+          });
+        }
+        control.find("button")
+          .on('click', function(){
+            var url_field = $(this).closest(".editor-ctl-box").find("input[type='text']");
+            gp_editor.selectUsingFinder(gp_editor.setFile, url_field);
+          });
+        control.find("input[type='checkbox']")
+          .on("change", function(){
+            var new_tab = $(this).prop("checked") ? "##!newtab" : "";
+            var new_val = $(this).closest(".editor-ctl-box").find("input[type='text']").val() + new_tab;
+            $("#editor-ctl-" + item).val(new_val).trigger("change");
+          })
+        control.find("input[type='text']")
+          .on("keyup change paste", function(){
+            var checkbox = $(this).closest(".editor-ctl-box").find("input[type='checkbox']");
+            var new_tab = checkbox.prop("checked") ? "##!newtab" : "";
+            var new_val = $(this).val() + new_tab;
+            if( new_val.indexOf('://') != -1 ){
+              checkbox.prop("checked", true);
+            }
+            $("#editor-ctl-" + item).val(new_val).trigger("change");
+          })
+          .autocomplete({
+            source    : gptitles,
+            appendTo  : "#gp_admin_html",
+            delay     : 100, 
+            minLength : 0,
+            select    : function(event,ui){
+                          if( ui.item ){
+                            $(this).val(encodeURI(ui.item[1]));
+                            $(this).trigger("change");
+                            event.stopPropagation();
+                            return false;
+                          }
+                        }
+        }).data("ui-autocomplete")._renderItem = function(ul,item) {
+          return $("<li></li>")
+            .data("ui-autocomplete-item", item[1])
+            .append('<a>' + $gp.htmlchars(item[0]) + '<span>' + $gp.htmlchars(item[1])+'</span></a>')
+            .appendTo(ul);
+        };
+        break;
+
 
       case "ck_editor":
         var control = $(
@@ -303,8 +373,8 @@ function gp_init_inline_edit(area_id, section_object){
       var control_map = CustomSections_editor.controls[item];
       var control_type = control_map['control_type'];
 
-      /* DEBUG */
-      if( CustomSections_editor.debug_level > 1) {
+      /* DEBUG level 3 */
+      if( CustomSections_editor.debug_level > 2) {
         console.log("control_map:", control_map);
         console.log("control_type:" + control_type);
       }
@@ -347,7 +417,11 @@ function gp_init_inline_edit(area_id, section_object){
         case "finder-select":
           gp_editor.ui.controls.append( gp_editor.getControl("finder-select", control_map, item, value) );
           break;  
-        
+
+        case "link-field":
+          gp_editor.ui.controls.append( gp_editor.getControl("link-field", control_map, item, value) );
+          break;  
+
         case "ck_editor":
           gp_editor.ui.controls.append( gp_editor.getControl("ck_editor", control_map, item, value) );
           break;

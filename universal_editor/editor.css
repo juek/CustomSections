@@ -45,6 +45,7 @@ color:#555;
 .editor-ctl-box.editor-ctl-select span.label-text,
 .editor-ctl-box.editor-ctl-textarea span.label-text,
 .editor-ctl-box.editor-ctl-colorpicker span.label-text,
+.editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text {
 display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);
@@ -146,7 +147,8 @@ content:"\f111";
 
 .editor-ctl-box button,
 .editor-ctl-box.editor-ctl-checkbox label,
-.editor-ctl-box.editor-ctl-radio-group label {
+.editor-ctl-box.editor-ctl-radio-group label:not(:first-child),
+.editor-ctl-box.editor-ctl-link-field label:not(:first-child) {
 cursor:pointer;
 }
 
@@ -168,11 +170,15 @@ width:100%!important;
 padding-left:24px;
 }
 
-.editor-ctl-box i.fa {
+.editor-ctl-box.editor-ctl-link-field input[type='text'] {
 display:inline-block;
-width:20px;
-margin-left:-20px;
-color:#888;
+width:85%!important;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
-
+.editor-ctl-box.editor-ctl-link-field button {
+display:inline-block;
+width:15%!important;
+border-left:1px solid rgba(0,0,0,0.125);
+}
