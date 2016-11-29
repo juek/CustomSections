@@ -12,7 +12,7 @@ Version 1.0b1
 defined('is_running') or die('Not an entry point...');
 
 $editor = array(
-  'custom_script' => false,
+  'custom_scripts' => false,
   'custom_css' =>    false,
 
   'controls' => array( 

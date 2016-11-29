@@ -207,54 +207,127 @@ class CustomSections {
   static function InlineEdit_Scripts($scripts, $type){
     global $addonRelativeCode, $addonPathCode, $addonFolderName, $addonCodeFolder;
     $section_types = self::SectionTypes();  
-    if( array_key_exists($type, $section_types) ){ 
-      include $addonPathCode . '/_types/' . $type . '/editor.php';
-
-      /* 
-      // we don't need this anymore since there is (boolean)already_prefixed in $gp.LoadStyle since TS 5
-      $addonBasePath = (strpos($addonRelativeCode, 'addons/') > 0) 
-        ? '/addons/' . $addonFolderName 
-        : '/data/_addoncode/' . $addonFolderName;
-      $editor_css = $editor['custom_css'] != false ? $addonBasePath . '/_types/' . $type . '/' . $editor['custom_css'] : $addonBasePath . '/universal_editor/editor.css' ;
-      */
-
-	  
-	  foreach ($editor['controls'] as $field) {
-		  if($field['control_type'] == "ck_editor"){
-				// ckeditor basepath and configuration
-				$options = array();
-				$ckeditor_basepath = common::GetDir('/include/thirdparty/ckeditor_34/');
-				echo 'CKEDITOR_BASEPATH = ' . gpAjax::quote($ckeditor_basepath) . '; ';
-				echo 'var CS_ckconfig = ' . gp_edit::CKConfig($options, 'json', $plugins) . '; ';
-				// extra plugins
-			//	echo 'var gp_add_plugins = ' . json_encode( $plugins ) . ';';
-				$scripts[] = '/include/thirdparty/ckeditor_34/ckeditor.js';
-				$scripts[] = '/include/js/ckeditor_config.js';
-				break;
-		 }
-		  
-	  }
-	  
-	  	  
-	  
-      $editor_css = $editor['custom_css'] != false ? $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_css'] : $addonRelativeCode . '/universal_editor/editor.css' ;
-      $code = 'var CustomSections_editor = { ';
-      $code .=  'base : "' . $addonRelativeCode . '", ';
-      $code .=  'editor_css : "' . $editor_css . '"';
-      if( $editor['custom_script'] == false ){
-        $code .= ', controls : ' . json_encode($editor['controls']);
-      }
-      $code .= ' };';
-      $scripts[] = array( 'code' => $code );
-
-      $editor_script = $editor['custom_script'] != false ? $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_script'] : $addonRelativeCode . '/universal_editor/editor.js' ;
-      $scripts[] = $editor_script;
+    if( !array_key_exists($type, $section_types) ){ 
+      return $scripts;
     }
+
+    include $addonPathCode . '/_types/' . $type . '/editor.php';
+
+    $css = array();
+    if( !empty($editor['custom_css']) ){
+      if( is_array($editor['custom_css']) ){
+        // array of css files
+        foreach( $editor['custom_css'] as $css_file ){
+          $css[] = $addonRelativeCode . '/_types/' . $type . '/' . $css_file;
+        }
+      }else{
+        // single css file
+        $css[] = $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_css'];
+      }
+    }else{
+      $css[] = $addonRelativeCode . '/universal_editor/editor.css';
+    }
+
+    $modules = array();
+    // modules defined in $editor array
+    if( !empty($editor['modules']) ){
+      if( is_array($editor['modules']) ){
+        $modules = $editor['modules'];
+      }else{ 
+        // is single value or csv
+        $modules = explode(',', $editor['modules']);
+      }
+    }
+
+    // modules defined in controls
+    foreach( $editor['controls'] as $control ){
+      switch( $control['control_type'] ){
+        case 'ck_editor':
+          $modules[] = 'ck_editor';
+          break;
+        case 'colorpicker': // for rgba
+          $modules[] = 'colorpicker';
+          break;
+        case 'clockpicker':
+          $modules[] = 'clockpicker';
+          break;
+        //case 'datepicker':
+        //  $modules[] = 'datepicker';
+        //  break;
+      }
+    }
+
+    if( !empty($modules) ){
+      $modules = array_unique($modules);
+      $get_modules = self::GetEditorModules($modules, $scripts, $css); // returns array( 'scripts' => $scripts, 'css' => $css )
+      $scripts = $get_modules['scripts'];
+      $css = $get_modules['css'];
+    }
+
+    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/modules.php','modules',$modules);
+    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/css.php','css',$css);
+    
+    $code = 'var CustomSections_editor = { ';
+    $code .=  'base : "' . $addonRelativeCode . '", ';
+    if( empty($editor['custom_scripts']) ){
+      $code .= 'controls : ' . json_encode($editor['controls']) . ', ';
+    }
+    $code .=  'css : ' . json_encode($css);
+    $code .= ' };';
+    $scripts[] = array( 'code' => $code );
+
+    if( !empty($editor['custom_scripts']) ){
+      if( is_array($editor['custom_scripts']) ){
+        // array of script files
+        foreach( $editor['custom_scripts'] as $js_file ){
+          $scripts[] = $addonRelativeCode . '/_types/' . $type . '/' . $js_file;
+        }
+      }else{
+        // single script file
+        $scripts[] = $addonRelativeCode . '/_types/' . $type . '/' . $editor['custom_scripts'];
+      }
+    }else{
+      $scripts[] = $addonRelativeCode . '/universal_editor/editor.js';
+    }
+    //* DEBUG */ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/scripts.php','scripts',$scripts);
     return $scripts;
   }
 
-  
-  
+
+
+  static function GetEditorModules($modules, $scripts, $css){
+    global $addonRelativeCode;
+    foreach( $modules as $module ){
+      $module = trim($module); // remove possible spaces left from exploding csv
+      switch( $module) {
+        case 'ck_editor':
+          // ckeditor basepath and configuration
+          $options = array();
+          $ckeditor_basepath = \gp\tool::GetDir('/include/thirdparty/ckeditor_34/');
+          $scripts[] = array( 'code' => 'CKEDITOR_BASEPATH = ' . gpAjax::quote($ckeditor_basepath) . '; ' ); 
+          $scripts[] = array( 'code' => 'var CS_ckconfig = ' . gp_edit::CKConfig($options, 'json', $plugins) . '; ');
+          // extra plugins
+          // echo 'var gp_add_plugins = ' . json_encode( $plugins ) . ';';
+          $scripts[] = '/include/thirdparty/ckeditor_34/ckeditor.js';
+          $scripts[] = '/include/js/ckeditor_config.js';
+          break;
+
+        case 'colorpicker':
+          $scripts[] = $addonRelativeCode . '/thirdparty/bootstrap_colorpicker/bootstrap-colorpicker.min.js';
+          $css[] = $addonRelativeCode . '/thirdparty/bootstrap_colorpicker/bootstrap-colorpicker.css';
+          break;
+
+        case 'clockpicker':
+          $scripts[] = $addonRelativeCode . '/thirdparty/jquery_clockpicker/jquery-clockpicker.min.js';
+          $css[] = $addonRelativeCode . '/thirdparty/jquery_clockpicker/jquery-clockpicker.min.css';
+          break;
+      }
+    }
+    return array( 'scripts' => $scripts, 'css' => $css );
+  }
+
+
+
   static function PageRunScript($cmd) {
     global $page; 
     if( $cmd != 'save_custom_section' ){
@@ -270,7 +343,8 @@ class CustomSections {
     $arg_value = \gp\tool\Output\Sections::SectionToContent($section_options, '');
     $page->ajaxReplace[] = array('updateContent', 'arg', $arg_value);
     return 'return';
-  } 
+  }
+
 
 }
   

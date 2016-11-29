@@ -19,7 +19,7 @@ $section['values'] = array_merge(array(
   'badge_position'  => 'top-left', // radio group
   'badge_color'     => '#ABD117', // color
   'title'           => 'Custom Sections!', // text
-  'description'     => 'A brand-new plugin to <strong>prototype sections</strong> with custom editors <em>in no time</em>. Hands on!', // ck_editor
+  'description'     => 'A brand-new plugin to <strong>prototype sections</strong> with custom editors <em>in no time</em>. Hands-on!', // ck_editor
   'available'       => 'in stock', // select 
   'price'           => '0.00', // number
 ), $sectionCurrentValues );

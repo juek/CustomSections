@@ -12,8 +12,11 @@ Version 1.0b1
 defined('is_running') or die('Not an entry point...');
 
 $editor = array(
-  'custom_script' => false, // use a custom editor Javascript for this section type?
-  'custom_css' =>    false, // use a custom editor CSS for this section type?
+  'custom_scripts' => false,  // use a custom editor Javascript for this section type?
+  'custom_css' =>     false,  // use a custom editor CSS for this section type?
+  'modules' =>     false,     // when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clickpicker, datepicker
+                              // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
+                              // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
 
    /*---------------------------------------------*/
    /*    If both values above are set to false,   */
@@ -75,7 +78,7 @@ $editor = array(
     // value 'badge_color' --start
     'badge_color' => array(
       'label' => 'Badge Color',
-      'control_type' => 'color',
+      'control_type' => 'colorpicker', // 'color' for HTML5 color input
       'attributes' => array(
         'placeholder' => '#123ABC',
       ),

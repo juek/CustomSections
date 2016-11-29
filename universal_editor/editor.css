@@ -44,6 +44,7 @@ color:#555;
 .editor-ctl-box.editor-ctl-input span.label-text,
 .editor-ctl-box.editor-ctl-select span.label-text,
 .editor-ctl-box.editor-ctl-textarea span.label-text,
+.editor-ctl-box.editor-ctl-colorpicker span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text {
 display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);

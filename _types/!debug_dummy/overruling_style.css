@@ -3,6 +3,12 @@
 .filetype-debug_dummy { 
 text-align:center; 
 padding:4em; 
-background:#E5B906 url(img/dummy.png) 75% center no-repeat; 
+background:#E5B906 url(img/dummy.png) 50% center repeat-x; 
 background-size:contain;
+border:5px dashed rgba(0,0,0,0.5);
+}
+
+.filetype-debug_dummy *{ 
+color:#fff!important;
+text-shadow:0 0 5px #000;
 }
