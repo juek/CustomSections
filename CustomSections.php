@@ -14,7 +14,7 @@ defined('is_running') or die('Not an entry point...');
 class CustomSections {
 
   static $custom_types = false;   // will be set at first call of SectionTypes()
-  static $debug_level = 2;        // 0 = silence, 1 = only error/warning msgs, 2 = msgs for current debugging , 3 = level-3 messages, also write debug files to $addonPathCode/!debug/*.php (needs write permissions!)
+  static $debug_level = 1;        // 0 = silence, 1 = only error/warning msgs, 2 = msgs for current debugging , 3 = level-3 messages, also write debug files to $addonPathCode/!debug/*.php (needs write permissions!)
   static $debug_counter = 0;      // to prevent stripping of duplicate messages
 
 
@@ -175,9 +175,19 @@ class CustomSections {
     $search = array();
     $replace = array();
     foreach( $sectionCurrentValues as $key => $val ){
-      $search[] =   '{{' . $key . '}}';
-      $replace[] =  $val;
-    }
+     
+		 //one level array elements echo  syntax  {{array|key}}
+		 if(is_array($val)){
+			 foreach($val as $sub_key=>$sub_val){
+				$search[] =   '{{' . $key .'|'.$sub_key. '}}';
+				$replace[] =  $sub_val;
+			 }
+		 } else {
+		
+			$search[] =   '{{' . $key . '}}';
+			$replace[] =  $val;
+		 }
+   }
     $current_section['content'] = str_replace($search, $replace, $section['content']);
     /* DEBUG level 3 */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/current_section.php', 'current_section', $current_section); }
     return $current_section;
@@ -310,7 +320,11 @@ class CustomSections {
     }
     $code .=  'css : ' . json_encode($css) . ', ';
     $code .=  'debug_level : "' . self::$debug_level . '", ';
-    $code .= ' };';
+    
+	if(!empty($editor['js_on_content']) ){
+	$code .=  'js_on_content : ' . json_encode($editor['js_on_content']) . ', ';
+	}
+	$code .= ' };';
     $scripts[] = array( 'code' => $code );
 
     if( !empty($editor['custom_scripts']) ){

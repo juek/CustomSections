@@ -17,8 +17,9 @@ $editor = array(
   'modules' =>     false,     // when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clickpicker, datepicker
                               // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
                               // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
+//'js_on_content' => 'console.log("js_on_content")',  // use this js for this section type in time of inline editing/refreshing when need to reinit something
 
-   /*---------------------------------------------*/
+ /*---------------------------------------------*/
    /*    If both values above are set to false,   */
    /*         WE USE THE UNIVERSAL EDITOR         */
    /*     (see /universal_editor/edit.js/css)     */
