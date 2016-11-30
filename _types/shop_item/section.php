@@ -22,7 +22,10 @@ $section['values'] = array_merge(array(
   'description'     => 'A brand-new plugin to <strong>prototype sections</strong> with custom editors <em>in no time</em>. Hands-on!', // ck_editor
   'available'       => 'in stock', // select 
   'price'           => '0.00', // number
-  'button_link'     => 'https://www.typesettercms.com/Plugins##!newtab', // link-field, trailing ##!newtab will open new window, see conditional in content below
+  'button_link'     => array( 
+                        'url' => 'https://www.typesettercms.com/Plugins',  // absolute URL, relative URL, mailto, #anchor
+                        'target' => '_blank', // _blank, _self
+                       ), // link-field
   'button_text'     => 'get it', // text, span and &zwnj; if we want to use CKE
 ), $sectionCurrentValues );
 
@@ -59,18 +62,8 @@ $section['content'] .=
       </div>
       <div class="col-md-6 text-right">
         <h4 class="item-price">EUR {{price}}</h4>
-';
-
-
-// DIRTY!!!!  conditional rendering: link in new tab? Will change it once we have array support for values
-$url = rtrim($section['values']['button_link'], '##!newtab');
-$target = (strpos($section['values']['button_link'], '##!newtab') !== false) ? ' target="_blank" ' : '';
-$section['content'] .= 
-'        <a href="' . $url . '" class="btn btn-success btn-block"' . $target . '><span class="fa fa-download">&zwnj;</span> {{button_text}}</a>';
-
-
-$section['content'] .= 
-'     </div>
+        <a href="{{button_link|url}}" class="btn btn-success btn-block" target="{{button_link|target}}"><span class="fa fa-download">&zwnj;</span> {{button_text}}</a>
+      </div>
     </div>
   </div>
 </div>
