@@ -22,6 +22,7 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editing.editor_tools();
 
   gp_editor = {
+    section_object    : section_object,
     edit_section      : gp_editing.get_edit_area(area_id),
     save_path         : gp_editing.get_path(area_id),
     cacheValue        : '',
@@ -357,7 +358,12 @@ function gp_init_inline_edit(area_id, section_object){
 
   // define ajaxResponse callback
   $gp.response.updateContent = function(arg){
-    gp_editor.edit_section.html(arg.CONTENT);
+    gp_editor.edit_section
+      .html(arg.CONTENT)
+      .trigger("CustomSection:updated");
+    if( typeof(CustomSections.onUpdate) == "function" ){
+      CustomSections.onUpdate.call(gp_editor.edit_section);
+    }
     //use js on loaded content
     eval(CustomSections_editor.js_on_content);
   };

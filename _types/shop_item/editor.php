@@ -18,8 +18,9 @@ $editor = array(
                               // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
                               // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
   
-  'js_on_content' => 'console.log( "Section " + gp_editor.edit_section.attr("id") + " was updated @ " + new Date().toJSON() )',  
+  'js_on_content' => 'console.log( "js_on_content, JavaScript code defined in _types/shop_item/editor.php was executed: Editing section id = " + gp_editor.edit_section.attr("id") + " | Timestamp: " + new Date().toJSON() )',  
   // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
+  
 
   /*---------------------------------------------*/
   /*    If both values above are set to false,   */
