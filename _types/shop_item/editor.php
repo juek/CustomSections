@@ -199,7 +199,15 @@ $editor = array(
       ),
     ), 
     // value 'button_text' --end
-
+	
+	// value 'images' --start
+    'images' => array(
+      'label' => '<i class="fa fa-image"></i> Carousel Images',
+      'control_type' => 'image_multiply',
+      'attributes' => array(),
+      
+    ), 
+    // value 'images' --end
 
   ),
 );

@@ -27,6 +27,10 @@ $section['values'] = array_merge(array(
                         'target' => '_blank', // _blank, _self
                        ), // link-field
   'button_text'     => 'get it', // text, span and &zwnj; if we want to use CKE
+  'images'			=> array($sectionRelativeCode . '/img/default_image.png',
+							 $sectionRelativeCode . '/img/default_image_c.png',
+							 $sectionRelativeCode . '/img/default_image_r.png',
+							 $sectionRelativeCode . '/img/default_image_e.png',),//array of images for muliply image field
 ), $sectionCurrentValues );
 
 
@@ -69,6 +73,40 @@ $section['content'] .=
 </div>
 ';
 
+
+// bootstrap carousel of images example
+$car=crc32(uniqid("",true)); $number=count($section["values"]["images"]); $i = 1;
+
+$section['content'] .= '<div id="'.$car.'" class="carousel slide qwerty" data-ride="carousel">';
+		
+		$section['content'] .= '<ol class="carousel-indicators">';
+		
+			$section['content'] .= '<li data-target="#'.$car.'" data-slide-to="0" class="active"></li>';
+				
+		while ($i < $number) { 
+				$section['content'] .= '<li data-target="#'.$car.'" data-slide-to="'.$i.'"></li>';
+
+				 $i++;  
+			} 
+		$section['content'] .= '</ol>';
+
+		
+	$section['content'] .= '<div class="carousel-inner" role="listbox">';
+								
+	$section['content'] .= '<div class="item active"><img src="{{images|0}}" ></div>';
+			
+			$i = 1;
+			while ($i < $number) { 
+			   $section['content'] .= ' <div class="item"><img src="{{images|'.$i.'}}" ></div>';
+				$i++;  
+			 } 
+	$section['content'] .='</div>';
+
+$section['content'] .= 
+	'<a class="left slide-control" href="#'.$car.'" role="button" data-slide="prev"><i class="fa fa-angle-left">&zwnj;</i></a>
+	<a class="right slide-control" href="#'.$car.'" role="button" data-slide="next"><i class="fa fa-angle-right">&zwnj;</i></a>
+	</div>';
+	
 
 // Recommended: Section Label. If not defined, it will be generated from the folder name.
 $section['gp_label'] = 'Shop Item';
