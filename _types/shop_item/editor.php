@@ -14,24 +14,26 @@ defined('is_running') or die('Not an entry point...');
 $editor = array(
   'custom_scripts' => false,  // use a custom editor Javascript for this section type?
   'custom_css' =>     false,  // use a custom editor CSS for this section type?
-  'modules' =>     false,     // when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clickpicker, datepicker
+  'modules' =>        false,  // when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clickpicker, datepicker
                               // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
                               // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
-//'js_on_content' => 'console.log("js_on_content")',  // use this js for this section type in time of inline editing/refreshing when need to reinit something
+  
+  'js_on_content' => 'console.log( "Section " + gp_editor.edit_section.attr("id") + " was updated @ " + new Date().toJSON() )',  
+  // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
 
- /*---------------------------------------------*/
-   /*    If both values above are set to false,   */
-   /*         WE USE THE UNIVERSAL EDITOR         */
-   /*     (see /universal_editor/edit.js/css)     */
-   /*                                             */
-   /* The universal editor only needs definitions */
-   /* for the controls of the used values.        */
-   /*                                             */
-   /* This demo 'shop_item' section makes use     */
-   /* of all currently available control types.   */
-   /*                                             */
-   /* More will follow...                         */
-   /*---------------------------------------------*/
+  /*---------------------------------------------*/
+  /*    If both values above are set to false,   */
+  /*         WE USE THE UNIVERSAL EDITOR         */
+  /*     (see /universal_editor/edit.js/css)     */
+  /*                                             */
+  /* The universal editor only needs definitions */
+  /* for the controls of the used values.        */
+  /*                                             */
+  /* This demo 'shop_item' section makes use     */
+  /* of all currently available control types.   */
+  /*                                             */
+  /* More will follow...                         */
+  /*---------------------------------------------*/
    
   'controls' => array( 
   

@@ -253,17 +253,16 @@ function gp_init_inline_edit(area_id, section_object){
 
 
       case "link-field":
-        var checked = value.indexOf("##!newtab") != -1 ? ' checked="checked"' : '';
-        var url = value.split("##!newtab")[0];
+        var checked = value['target'] == '_blank' ? ' checked="checked" ' : '';
         var control = $(
             '<div class="editor-ctl-box editor-ctl-link-field">'
           +   '<label><span class="label-text">' + control_map['label'] + '</span> '
-          +     '<input class="editor-ctl-no-submit" type="text" value="' + url + '"' + attributes + '/>'  // type="url" only accepts http://absolute ones >:(
+          +     '<input id="editor-ctl-' + item + '-url" type="text" name="values[' + item + '][url]" value="' + value['url'] + '"/>'
           +     '<button title="Select File"><i class="fa fa-file-o"></i></button>'
           +   '</label>' 
           +   '<label>' 
           +     '<input type="checkbox"' + checked + '/><span></span> <span class="label-text">open in new tab\/window</span>'
-          +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/></div>'
+          +     '<input id="editor-ctl-' + item + '-target" type="hidden" name="values[' + item + '][target]" value="' + value['target'] + '"/>'
           +   '</label>' 
           + '</div>'
         );
@@ -280,19 +279,17 @@ function gp_init_inline_edit(area_id, section_object){
           });
         control.find("input[type='checkbox']")
           .on("change", function(){
-            var new_tab = $(this).prop("checked") ? "##!newtab" : "";
-            var new_val = $(this).closest(".editor-ctl-box").find("input[type='text']").val() + new_tab;
-            $("#editor-ctl-" + item).val(new_val).trigger("change");
+            var target = $(this).prop("checked") ? "_blank" : "_self";
+            $("#editor-ctl-" + item + "-target").val(target).trigger("change");
           })
-        control.find("input[type='text']")
+        control.find("#editor-ctl-" + item + "-url")
           .on("keyup change paste", function(){
             var checkbox = $(this).closest(".editor-ctl-box").find("input[type='checkbox']");
-            var new_tab = checkbox.prop("checked") ? "##!newtab" : "";
-            var new_val = $(this).val() + new_tab;
-            if( new_val.indexOf('://') != -1 ){
-              checkbox.prop("checked", true);
+            if( $(this).val().indexOf('://') != -1 ){
+              checkbox.prop("checked", true).trigger("change");
+            }else{
+              checkbox.prop("checked", false).trigger("change");
             }
-            $("#editor-ctl-" + item).val(new_val).trigger("change");
           })
           .autocomplete({
             source    : gptitles,
@@ -361,8 +358,8 @@ function gp_init_inline_edit(area_id, section_object){
   // define ajaxResponse callback
   $gp.response.updateContent = function(arg){
     gp_editor.edit_section.html(arg.CONTENT);
-	 //use js on loaded content
-	 eval(CustomSections_editor.js_on_content);
+    //use js on loaded content
+    eval(CustomSections_editor.js_on_content);
   };
 
 

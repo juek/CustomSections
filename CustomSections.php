@@ -30,15 +30,6 @@ class CustomSections {
     global $addonRelativeCode, $addonPathCode, $addonPathData;
     $types_cache = $addonPathData . '/types.php';
 
-    /*
-    static $cache_call;
-    if($cache_call == 1){
-      include $types_cache;
-      $section_types += $types;
-      return $section_types;
-    }
-    */
-
     if( \gp\tool::LoggedIn() || !file_exists($types_cache) ){
       $types = array();
       $sections = gp\tool\Files::ReadDir($addonPathCode . '/_types/', 1);
@@ -58,15 +49,10 @@ class CustomSections {
         }
       }
       \gp\tool\Files::SaveData($types_cache, 'types', $types);
-
       /* DEBUG level 3 */ if( self::$debug_level > 2 ){ self::$debug_counter++; msg('SectionTypes - writing cache file (' . self::$debug_counter . ')'); }
 
-      /*
-      ++$cache_call;
-      */
     }else{
       include $types_cache;
-
       /* DEBUG level 3 */ if( self::$debug_level > 2 ){ self::$debug_counter++; msg('SectionTypes - loading cache file (' . self::$debug_counter  .')'); }
     }
 
@@ -176,17 +162,16 @@ class CustomSections {
     $replace = array();
     foreach( $sectionCurrentValues as $key => $val ){
      
-		 //one level array elements echo  syntax  {{array|key}}
-		 if(is_array($val)){
-			 foreach($val as $sub_key=>$sub_val){
-				$search[] =   '{{' . $key .'|'.$sub_key. '}}';
-				$replace[] =  $sub_val;
-			 }
-		 } else {
-		
-			$search[] =   '{{' . $key . '}}';
-			$replace[] =  $val;
-		 }
+     // one level array elements echo syntax {{array|key}}
+     if( is_array($val) ){
+       foreach( $val as $sub_key => $sub_val ){
+        $search[] =  '{{' . $key . '|' . $sub_key . '}}';
+        $replace[] =  $sub_val;
+       }
+     }else{    
+      $search[] =   '{{' . $key . '}}';
+      $replace[] =  $val;
+     }
    }
     $current_section['content'] = str_replace($search, $replace, $section['content']);
     /* DEBUG level 3 */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/current_section.php', 'current_section', $current_section); }
@@ -318,13 +303,13 @@ class CustomSections {
     if( empty($editor['custom_scripts']) ){
       $code .= 'controls : ' . json_encode($editor['controls']) . ', ';
     }
+    if( !empty($editor['js_on_content']) ){
+      $code .=  'js_on_content : ' . json_encode($editor['js_on_content']) . ', ';
+    }
     $code .=  'css : ' . json_encode($css) . ', ';
     $code .=  'debug_level : "' . self::$debug_level . '", ';
-    
-	if(!empty($editor['js_on_content']) ){
-	$code .=  'js_on_content : ' . json_encode($editor['js_on_content']) . ', ';
-	}
-	$code .= ' };';
+
+    $code .= ' };';
     $scripts[] = array( 'code' => $code );
 
     if( !empty($editor['custom_scripts']) ){
