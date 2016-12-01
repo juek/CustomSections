@@ -27,6 +27,7 @@ function gp_init_inline_edit(area_id, section_object){
     save_path         : gp_editing.get_path(area_id),
     cacheValue        : '',
     destroy           : function(){},
+    getValues         : function(){},
     SaveData          : function(){},
     checkDirty        : function(){},
     resetDirty        : function(){},
@@ -37,31 +38,48 @@ function gp_init_inline_edit(area_id, section_object){
     CKfield           : function(){},
     updateCKfield     : function(){},
     destroyCK         : function(){},
-	Multyimage        : function(){},
-    CheckImage 	      : function(){},
+    addImage          : function(){},
+    isImage           : function(){},
     ui                : {}
   }; 
 
 
+
+  gp_editor.getValues = function(){
+    var values = gp_editor.ui.controls
+      .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
+      .serialize();
+    return values;
+  };
+
+
   gp_editor.SaveData = function(){
-    var values = gp_editor.ui.controls.find("input:not(.editor-ctl-no-submit, [type='checkbox'],[type='radio']),select,textarea").serialize();
+    var values = gp_editor.getValues();
     var content = encodeURIComponent( gp_editor.edit_section.html() );
     return 'gpcontent=' + content + '&' + values;
   };
 
 
-
   gp_editor.checkDirty = function(){
+    var values = gp_editor.getValues();
+
 
     /* DEBUG level 3 */
     if( CustomSections_editor.debug_level > 2) {
-      console.log("SD=" + gp_editor.SaveData());
-      console.log("cV=" + gp_editor.cacheValue);
+      console.log("getValues = " + values);
+      console.log("cacheValue = " + gp_editor.cacheValue);
     }
 
-    var curr_val = gp_editor.SaveData();
-    if( curr_val != gp_editor.cacheValue ){
+    var isDirty = values != gp_editor.cacheValue;
+
+    /* DEBUG level 2 */
+    if( CustomSections_editor.debug_level > 2) {
+      console.log("checkDirty returns " + (isDirty ? "true" : "false") );
+    }
+
+    if( isDirty ){
       gp_editor.updateSection();
+      gp_editor.cacheValue = values;
       return true;
     }
     return false;
@@ -329,34 +347,35 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.CKfield(gp_editor.setFile, "editor-ctl-" + item, control_map['label']);
         });
         break;
-		
-		/*********************to merge*******************************/
-	case "image_multiply":
-		var img_multiply='<div class="editor-ctl-box editor-ctl-img-multiply">';
-			img_multiply+='<div id="media_plate_' + item + '" class="media_plate">';
-			$.each(value, function(i, img){ 
-			img_multiply += '<div class="imageWrapper img-thumbnail">' ;
-			img_multiply+='<img class="img_media" src="' + img + '"/>';
-			img_multiply+= '<div class="img_del"><i class="fa fa-times" ></i></div>';
-			img_multiply+='<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + '][]" value="' + img + '"/>';
-			img_multiply+='</div>';
-		 });
-			img_multiply+='</div>';
-			img_multiply+= '<label>';
-			img_multiply+='<button id="editor-btn-img-multiply-'+ item +'">' + control_map['label'] + '</button>';
-			
-			img_multiply+='</label>';
-			img_multiply+='</div>';
-		var control = $(img_multiply);
-		
-			
-        
-		control.find("#editor-btn-img-multiply-"+ item).on("click", function(){
-          gp_editor.selectUsingFinder(gp_editor.Multyimage, item);
+
+
+      case "multi-image":
+        var multi_img_ctl = '<div class="editor-ctl-box editor-ctl-multi-img">';
+        multi_img_ctl +=   '<label><span class="label-text">' + control_map['label'] + '</span></label>';
+        multi_img_ctl +=   '<ul id="multi-img-list-' + item + '" class="multi-img-list cf">';
+        $.each(value, function(i, img){ 
+          multi_img_ctl +=    '<li style="background-image:url(\'' + img + '\');">';
+          multi_img_ctl +=      '<div title="Remove Image" class="remove-img-btn"><i class="fa fa-times" ></i></div>';
+          multi_img_ctl +=      '<input type="hidden" name="values[' + item + '][]" value="' + img + '"/>';
+          multi_img_ctl +=    '</li>';
         });
-		control.find(".media_plate").sortable();
+        multi_img_ctl +=   '</ul>';
+        multi_img_ctl +=   '<label>';
+        multi_img_ctl +=     '<button id="editor-btn-multi-img-'+ item +'"><i class="fa fa-image"></i> Add Image</button>';
+        multi_img_ctl +=   '</label>';
+        multi_img_ctl += '</div>';
+
+        var control = $(multi_img_ctl);
+
+        control.find("#editor-btn-multi-img-" + item).on("click", function(){
+          gp_editor.selectUsingFinder(gp_editor.addImage, item);
+        });
+
+        control.find(".remove-img-btn").on("click", gp_editor.removeImage);
+
+        control.find(".multi-img-list").sortable();
         break;
-	/****************************************************************/
+
 
       case "colorpicker":
         var control = $(
@@ -384,54 +403,59 @@ function gp_init_inline_edit(area_id, section_object){
     }
     return control;
   }; // gp_editor.getControl --end
-	
-	/************************ to merge multyimage functions********/
-	gp_editor.Multyimage= function(fileUrl, item){
-		if (gp_editor.CheckImage(fileUrl.toString())){ 
-									var into ="";
-									into += '<div class="imageWrapper img-thumbnail">' ;
-									into += '<img class="img_media" src="' + fileUrl + '" />'
-									into += '<div class="img_del"><i class="fa fa-times" ></i></div>';
-									into +='<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + '][]" value="' + fileUrl + '"/>';
-									into += '</div>';	
-									$( into ).appendTo( "#media_plate_" + item  );
 
-		}
-	 };
-	//may be todo module like?
-	$(document).on("click",".img_del",function(e){
-					$(this).parent().remove();
-	});
-	//
 
-	gp_editor.CheckImage = function (fileUrl){
-	 var filetype = fileUrl.substr(fileUrl.lastIndexOf('.') + 1).toLowerCase();
-	  if (!filetype.match(/jpg|jpeg|png|gif|svg|svgz|mng|apng|webp|bmp|ico/)) {
-		window.setTimeout(
-		  function() {
-			alert("Please choose an image file! " 
-			  + "\nValid file formats are: *.jpg/jpeg, *.png/mng/apng, "
-			  + "*.gif, *.svg/svgz, *.webp, *.bmp, *.ico");
-		  }, 300
-		);
-		return false;
-	  }
-	  return true;
-	}
 
-	/*************************************************************/		
+  gp_editor.addImage = function(fileUrl, item){
+    if( gp_editor.isImage(fileUrl.toString()) ){ 
+      var list_item = $('<li style="background-image:url(\'' + fileUrl + '\');">'
+       +    '<div class="remove-img-btn" title="Remove Image"><i class="fa fa-times"></i></div>'
+       +    '<input type="hidden" name="values[' + item + '][]" value="' + fileUrl + '"/>'
+       +  '</li>')
+        .appendTo("#multi-img-list-" + item)
+        .find(".remove-img-btn").on("click", gp_editor.removeImage);
+      // possible re-inits here
+    }
+  };
+
+
+
+  gp_editor.removeImage = function(e){
+    $(this).closest("li").remove();
+    // possible re-inits here
+  };
+
+
+
+  gp_editor.isImage = function(fileUrl){
+   var filetype = fileUrl.substr(fileUrl.lastIndexOf('.') + 1);
+    if( !filetype.match(/jpg|jpeg|png|gif|svg|svgz|mng|apng|webp|bmp|ico/i) ){
+      window.setTimeout(
+        function() {
+        alert("Please choose an image file! " 
+          + "\nValid file formats are: *.jpg/jpeg, *.png/mng/apng, "
+          + "*.gif, *.svg/svgz, *.webp, *.bmp, *.ico");
+        }, 300
+      );
+      return false;
+    }
+    return true;
+  }
+
+
 
   // define ajaxResponse callback
   $gp.response.updateContent = function(arg){
     gp_editor.edit_section
       .html(arg.CONTENT)
       .trigger("CustomSection:updated");
-    if( typeof(CustomSections.onUpdate) == "function" ){
+    if( typeof(CustomSections) != 'undefined' && typeof(CustomSections.onUpdate) == "function" ){
       CustomSections.onUpdate.call(gp_editor.edit_section);
     }
     //use js on loaded content
     eval(CustomSections_editor.js_on_content);
   };
+
 
 
   // ##### build the editor ui #####
@@ -503,15 +527,17 @@ function gp_init_inline_edit(area_id, section_object){
         case "clockpicker":
           gp_editor.ui.controls.append( gp_editor.getControl("colorpicker", control_map, item, value) );
           break;
-		
-		case "image_multiply":
-          gp_editor.ui.controls.append( gp_editor.getControl("image_multiply", control_map, item, value) );
+
+        case "multi-image":
+          gp_editor.ui.controls.append( gp_editor.getControl("multi-image", control_map, item, value) );
           break;
 
       }
     }
   }); // each section_object.values --end
  
+  gp_editor.cacheValue = gp_editor.getValues();
+
   loaded();
 
 }

@@ -8,6 +8,10 @@ border-radius:3px;
 overflow:hidden;
 }
 
+.filetype-shop_item div.carousel-clip {
+position:relative;
+}
+
 .filetype-shop_item div.image-clip {
 position:absolute;
 top:0;
@@ -65,6 +69,7 @@ left:-18px;
 transform:rotate(-12.5deg);
 }
 
+.filetype-shop_item div.carousel-clip:hover div.item-badge.item-badge-top-left,
 .filetype-shop_item div.image-clip:hover div.item-badge.item-badge-top-left {
 top:-124px;
 left:-124px;
@@ -79,6 +84,7 @@ right:-18px;
 transform:rotate(12.5deg);
 }
 
+.filetype-shop_item div.carousel-clip:hover div.item-badge.item-badge-top-right,
 .filetype-shop_item div.image-clip:hover div.item-badge.item-badge-top-right {
 top:-124px;
 right:-124px;
@@ -94,6 +100,7 @@ left:-18px;
 transform:rotate(12.5deg);
 }
 
+.filetype-shop_item div.carousel-clip:hover div.item-badge.item-badge-bottom-left,
 .filetype-shop_item div.image-clip:hover div.item-badge.item-badge-bottom-left {
 bottom:-124px;
 left:-124px;
@@ -109,6 +116,7 @@ right:-18px;
 transform:rotate(-12.5deg);
 }
 
+.filetype-shop_item div.carousel-clip:hover div.item-badge.item-badge-bottom-right,
 .filetype-shop_item div.image-clip:hover div.item-badge.item-badge-bottom-right {
 bottom:-124px;
 right:-124px;
@@ -117,7 +125,8 @@ right:-124px;
 
 
 .filetype-shop_item div.item-info{
-padding:77% 15px 15px 15px;
+/* padding:77% 15px 15px 15px; */
+padding:15px;
 }
 
 .filetype-shop_item div.item-text {

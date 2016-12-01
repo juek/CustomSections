@@ -18,8 +18,8 @@ $editor = array(
                               // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
                               // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
   
-  'js_on_content' => 'console.log( "js_on_content, JavaScript code defined in _types/shop_item/editor.php was executed: Editing section id = " + gp_editor.edit_section.attr("id") + " | Timestamp: " + new Date().toJSON() )',  
-  // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
+  //*disabled */ 'js_on_content' => 'console.log( "js_on_content, JavaScript code defined in _types/shop_item/editor.php was executed: Editing section id = " + gp_editor.edit_section.attr("id") + " | Timestamp: " + new Date().toJSON() )',  
+      // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
   
 
   /*---------------------------------------------*/
@@ -41,6 +41,7 @@ $editor = array(
     // the controls array keys must match the section's values
 
     // value 'image' --start
+    /* currently disabled in favor of carousel
     'image' => array(
       'label' => '<i class="fa fa-image"></i> Select Image',
       'control_type' => 'finder-select',
@@ -49,7 +50,18 @@ $editor = array(
         // event handlers will be bound to the associated hidden input, not the button!
       ),
     ), 
+    */
     // value 'image' --end
+
+
+    // value 'images' --start
+    'images' => array(
+      'label' => '<i class="fa fa-image"></i> Carousel Images',
+      'control_type' => 'multi-image',
+      'attributes' => array(),
+      'on' => array(),
+    ), 
+    // value 'images' --end
 
 
     // value 'show_badge' --start
@@ -200,15 +212,6 @@ $editor = array(
       ),
     ), 
     // value 'button_text' --end
-	
-	// value 'images' --start
-    'images' => array(
-      'label' => '<i class="fa fa-image"></i> Carousel Images',
-      'control_type' => 'image_multiply',
-      'attributes' => array(),
-      
-    ), 
-    // value 'images' --end
 
   ),
 );

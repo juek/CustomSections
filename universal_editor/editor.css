@@ -57,7 +57,8 @@ border-top:1px solid rgba(0,0,0,0.125);
 .editor-ctl-box.editor-ctl-textarea span.label-text,
 .editor-ctl-box.editor-ctl-colorpicker span.label-text,
 .editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
-.editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text {
+.editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text,
+.editor-ctl-box.editor-ctl-multi-img>label:first-child span.label-text {
 display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);
 background:#f8f8f8;
@@ -188,38 +189,47 @@ display:inline-block;
 width:15%!important;
 border-left:1px solid rgba(0,0,0,0.125);
 }
-/*****multiply image field (start)***/
-.media_plate{
-max-height:200px;
-overflow-y: scroll;
+
+/* multi-image --start */
+.editor-ctl-box.editor-ctl-multi-img .multi-img-list {
+display:block;
+max-height:224px;
+margin:0;
+padding:3px 0 0 3px;
+overflow-y:scroll;
+border-bottom:1px solid rgba(0,0,0,0.125);
 }
- .imageWrapper{
-	position: relative; 
-	float:left;
-	margin-right:5px;
-	margin-top:5px;
- }
- .imageWrapper:hover{
-	 cursor:move;
- }
- 
- .img_del{
-	  float: right;
-    padding: 3px;
-	/*display:none;*/
- }
- /*
- .imageWrapper:hover > .img_del{
-	 display:block;
- }
- */
-.img_del:hover i{
-	color:firebrick;
-	cursor:pointer;
+.editor-ctl-box.editor-ctl-multi-img .multi-img-list li {
+display:block;
+width:56px;
+height:56px;
+background-color:#ccc;
+background-position:center center;
+background-size:cover;
+float:left;
+position:relative; 
+padding:3px 0 0 3px;
+margin:0 3px 3px 0;
+cursor:move;
+border-radius:3px;
 }
-.img_media{
-width:50px; 
-height:50px;
+.editor-ctl-box.editor-ctl-multi-img .multi-img-list li .remove-img-btn {
+display:block;
+position:absolute;
+top:3px;
+right:3px;
+width:20px;
+height:20px;
+line-height:20px!important;
+text-align:center;
+background:rgba(255,255,255,0.33);
+border-radius:10px;
+cursor:pointer;
 }
 
-/*******multiply image field (end)***********/
+.editor-ctl-box.editor-ctl-multi-img .multi-img-list li:hover .remove-img-btn {
+background:rgba(255,255,255,1);
+box-shadow:0 0 2px #000;
+}
+/* multi-image --end */
+

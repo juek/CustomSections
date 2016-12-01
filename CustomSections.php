@@ -14,7 +14,7 @@ defined('is_running') or die('Not an entry point...');
 class CustomSections {
 
   static $custom_types = false;   // will be set at first call of SectionTypes()
-  static $debug_level = 1;        // 0 = silence, 1 = only error/warning msgs, 2 = msgs for current debugging , 3 = level-3 messages, also write debug files to $addonPathCode/!debug/*.php (needs write permissions!)
+  static $debug_level = 2;        // 0 = silence, 1 = only error/warning msgs, 2 = msgs for current debugging , 3 = level-3 messages, also write debug files to $addonPathCode/!debug/*.php (needs write permissions!)
   static $debug_counter = 0;      // to prevent stripping of duplicate messages
 
 
