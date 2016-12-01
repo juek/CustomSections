@@ -141,4 +141,10 @@ background:linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1
 filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#ffffff', GradientType=0);
 }
 
-
+/*carousel styles */
+.filetype-shop_item .carousel-inner > .item > img {
+    margin: 0 auto;
+}
+.filetype-shop_item .slide-control{color:#fff;font-size:80px;left:30px;margin-top:-70px;position:absolute;top:50%;}
+.filetype-shop_item .slide-control.right{left:auto;right:30px;}
+.filetype-shop_item .slide-control:focus {outline: none;}

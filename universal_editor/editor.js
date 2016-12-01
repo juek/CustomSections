@@ -37,6 +37,8 @@ function gp_init_inline_edit(area_id, section_object){
     CKfield           : function(){},
     updateCKfield     : function(){},
     destroyCK         : function(){},
+	Multyimage        : function(){},
+    CheckImage 	      : function(){},
     ui                : {}
   }; 
 
@@ -327,6 +329,34 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.CKfield(gp_editor.setFile, "editor-ctl-" + item, control_map['label']);
         });
         break;
+		
+		/*********************to merge*******************************/
+	case "image_multiply":
+		var img_multiply='<div class="editor-ctl-box editor-ctl-img-multiply">';
+			img_multiply+='<div id="media_plate_' + item + '" class="media_plate">';
+			$.each(value, function(i, img){ 
+			img_multiply += '<div class="imageWrapper img-thumbnail">' ;
+			img_multiply+='<img class="img_media" src="' + img + '"/>';
+			img_multiply+= '<div class="img_del"><i class="fa fa-times" ></i></div>';
+			img_multiply+='<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + '][]" value="' + img + '"/>';
+			img_multiply+='</div>';
+		 });
+			img_multiply+='</div>';
+			img_multiply+= '<label>';
+			img_multiply+='<button id="editor-btn-img-multiply-'+ item +'">' + control_map['label'] + '</button>';
+			
+			img_multiply+='</label>';
+			img_multiply+='</div>';
+		var control = $(img_multiply);
+		
+			
+        
+		control.find("#editor-btn-img-multiply-"+ item).on("click", function(){
+          gp_editor.selectUsingFinder(gp_editor.Multyimage, item);
+        });
+		control.find(".media_plate").sortable();
+        break;
+	/****************************************************************/
 
       case "colorpicker":
         var control = $(
@@ -354,7 +384,42 @@ function gp_init_inline_edit(area_id, section_object){
     }
     return control;
   }; // gp_editor.getControl --end
+	
+	/************************ to merge multyimage functions********/
+	gp_editor.Multyimage= function(fileUrl, item){
+		if (gp_editor.CheckImage(fileUrl.toString())){ 
+									var into ="";
+									into += '<div class="imageWrapper img-thumbnail">' ;
+									into += '<img class="img_media" src="' + fileUrl + '" />'
+									into += '<div class="img_del"><i class="fa fa-times" ></i></div>';
+									into +='<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + '][]" value="' + fileUrl + '"/>';
+									into += '</div>';	
+									$( into ).appendTo( "#media_plate_" + item  );
 
+		}
+	 };
+	//may be todo module like?
+	$(document).on("click",".img_del",function(e){
+					$(this).parent().remove();
+	});
+	//
+
+	gp_editor.CheckImage = function (fileUrl){
+	 var filetype = fileUrl.substr(fileUrl.lastIndexOf('.') + 1).toLowerCase();
+	  if (!filetype.match(/jpg|jpeg|png|gif|svg|svgz|mng|apng|webp|bmp|ico/)) {
+		window.setTimeout(
+		  function() {
+			alert("Please choose an image file! " 
+			  + "\nValid file formats are: *.jpg/jpeg, *.png/mng/apng, "
+			  + "*.gif, *.svg/svgz, *.webp, *.bmp, *.ico");
+		  }, 300
+		);
+		return false;
+	  }
+	  return true;
+	}
+
+	/*************************************************************/		
 
   // define ajaxResponse callback
   $gp.response.updateContent = function(arg){
@@ -437,6 +502,10 @@ function gp_init_inline_edit(area_id, section_object){
 
         case "clockpicker":
           gp_editor.ui.controls.append( gp_editor.getControl("colorpicker", control_map, item, value) );
+          break;
+		
+		case "image_multiply":
+          gp_editor.ui.controls.append( gp_editor.getControl("image_multiply", control_map, item, value) );
           break;
 
       }
