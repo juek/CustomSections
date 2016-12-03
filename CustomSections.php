@@ -79,6 +79,18 @@ class CustomSections {
     global $page, $addonPathCode, $addonRelativeCode;
     $types = self::SectionTypes();
     foreach( $types as $type => $type_arr ){
+      // load components required for editing
+      if( \gp\tool::LoggedIn() ){
+        $editor_file = $addonPathCode . '/_types/' . $type . '/editor.php';
+        if( file_exists($editor_file) ){
+          include($editor_file);
+          foreach( $editor['controls'] as $control => $control_arr ){
+            if( !empty($control_arr['components']) ){
+              \gp\tool::LoadComponents($control_arr['components']); 
+            }
+          }
+        }
+      }
       $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
       if( file_exists($section_file) ){
         // needed to avoid warnings -start

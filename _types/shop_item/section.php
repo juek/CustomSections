@@ -22,7 +22,7 @@ $section['values'] = array_merge(array(
                       ), // control_type = multi-image
   'show_badge'      => '1', // control_type = checkbox
   'badge_position'  => 'top-left', // control_type = radio group
-  'badge_color'     => '#ABD117', // control_type = color-picker
+  'badge_color'     => '#ABD117', // control_type = colorpicker
   'title'           => 'Custom Sections!', // control_type = text
   'description'     => 'A brand-new plugin to <strong>prototype sections</strong> with custom editors <em>in no time</em>. Hands-on!', // control_type = ck_editor
   'available'       => 'in stock', // control_type = select 

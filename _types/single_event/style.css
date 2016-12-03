@@ -1,0 +1,47 @@
+/* #### custom styles for demo section type 'Single Event' ### */
+
+.filetype-single_event div.single-event-box {
+position:relative;
+background-color:#ccc;
+/* background-image will be set in editor */
+background-repeat:no-repeat;
+background-position:center center;
+background-size:cover;
+box-shadow:0 1px 2px rgba(0,0,0,0.33), 0 0 8px rgba(0,0,0,0.25);
+border-radius:3px;
+overflow:hidden;
+}
+
+.filetype-single_event div.single-event-overlay {
+position:absolute;
+top:0;
+right:0;
+bottom:0;
+left:0;
+z-index:10;
+}
+
+.filetype-single_event div.single-event-content {
+position:relative;
+padding:15px;
+z-index:20;
+color:#fff;
+}
+
+.filetype-single_event div.single-event-content * {
+color:#fff;
+}
+
+.filetype-single_event div.single-event-date-row span {
+display:inline-block;
+margin-right:0.25em;
+}
+
+.filetype-single_event div.single-event-booking-row {
+margin:0.5em 0;
+padding-top:0.5em;
+padding-bottom:0.5em;
+border-top:1px solid #fff;
+border-bottom:1px solid #fff;
+background:rgba(255,255,255,0.25)
+}

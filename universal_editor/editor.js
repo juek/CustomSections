@@ -15,7 +15,7 @@ function gp_init_inline_edit(area_id, section_object){
     console.log("section_object = ", section_object);
   }
  
- $.each(CustomSections_editor.css, function(i, css_file){
+  $.each(CustomSections_editor.css, function(i, css_file){
     $gp.LoadStyle( css_file, true ); // true for (boolean)alreadyprefixed
   });
 
@@ -29,6 +29,7 @@ function gp_init_inline_edit(area_id, section_object){
     destroy           : function(){},
     getValues         : function(){},
     SaveData          : function(){},
+    isDirty           : false,
     checkDirty        : function(){},
     resetDirty        : function(){},
     intervalSpeed     : function(){},
@@ -62,32 +63,24 @@ function gp_init_inline_edit(area_id, section_object){
 
   gp_editor.checkDirty = function(){
     var values = gp_editor.getValues();
-
-
-    /* DEBUG level 3 */
-    if( CustomSections_editor.debug_level > 2) {
-      console.log("getValues = " + values);
-      console.log("cacheValue = " + gp_editor.cacheValue);
+    /* DEBUG level 3 */ if( CustomSections_editor.debug_level > 2 ){ console.log("getValues = " + values);  console.log("cacheValue = " + gp_editor.cacheValue); }
+    /* DEBUG level 2 */ if( CustomSections_editor.debug_level > 1 ){ console.log("checkDirty returns " + (gp_editor.isDirty ? "true" : "false") ); }
+    if( values != gp_editor.cacheValue ){
+      gp_editor.updateSection(); // will now also set gp_editor.isDirty = true and call gp_editor.resetCache() after section update finished
     }
-
-    var isDirty = values != gp_editor.cacheValue;
-
-    /* DEBUG level 2 */
-    if( CustomSections_editor.debug_level > 2) {
-      console.log("checkDirty returns " + (isDirty ? "true" : "false") );
-    }
-
-    if( isDirty ){
-      gp_editor.updateSection();
-      gp_editor.cacheValue = values;
-      return true;
-    }
-    return false;
+    return gp_editor.isDirty;
   };
 
 
   gp_editor.resetDirty = function(){
-    gp_editor.cacheValue = gp_editor.SaveData();
+    /* DEBUG level 2 */ if( CustomSections_editor.debug_level > 1 ){ console.log("gp_editor.resetDirty called"); }
+    gp_editor.isDirty = false;
+  };
+
+
+  gp_editor.resetCache = function(){
+    /* DEBUG level 2 */ if( CustomSections_editor.debug_level > 1 ){ console.log("gp_editor.resetCache called"); };
+    gp_editor.cacheValue = gp_editor.getValues();
   };
 
 
@@ -377,6 +370,41 @@ function gp_init_inline_edit(area_id, section_object){
         break;
 
 
+
+      case "datepicker":
+        var control = $(
+            '<div class="editor-ctl-box editor-ctl-datepicker">'
+          +   '<label><span class="label-text">' + control_map['label'] + '</span> '
+          +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
+          +   '</label>' 
+          + '</div>'
+        );
+        control.find("input").datepicker({
+          dateFormat : 'yy-mm-dd'
+        });
+        break;
+
+
+      case "clockpicker":
+        var control = $(
+            '<div class="editor-ctl-box editor-ctl-clockpicker">'
+          +   '<label><span class="label-text">' + control_map['label'] + '</span> '
+          +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
+          +   '</label>' 
+          + '</div>'
+        );
+        control.find("input").clockpicker({
+          placement : 'bottom',
+          align : 'left',
+          autoclose : true,
+          'default' : 'now',
+          afterDone : function(){
+            $(this).trigger("change");
+          }
+        });
+        break;
+
+
       case "colorpicker":
         var control = $(
             '<div class="editor-ctl-box editor-ctl-colorpicker">'
@@ -449,10 +477,12 @@ function gp_init_inline_edit(area_id, section_object){
     gp_editor.edit_section
       .html(arg.CONTENT)
       .trigger("CustomSection:updated");
+    gp_editor.isDirty = true; // this will tell Typesetter to autosave section including content
+    gp_editor.resetCache(); // this will reset the values cache
     if( typeof(CustomSections) != 'undefined' && typeof(CustomSections.onUpdate) == "function" ){
       CustomSections.onUpdate.call(gp_editor.edit_section);
     }
-    //use js on loaded content
+    // execute js_on_content defined in editor.php
     eval(CustomSections_editor.js_on_content);
   };
 
@@ -520,11 +550,15 @@ function gp_init_inline_edit(area_id, section_object){
           gp_editor.ui.controls.append( gp_editor.getControl("ck_editor", control_map, item, value) );
           break;
 
-        case "colorpicker":
-          gp_editor.ui.controls.append( gp_editor.getControl("colorpicker", control_map, item, value) );
+        case "datepicker":
+          gp_editor.ui.controls.append( gp_editor.getControl("datepicker", control_map, item, value) );
           break;
 
         case "clockpicker":
+          gp_editor.ui.controls.append( gp_editor.getControl("clockpicker", control_map, item, value) );
+          break;
+
+        case "colorpicker":
           gp_editor.ui.controls.append( gp_editor.getControl("colorpicker", control_map, item, value) );
           break;
 

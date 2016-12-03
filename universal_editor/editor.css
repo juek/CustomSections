@@ -55,6 +55,8 @@ border-top:1px solid rgba(0,0,0,0.125);
 .editor-ctl-box.editor-ctl-input span.label-text,
 .editor-ctl-box.editor-ctl-select span.label-text,
 .editor-ctl-box.editor-ctl-textarea span.label-text,
+.editor-ctl-box.editor-ctl-datepicker span.label-text,
+.editor-ctl-box.editor-ctl-clockpicker span.label-text,
 .editor-ctl-box.editor-ctl-colorpicker span.label-text,
 .editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text,
@@ -190,7 +192,7 @@ width:15%!important;
 border-left:1px solid rgba(0,0,0,0.125);
 }
 
-/* multi-image --start */
+/* multi-image */
 .editor-ctl-box.editor-ctl-multi-img .multi-img-list {
 display:block;
 max-height:224px;
@@ -231,5 +233,70 @@ cursor:pointer;
 background:rgba(255,255,255,1);
 box-shadow:0 0 2px #000;
 }
-/* multi-image --end */
 
+
+/* # JQUERY UI DATEPICKER - OVERRIDES # */
+div.ui-datepicker {
+font-size:11px!important;
+}
+div.ui-datepicker.ui-widget {
+font-family:inherit;
+font-size:inherit;
+margin-top:2px;
+box-shadow:0 2px 3px rgba(0,0,0,0.33);
+max-width:180px;
+}
+div.ui-datepicker.ui-widget:before,
+div.ui-datepicker.ui-widget:after {
+content:'';
+display:block;
+position:absolute;
+top:-10px;
+left:8px;
+width:0;
+height:0;
+border:5px solid #aaa;
+border-top-color:transparent;
+border-right-color:transparent;
+border-left-color:transparent;
+}
+
+div.ui-datepicker.ui-widget:after {
+top:-9px;
+border-bottom-color:#fff;
+}
+div.ui-datepicker-header.ui-widget-header {
+background:none;
+border:none;
+color:inherit;
+}
+div.ui-datepicker .ui-state-default, 
+div.ui-datepicker .ui-state-hover, 
+div.ui-datepicker .ui-state-focus {
+background:none;
+border:none;
+color:inherit;
+top:2px;
+}
+a.ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w,
+a.ui-datepicker-next .ui-icon.ui-icon-circle-triangle-e {
+position:relative;
+background:none;
+cursor:pointer;
+}
+a.ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w:before,
+a.ui-datepicker-next .ui-icon.ui-icon-circle-triangle-e:before {
+font-family:"FontAwesome"!important;
+font-weight:normal!important;
+position:absolute;
+text-indent:0;
+left:4px;
+top:0;
+font-size:12px!important;
+}
+a.ui-datepicker-prev .ui-icon.ui-icon-circle-triangle-w:before {
+content:"\f053";
+}
+a.ui-datepicker-next .ui-icon.ui-icon-circle-triangle-e:before {
+content:"\f054";
+}
