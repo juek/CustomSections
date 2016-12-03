@@ -137,6 +137,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.updateSection = function(){
+    loading();
     var href = jPrep(window.location.href) 
       + '&cmd=save_custom_section' 
       + '&type=' + section_object.type
@@ -482,8 +483,10 @@ function gp_init_inline_edit(area_id, section_object){
     if( typeof(CustomSections) != 'undefined' && typeof(CustomSections.onUpdate) == "function" ){
       CustomSections.onUpdate.call(gp_editor.edit_section);
     }
+    loaded();
     // execute js_on_content defined in editor.php
     eval(CustomSections_editor.js_on_content);
+
   };
 
 
