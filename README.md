@@ -13,7 +13,7 @@ See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub]
 ##Manual Installation##
 Until the plugin is released on typesettercms.com, you need to download and install it manually:
 
-1. Download the master ZIP
+1. Download the [master ZIP Archive](https://github.com/juek/CustomSections/archive/master.zip)
 
 2. Upload the extracted folder 'CustomSections-master' to your server into the /addons directory
 
