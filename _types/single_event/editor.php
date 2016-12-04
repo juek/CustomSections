@@ -251,7 +251,7 @@ $editor = array(
       'options' => array( 
         // option value => option text
         'bookable' =>     'bookable',
-        'booked out' =>   "booked out", 
+        'booked-out' =>   "booked out", 
         'canceled' =>     "canceled", 
       ),
       'attributes' => array(),

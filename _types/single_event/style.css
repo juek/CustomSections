@@ -32,10 +32,22 @@ color:#fff;
 color:#fff;
 }
 
+.filetype-single_event h5.single-event-location {
+margin:0.5em 0;
+padding-top:0.5em;
+padding-bottom:0.5em;
+border-bottom:1px solid #fff;
+}
+
+
+.filetype-single_event div.single-event-date-row p {
+margin:0;
+}
 .filetype-single_event div.single-event-date-row span {
 display:inline-block;
 margin-right:0.25em;
 }
+
 
 .filetype-single_event div.single-event-booking-row {
 margin:0.5em 0;

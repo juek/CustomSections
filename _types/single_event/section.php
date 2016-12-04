@@ -62,13 +62,13 @@ $section['content']  =  '<div class="single-event-box" style="background-image:u
 $section['content'] .=    '<div class="single-event-overlay" style="background-color:{{overlay_color}};"></div>';
 
 $section['content'] .=    '<div class="single-event-content">';
-$section['content'] .=      '<h3 class="single-event-title text-center">{{title}}</h3>';
-$section['content'] .=      '<h5 class="single-event-subtitle text-center">{{subtitle}}</h5>';
+$section['content'] .=      '<h2 class="single-event-title text-center">{{title}}</h2>';
+$section['content'] .=      '<h4 class="single-event-subtitle text-center">{{subtitle}}</h4>';
 
 if( !empty($section['values']['location_link']['url']) ){
-  $section['content'] .=      '<a class="single-event-location" href="{{location_link|url}}" target="{{location_link|target}}"><i class="fa fa-home"></i> {{location_name}}</a>';
+  $section['content'] .=      '<h5 class="single-event-location"><a href="{{location_link|url}}" target="{{location_link|target}}"><i class="fa fa-home"></i> {{location_name}}</a></h5>';
 }else{
-  $section['content'] .=      '<span class="single-event-location"><i class="fa fa-home"></i> {{location_name}}</span>';
+  $section['content'] .=      '<h5 class="single-event-location"><i class="fa fa-home"></i> {{location_name}}</h5>';
 }
 
 $day_prefixing = '';
@@ -82,8 +82,8 @@ if( !empty($section['values']['start_day']) ){
   }else{
     $end_date = $section['values']['start_day'] . ' 23:59';
   }
-  $start_datetime = DateTime::createFromFormat('Y-m-d H:i', $start_date);
-  $end_datetime = DateTime::createFromFormat('Y-m-d H:i', $end_date);
+  $start_datetime = strtotime($start_date);
+  $end_datetime = strtotime($end_date);
 
   //msg("start_date: " . pre($start_date));
   //msg("start_datetime: " . pre($start_datetime));
@@ -107,14 +107,14 @@ if( !empty($section['values']['start_day']) ){
   global $config;
   $current_lang = $config['language']; // TODO: should be obteined from Multi-Language Manager's page language, if present
 
-  // DATE/TIME FORMATTING, see http://php.net/manual/de/datetime.createfromformat.php
+  // DATE/TIME FORMATTING, see http://php.net/manual/en/function.strftime.php
 
-  $i8n = array(
+  $i18n = array(
     'en' => array(
-      /* USA */
+      /* USA, default */
       'locale' =>      'en_US',
-      'day_format' =>   'D, M jS Y',  // gives Sun, Jan 1st 2017
-      'time_format' =>  'h:ia',       // gives 7:30pm
+      'day_format' =>   '%a, %b %e %Y',  // used by strftime: gives Sun, Jan 1 2017
+      'time_format' =>  '%l:%M%P',       // used by strftime: gives 7:30pm
       'on_day' =>       'on',
       'from_day' =>     'from',
       'to_day' =>       'to',
@@ -125,8 +125,8 @@ if( !empty($section['values']['start_day']) ){
     'de' => array(
       /* Germany, Austria */
       'locale' =>       'de_DE', 
-      'day_format' =>   'D, j. M Y',  // gives So, 1. Jan 2017
-      'time_format' =>  'G:i',        // gives 19:30
+      'day_format' =>   '%a, %e. %b %Y',  // used by strftime: gives So, 1. Jan 2017
+      'time_format' =>  '%k:%M',        // used by strftime: gives 19:30
       'on_day' =>       'am',
       'from_day' =>     'vom',
       'to_day' =>       'bis',
@@ -136,17 +136,20 @@ if( !empty($section['values']['start_day']) ){
     ),
   );
 
-  $lang = !empty($i8n[$current_lang]) ? $i8n[$current_lang] : $i8n['en'];
+  $lang = !empty($i18n[$current_lang]) ? $i18n[$current_lang] : $i18n['en'];
 
   // msg("current_lang: " . $current_lang);
   // msg("lang: " . pre($lang));
   // msg("locale: " . pre($lang['locale']));
-  setlocale(LC_TIME, $lang['locale']); 
+  $setLoc = setlocale(LC_TIME, $lang['locale']);
+  if( \gp\tool::LoggedIn() && !$setLoc ){ 
+    msg("setLocale() failed! The locale '" . $lang['locale'] . "' is probably not available on your server."); 
+  }
 
-  $date_row = '<div class="single-event-date-row row" data-start-date="' . $start_datetime->format('U') . '" data-end-date="' . $end_datetime->format('U') . '">';
+  $date_row = '<div class="single-event-date-row row" data-start-date="' . $start_datetime . '" data-end-date="' . $end_datetime . '">';
 
-  $start_time_html  = !empty($section['values']['start_time']) ? '<span class="single-event-time">' . $start_datetime->format($lang['time_format']) . '</span>'  : ''; 
-  $end_time_html    = !empty($section['values']['end_time'])   ? '<span class="single-event-time">' . $end_datetime->format($lang['time_format']) . '</span>'    : ''; 
+  $start_time_html  = !empty($section['values']['start_time']) ? '<span class="single-event-time">' . strftime($lang['time_format'], $start_datetime) . '</span>'  : ''; 
+  $end_time_html    = !empty($section['values']['end_time'])   ? '<span class="single-event-time">' . strftime($lang['time_format'], $end_datetime) . '</span>'    : ''; 
 
   switch( $time_prefixing ){
     case 'at':
@@ -161,22 +164,34 @@ if( !empty($section['values']['start_day']) ){
   switch( $day_prefixing ){
     case 'on':
       $date_row .=  '<div class="col-sm-6 single-event-on">';
-      $date_row .=    '<span class="single-event-on-day">' . $lang['on_day'] . '</span> ';
-      $date_row .=    '<span class="single-event-day">' . $start_datetime->format($lang['day_format']) . '</span>';
-      $date_row .=    $start_time_html . $end_time_html;
+      $date_row .=    '<p>';
+      $date_row .=      '<span class="single-event-on-day">' . $lang['on_day'] . '</span> ';
+      $date_row .=      '<span class="single-event-day">' . strftime($lang['day_format'], $start_datetime) . '</span>';
+      $date_row .=    '</p>';
+      $date_row .=    '<p>';
+      $date_row .=      $start_time_html . $end_time_html;
+      $date_row .=    '</p>';
       $date_row .=  '</div>';
       break;
 
     case 'from-to':
       $date_row .=  '<div class="col-sm-6 single-event-from">';
-      $date_row .=    '<span class="single-event-from-day">' . $lang['from_day'] . '</span> ';
-      $date_row .=    '<span class="single-event-day">' . $start_datetime->format($lang['day_format']) . '</span>';
-      $date_row .=    $start_time_html;
+      $date_row .=    '<p>';
+      $date_row .=      '<span class="single-event-from-day">' . $lang['from_day'] . '</span> ';
+      $date_row .=      '<span class="single-event-day">' . strftime($lang['day_format'], $start_datetime) . '</span>';
+      $date_row .=    '</p>';
+      $date_row .=    '<p>';
+      $date_row .=      $start_time_html;
+      $date_row .=    '</p>';
       $date_row .=  '</div>';
       $date_row .=  '<div class="col-sm-6 single-event-to">';
-      $date_row .=    '<span class="single-event-to-day">' . $lang['to_day'] . '</span> ';
-      $date_row .=    '<span class="single-event-day">' . $end_datetime->format($lang['day_format']) . '</span>';
-      $date_row .=    $end_time_html;
+      $date_row .=    '<p>';
+      $date_row .=      '<span class="single-event-to-day">' . $lang['to_day'] . '</span> ';
+      $date_row .=      '<span class="single-event-day">' . strftime($lang['day_format'], $end_datetime) . '</span>';
+      $date_row .=    '</p>';
+      $date_row .=    '<p>';
+      $date_row .=      $end_time_html;
+      $date_row .=    '</p>';
       $date_row .=  '</div>';
       break;
   }
