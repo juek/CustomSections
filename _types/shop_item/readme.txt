@@ -9,8 +9,8 @@ CustomSections.php in the NewSections method to
 
 $section_types['my_shop_item'] = array( 'label' => 'My Shop Item' );
 
-You can disable this section type by adding 
-a renaming it's folder name to start with a !(exclamation mark)
+You can disable this section type 
+by renaming it's folder to start with a !(exclamation mark)
 
 CustomSections/_types/shop_item == enabled
 CustomSections/_types/!shop_item == disabled
