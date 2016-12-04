@@ -39,6 +39,14 @@ vertical-align:baseline;
 color:#555;
 }
 
+.editor-ctl-box.ctl-box-half-width { 
+float:left;
+width:48%!important; 
+}
+.editor-ctl-box.ctl-box-half-width + .editor-ctl-box.ctl-box-half-width{
+margin-left:4%;
+}
+
 .editor-ctl-box label {}
 
 .editor-ctl-box button,
@@ -58,6 +66,7 @@ border-top:1px solid rgba(0,0,0,0.125);
 .editor-ctl-box.editor-ctl-datepicker span.label-text,
 .editor-ctl-box.editor-ctl-clockpicker span.label-text,
 .editor-ctl-box.editor-ctl-colorpicker span.label-text,
+.editor-ctl-box.editor-ctl-datetime-combo>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-multi-img>label:first-child span.label-text {

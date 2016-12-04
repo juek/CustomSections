@@ -381,7 +381,10 @@ function gp_init_inline_edit(area_id, section_object){
           + '</div>'
         );
         control.find("input").datepicker({
-          dateFormat : 'yy-mm-dd'
+          dateFormat : 'yy-mm-dd',
+          onSelect : function(){
+            $(this).change();
+          }
         });
         break;
 
@@ -404,6 +407,73 @@ function gp_init_inline_edit(area_id, section_object){
           }
         });
         break;
+
+      case "datetime-combo":
+        var datetime = value.split('T'); // datetime-combo uses ISO 8601 format 'Y-m-dTH:i:s' omitting '+timezone-offset', same does HTML5 datetime-local input type
+        //console.log("value=" , value);
+        //console.log("datetime=" , datetime);
+        var date = datetime[0];
+        var time_full = datetime[1].split(':');
+        time_full.pop();
+        var time = time_full.join(':'); // = hours:minutes, clockpicker doesn't support seconds input
+        var control = $(
+            '<div class="editor-ctl-box editor-ctl-datetime-combo">'
+          +   '<label><span class="label-text">' + control_map['label'] + '</span></label>'
+          +   '<label class="ctl-half-width">'
+          +     '<input class="editor-ctl-date" id="editor-ctl-' + item + '-date" type="text" value="' + date + '"' + attributes + '/>'
+          +   '</label>' 
+          +   '<label class="ctl-half-width">'
+          +     '<input class="editor-ctl-time" id="editor-ctl-' + item + '-time" type="text" value="' + time + '"' + attributes + '/>'
+          +   '</label>' 
+          +   '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
+          + '</div>'
+        );
+        control.find('input#editor-ctl-' + item + '-date').datepicker({
+          dateFormat : 'yy-mm-dd',
+          onSelect : function(){
+            $(this).change();
+          }
+        });
+        control.find('input#editor-ctl-' + item + '-time').clockpicker({
+          placement : 'bottom',
+          align : 'right',
+          autoclose : true,
+          'default' : 'now',
+          afterDone : function(){
+            $(this).trigger("change");
+          }
+        });
+        control.find('input#editor-ctl-' + item + '-date, input#editor-ctl-' + item + '-time').on("change", function(){
+          var date_field = $(this).closest(".editor-ctl-box").find(".editor-ctl-date");
+          var time_field = $(this).closest(".editor-ctl-box").find(".editor-ctl-time");
+          var date = date_field.val().trim();
+          var time = (time_field.val().trim() == "") ? '00:00' : time_field.val();
+          var date_time = (date == "") ? date + 'T' + time + ':00' : "";
+          $(this).val(date_time).trigger("change");
+        });
+        break;
+
+
+      case "clockpicker":
+        var control = $(
+            '<div class="editor-ctl-box editor-ctl-clockpicker">'
+          +   '<label><span class="label-text">' + control_map['label'] + '</span> '
+          +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
+          +   '</label>' 
+          + '</div>'
+        );
+        control.find("input").clockpicker({
+          placement : 'bottom',
+          align : 'left',
+          autoclose : true,
+          'default' : 'now',
+          afterDone : function(){
+            $(this).trigger("change");
+          }
+        });
+        break;
+
+
 
 
       case "colorpicker":
@@ -559,6 +629,10 @@ function gp_init_inline_edit(area_id, section_object){
 
         case "clockpicker":
           gp_editor.ui.controls.append( gp_editor.getControl("clockpicker", control_map, item, value) );
+          break;
+
+        case "datetime-combo":
+          gp_editor.ui.controls.append( gp_editor.getControl("datetime-combo", control_map, item, value) );
           break;
 
         case "colorpicker":
