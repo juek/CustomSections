@@ -9,8 +9,8 @@ CustomSections.php in the NewSections method to
 
 $section_types['my_event'] = array( 'label' => 'My Event' );
 
-You can disable this section type by adding 
-a renaming it's folder name to start with a !(exclamation mark)
+You can disable this section type by
+renaming it's folder to start with a !(exclamation mark)
 
 CustomSections/_types/single_event == enabled
 CustomSections/_types/!single_event == disabled
