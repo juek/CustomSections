@@ -210,7 +210,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
       case "checkbox":
-        var checked = value ? ' checked="checked"' : '';
+        var checked = value == '1' ? ' checked="checked"' : '';
         var control = $(
             '<div class="editor-ctl-box editor-ctl-checkbox">'
           +   '<label>'
@@ -221,7 +221,7 @@ function gp_init_inline_edit(area_id, section_object){
           + '</div>'
         );
         control.find("input[type='checkbox']").on("change", function(){
-          var v = this.checked ? $(this).val() : '0';
+          var v = this.checked ? '1' : '0';
           $("#editor-ctl-" + item).val(v);
         });
         break;
