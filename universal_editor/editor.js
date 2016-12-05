@@ -109,7 +109,7 @@ function gp_init_inline_edit(area_id, section_object){
         CKEDITOR.plugins.addExternal(name,path);
       });
     }
-    var content = gp_editor.ui.controls.find("#" + input_selector).val(); //.html();
+    var content = decodeURIComponent(gp_editor.ui.controls.find("#" + input_selector).val()); //.html();
     var boxHtml = '<div class="inline_box">'
     + '<h3>' + label + '</h3>'
     + '<textarea id="ck_field" name="ck_field" data-inp-selector="' + input_selector + '" cols="50" rows="3">' + $gp.htmlchars(content) + '</textarea>'
@@ -333,7 +333,7 @@ function gp_init_inline_edit(area_id, section_object){
               '<div class="editor-ctl-box editor-ctl-ckedit">'
             +   '<label>'
             +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
-            +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
+            +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + encodeURIComponent(value) + '"/>'
             +   '</label>' 
             + '</div>'
           );
