@@ -46,14 +46,20 @@ function gp_init_inline_edit(area_id, section_object){
 
 
 
-  gp_editor.getValues = function(){
-    var values = gp_editor.ui.controls
-      .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
-      .serialize();
-    return values;
+  gp_editor.getValues = function(flag_post=false){
+    if(flag_post){
+		var values = gp_editor.ui.controls
+		  .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
+		  .serializeArray();
+	}else{ 
+		var values = gp_editor.ui.controls
+		  .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
+		  .serialize();
+	}
+   return values;
   };
-
-
+	
+	
   gp_editor.SaveData = function(){
     var values = gp_editor.getValues();
     var content = encodeURIComponent( gp_editor.edit_section.html() );
@@ -136,16 +142,48 @@ function gp_init_inline_edit(area_id, section_object){
   };
 
 
-  gp_editor.updateSection = function(){
-    loading();
-    var href = jPrep(window.location.href) 
-      + '&cmd=save_custom_section' 
-      + '&type=' + section_object.type
-      + '&values=' + gp_editor.SaveData();
-    $.getJSON(href, ajaxResponse);
-  };
+	gp_editor.updateSection = function(){
+		loading();
+		var formData = new FormData();
+		formData.append('verified', encodeURIComponent(post_nonce));
+		formData.append('cmd', 'save_custom_section');
+		formData.append('type', section_object.type);
+		var temp_vals = gp_editor.getValues(true);
+		$.each(temp_vals, function(i, item) {
+			formData.append(item.name, item.value);
+		});
+		
+		$.ajax({
+			url:location.pathname+"?gpreq=json&jsoncallback=updateContent",
+			type: 'POST',
+			data:formData,
+			success: function (response) {
+					eval(response);
+					function updateContent(arg){
+							//console.log(arg[0].CONTENT);
+							gp_editor.edit_section
+											.html(arg[0].CONTENT)
+											.trigger("CustomSection:updated");
+							gp_editor.isDirty = true; // this will tell Typesetter to autosave section including content
+							gp_editor.resetCache(); // this will reset the values cache
+					        if( typeof(CustomSections) != 'undefined' && typeof(CustomSections.onUpdate) == "function" ){
+							  CustomSections.onUpdate.call(gp_editor.edit_section);
+							}
+							loaded();
+							// execute js_on_content defined in editor.php
+							eval(CustomSections_editor.js_on_content);
+					
+					}
 
-
+							
+			},
+			cache: false,
+			contentType: false,
+			processData: false
+			
+		});	
+	};
+  
   gp_editor.getControl = function(input_type, control_map, item, value){
 
     /* DEBUG level 3 */
@@ -543,25 +581,6 @@ function gp_init_inline_edit(area_id, section_object){
   }
 
 
-
-  // define ajaxResponse callback
-  $gp.response.updateContent = function(arg){
-    gp_editor.edit_section
-      .html(arg.CONTENT)
-      .trigger("CustomSection:updated");
-    gp_editor.isDirty = true; // this will tell Typesetter to autosave section including content
-    gp_editor.resetCache(); // this will reset the values cache
-    if( typeof(CustomSections) != 'undefined' && typeof(CustomSections.onUpdate) == "function" ){
-      CustomSections.onUpdate.call(gp_editor.edit_section);
-    }
-    loaded();
-    // execute js_on_content defined in editor.php
-    eval(CustomSections_editor.js_on_content);
-
-  };
-
-
-
   // ##### build the editor ui #####
 
   gp_editor.ui.controls = $('<div id="option_area"></div>').prependTo('#ckeditor_controls');
@@ -651,6 +670,7 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editor.cacheValue = gp_editor.getValues();
 
   loaded();
+
 
 }
 
