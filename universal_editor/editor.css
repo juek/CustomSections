@@ -47,7 +47,9 @@ width:48%!important;
 margin-left:4%;
 }
 
-.editor-ctl-box label {}
+.editor-ctl-box label {
+position:relative;
+}
 
 .editor-ctl-box button,
 .editor-ctl-box.editor-ctl-checkbox label,
@@ -245,6 +247,40 @@ box-shadow:0 0 2px #000;
 
 
 /* multi-date */
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort {
+display:block;
+position:absolute;
+top:4px;
+right:4px;
+height:18px;
+width:18px;
+font-family:"FontAwesome"!important;
+cursor:pointer;
+}
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort:before,
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort:after {
+display:block;
+position:absolute;
+top:0;
+left:0;
+height:18px;
+width:18px;
+line-height:18px;
+text-align:center;
+}
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort:before {
+content:"\f0dc";
+color:#aaa;
+}
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort-asc:after {
+content:"\f0de";
+color:#555;
+}
+.editor-ctl-box.editor-ctl-multi-date a.multi-date-sort-desc:after {
+content:"\f0dd";
+color:#555;
+}
+
 .editor-ctl-box.editor-ctl-multi-date .multi-date-list {
 display:block;
 max-height:224px;
@@ -401,3 +437,5 @@ content:"\f053";
 a.ui-datepicker-next .ui-icon.ui-icon-circle-triangle-e:before {
 content:"\f054";
 }
+
+

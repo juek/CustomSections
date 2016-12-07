@@ -45,6 +45,7 @@ function gp_init_inline_edit(area_id, section_object){
     editMultiDateItem     : function(){},
     updateMultiDateItem   : function(){},
     deleteMultiDateItem   : function(){},
+    sortMultiDateItems    : function(){},
     reIndexMultiDateItems : function(){},
 
     ui                : {}
@@ -217,8 +218,8 @@ function gp_init_inline_edit(area_id, section_object){
   }; 
 
 
-  gp_editor.reIndexMultiDateItems = function(list){
-    console.log("gp_editor.reIndexMultiDateItems called with #", list.attr("id"));
+  gp_editor.reIndexMultiDateItems = function(list, unset_sort_button){
+    // console.log("gp_editor.reIndexMultiDateItems called with #", list.attr("id"));
     var new_index = 0;
     list.sortable("destroy");
     var new_list = list.clone(true);
@@ -239,14 +240,44 @@ function gp_init_inline_edit(area_id, section_object){
     // $list.replaceWith(new_list).sortable("refresh");
     list.replaceWith(new_list)
     new_list.sortable({
-        update  : function(event, ui){
-                    //console.log("event ", event);
-                    //console.log("ui ", ui);
-                    var current_list = $(event.target);
-                    gp_editor.reIndexMultiDateItems(current_list);
-                  }
-      });
+      update  : function(event, ui){
+                  //console.log("event ", event);
+                  //console.log("ui ", ui);
+                  var current_list = $(event.target);
+                  gp_editor.reIndexMultiDateItems(current_list, true);
+                }
+    });
+    if( unset_sort_button ){
+      var sort_button = new_list.closest(".editor-ctl-box").find("a.multi-date-sort");
+      sort_button
+        .attr("title", "Sort Dates Ascending")
+        .removeClass("multi-date-sort-asc multi-date-sort-desc");
+    }
   };
+
+
+
+  gp_editor.sortMultiDateItems = function(e){
+    var sort_button = $(e.target);
+    var sort_list = sort_button.closest(".editor-ctl-box").find("ul.multi-date-list");
+    if( sort_button.hasClass('multi-date-sort-asc') ){
+      var sort_dir = '-1';
+      sort_button
+        .attr("title", "Sort Dates Ascending")
+        .removeClass('multi-date-sort-asc').addClass('multi-date-sort-desc');
+    }else{
+      var sort_dir = '1';
+      sort_button
+        .attr("title", "Sort Dates Descending")
+        .removeClass('multi-date-sort-desc').addClass('multi-date-sort-asc');
+    }
+    $(sort_list).find("li")
+      .sort( function(a, b){
+        return ( $(b).attr("data-start-date") < $(a).attr("data-start-date") ? 1 * sort_dir : -1 * sort_dir );
+      })
+      .appendTo(sort_list);
+  };
+
 
 
   gp_editor.deleteMultiDateItem = function(e){
@@ -254,7 +285,7 @@ function gp_init_inline_edit(area_id, section_object){
     if( confirm("Really delete this date?") ){
       var current_list = clicked_element.closest("ul");
       clicked_element.closest("li").remove();
-      gp_editor.reIndexMultiDateItems(current_list);
+      gp_editor.reIndexMultiDateItems(current_list, false);
     }
   };
 
@@ -269,7 +300,7 @@ function gp_init_inline_edit(area_id, section_object){
     var monthAbbr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Novr", "Dec"];
     var item_index = $("#gp_admin_boxc div#admin_box-date-values").attr("data-item-index");
     // clean up
-    $('div#admin_box-date-values input.multi-date-day').datepicker("destroy");
+    $('div#admin_box-date-values input.multi-date-day').removeAttr("id").datepicker("destroy");
     $('div#admin_box-date-values input.multi-date-time').clockpicker("remove");
     $("div#admin_box-date-values button.multi-date-unset-value").remove();
     // calculate new Unix Times for start_date and end_date
@@ -313,7 +344,7 @@ function gp_init_inline_edit(area_id, section_object){
     var new_values = $("div#admin_box-date-values").clone(true);
     new_values.removeAttr("id").addClass("multi-date-values");
     var date_li = $(
-        '<li>' 
+        '<li data-start-date="' + start_date +  '" data-end-date="' + end_date +  '">' 
       +   '<div class="multi-date-day">' + startDateObj.getDate() + '</div>'
       +   '<div class="multi-date-month">' + monthAbbr[startDateObj.getMonth()] + '</div>'
       +   '<div title="Edit Date" class="edit-date-btn"><i class="fa fa-pencil" ></i></div>'
@@ -324,19 +355,19 @@ function gp_init_inline_edit(area_id, section_object){
     // bind button event handlers
     date_li.find(".edit-date-btn").on("click", gp_editor.editMultiDateItem);
     date_li.find(".remove-date-btn").on("click", gp_editor.deleteMultiDateItem);
+    date_li.addClass("multi-date-updated-item").on("mouseleave", function(){
+      $(this).removeClass("multi-date-updated-item");
+    });
     if( item_index >= current_list.find("li").length ){
       // li with item_index doesn't exist, it's a new one -> append it
       current_list.append(date_li);
+      gp_editor.reIndexMultiDateItems(current_list, true);
     }else{
       // li with item_index exists -> replace it
       current_list.find("li").eq(item_index).replaceWith(date_li);
     }
     // TODO: maybe sort the list chronologically?
-    date_li.addClass("multi-date-updated-item").on("mouseleave", function(){
-      $(this).removeClass("multi-date-updated-item");
-    });
     $gp.CloseAdminBox();
-    gp_editor.reIndexMultiDateItems(current_list);
   }; 
 
 
@@ -688,7 +719,7 @@ function gp_init_inline_edit(area_id, section_object){
         var monthAbbr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Novr", "Dec"];
 
         var multi_date_ctl = '<div class="editor-ctl-box editor-ctl-multi-date">';
-        multi_date_ctl +=   '<label><span class="label-text">' + control_map['label'] + '</span></label>';
+        multi_date_ctl +=   '<label><span class="label-text">' + control_map['label'] + '</span><a title="Sort Dates Ascending" class="multi-date-sort"></a></label>';
         multi_date_ctl +=   '<ul id="multi-date-list-' + item + '" class="multi-date-list cf">';
         $.each(value, function(i, date_vals){
           // calculate Unix Times for date_vals['start_date'] and date_vals['start_date'] if not set
@@ -698,7 +729,7 @@ function gp_init_inline_edit(area_id, section_object){
           }
           if( typeof(date_vals['end_date']) == "undefined" || date_vals['end_date'] == "" ){
             date_vals['end_date'] = 
-              typeof(date_vals['end_day']) != "undefined" || date_vals['end_day'] != "" 
+              typeof(date_vals['end_day']) != "undefined" && date_vals['end_day'] != "" 
                 ? Math.round( new Date(date_vals['end_day'] + (typeof(date_vals['end_time']) != "undefined" && date_vals['end_time'] != "" ? ('T' + date_vals['end_time'] + ':00') : '' )).getTime() / 1000 )
                 : ( typeof(date_vals['end_time']) != "undefined" && date_vals['end_time'] != "" 
                     ? Math.round( new Date(date_vals['start_day'] + 'T' + date_vals['end_time'] + ':00' ).getTime() / 1000 )
@@ -706,7 +737,7 @@ function gp_init_inline_edit(area_id, section_object){
                   );
           }
           var startDateObj = new Date(date_vals['start_date']*1000);
-          multi_date_ctl +=    '<li>';
+          multi_date_ctl +=    '<li data-start-date="' + date_vals['start_date'] + '" data-end-date="' + date_vals['end_date'] + '" >';
           multi_date_ctl +=      '<div class="multi-date-day">' + startDateObj.getDate() + '</div>';
           multi_date_ctl +=      '<div class="multi-date-month">' + monthAbbr[startDateObj.getMonth()] + '</div>';
           multi_date_ctl +=      '<div title="Edit Date" class="edit-date-btn"><i class="fa fa-pencil" ></i></div>';
@@ -772,6 +803,7 @@ function gp_init_inline_edit(area_id, section_object){
         multi_date_ctl += '</div>';
 
         var control = $(multi_date_ctl);
+        control.find("a.multi-date-sort").on("click", gp_editor.sortMultiDateItems);
         control.find("#editor-btn-multi-date-" + item + ", .edit-date-btn").on("click", gp_editor.editMultiDateItem);
         control.find(".remove-date-btn").on("click", gp_editor.deleteMultiDateItem);
         control.find(".multi-date-list").sortable({
@@ -779,7 +811,7 @@ function gp_init_inline_edit(area_id, section_object){
                       //console.log("event ", event);
                       //console.log("ui ", ui);
                       var current_list = $(event.target);
-                      gp_editor.reIndexMultiDateItems(current_list);
+                      gp_editor.reIndexMultiDateItems(current_list, true);
                     }
         });
         break;

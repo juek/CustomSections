@@ -115,9 +115,9 @@ $i18n = array(
     'day_format' =>   '%a, %e. %b %Y',  // used by strftime: gives So, 1. Jan 2017
     'time_format' =>  '%k:%M',        // used by strftime: gives 19:30
     'on_day' =>       'am',
-    'from_day' =>     'vom',
+    'from_day' =>     'von',
     'to_day' =>       'bis',
-    'at_time'=>       'um',
+    'at_time'=>       'ab',
     'from_time' =>    'von',
     'until_time' =>   'bis',
   ),
