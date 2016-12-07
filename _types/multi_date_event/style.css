@@ -1,0 +1,70 @@
+/* #### custom styles for demo section type 'Multi-Date Event' ### */
+
+.filetype-multi_date_event div.multi-date-event-box {
+position:relative;
+background-color:#ccc;
+/* background-image will be set in editor */
+background-repeat:no-repeat;
+background-position:center center;
+background-size:cover;
+box-shadow:0 1px 2px rgba(0,0,0,0.33), 0 0 8px rgba(0,0,0,0.25);
+border-radius:3px;
+overflow:hidden;
+}
+
+.filetype-multi_date_event div.multi-date-event-overlay {
+position:absolute;
+top:0;
+right:0;
+bottom:0;
+left:0;
+z-index:10;
+}
+
+.filetype-multi_date_event div.multi-date-event-content {
+position:relative;
+padding:15px;
+z-index:20;
+color:#fff;
+}
+
+.filetype-multi_date_event div.multi-date-event-content * {
+color:#fff;
+}
+
+.filetype-multi_date_event h5.multi-date-event-location {
+margin:0.5em 0;
+padding-top:0.5em;
+padding-bottom:0.5em;
+}
+
+.filetype-multi_date_event div.multi-date-event-date {
+margin:-1px 0 0 0;
+padding-top:0.5em;
+padding-bottom:0.5em;
+border-top:1px solid #fff;
+border-bottom:1px solid #fff;
+background:rgba(0,0,0,0.5);
+}
+.filetype-multi_date_event div.multi-date-event-date .row {
+margin-left:0;
+margin-right:0;
+}
+
+
+.filetype-multi_date_event div.multi-date-event-date p {
+margin:0;
+line-height:1.2;
+}
+.filetype-multi_date_event div.multi-date-event-date span {
+display:inline-block;
+margin-right:0.25em;
+}
+.filetype-multi_date_event div.multi-date-event-booking {
+clear:both;
+border-top:1px dotted rgba(255,255,255,0.25);
+margin-top:0.5em;
+padding-top:0.5em;
+}
+
+

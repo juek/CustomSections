@@ -177,6 +177,9 @@ class CustomSections {
      // one level array elements echo syntax {{array|key}}
      if( is_array($val) ){
        foreach( $val as $sub_key => $sub_val ){
+        if( is_array($sub_val) ){
+          continue; // we don't deal with multi-dimensional arrays
+        }
         $search[] =  '{{' . $key . '|' . $sub_key . '}}';
         $replace[] =  $sub_val;
        }
@@ -289,6 +292,8 @@ class CustomSections {
           $modules[] = 'colorpicker';
           break;
         case 'clockpicker':
+        case 'datetime-combo':
+        case 'multi-date':
           $modules[] = 'clockpicker';
           break;
         case 'link-field':

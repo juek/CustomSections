@@ -69,7 +69,8 @@ border-top:1px solid rgba(0,0,0,0.125);
 .editor-ctl-box.editor-ctl-datetime-combo>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text,
-.editor-ctl-box.editor-ctl-multi-img>label:first-child span.label-text {
+.editor-ctl-box.editor-ctl-multi-img>label:first-child span.label-text,
+.editor-ctl-box.editor-ctl-multi-date>label:first-child span.label-text {
 display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);
 background:#f8f8f8;
@@ -237,10 +238,101 @@ background:rgba(255,255,255,0.33);
 border-radius:10px;
 cursor:pointer;
 }
-
 .editor-ctl-box.editor-ctl-multi-img .multi-img-list li:hover .remove-img-btn {
 background:rgba(255,255,255,1);
 box-shadow:0 0 2px #000;
+}
+
+
+/* multi-date */
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list {
+display:block;
+max-height:224px;
+margin:0;
+padding:3px 0 0 3px;
+overflow-y:scroll;
+border-bottom:1px solid rgba(0,0,0,0.125);
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li {
+display:block;
+width:32px;
+height:32px;
+background-color:rgba(0,0,0,0.125);
+float:left;
+position:relative; 
+padding:0;
+margin:0 3px 3px 0;
+cursor:move;
+border:1px solid #ccc;
+border-radius:3px;
+overflow:hidden;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li.multi-date-updated-item {
+box-shadow:inset 0 0 12px #E9CF5F, inset 0 0 12px #E9CF5F;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li div.multi-date-day {
+margin:0;
+padding:0;
+text-align:center;
+line-height:20px!important;
+font-size:18px!important;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li div.multi-date-month {
+margin:0;
+padding:0;
+text-align:center;
+line-height:12px!important;
+font-size:10px!important;
+background:rgba(0,0,0,0.125);
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li .edit-date-btn,
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li .remove-date-btn {
+display:none;
+position:absolute;
+bottom:0;
+width:16px;
+height:16px;
+line-height:16px!important;
+text-align:center;
+background:rgba(255,255,255,0.33);
+cursor:pointer;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li .remove-date-btn {
+right:0;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li .edit-date-btn {
+left:0;
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li:hover .edit-date-btn,
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li:hover .remove-date-btn {
+display:block;
+background:rgba(255,255,255,1);
+}
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li:only-child .remove-date-btn {
+display:none!important; /* we need at least one date */
+}
+
+.editor-ctl-box.editor-ctl-multi-date .multi-date-list li .multi-date-values {
+display:none;
+}
+
+#gp_admin_boxc div#admin_box-date-values {
+margin-top:1em;
+}
+#gp_admin_boxc div#admin_box-date-values label {
+clear:both;
+margin:6px 0;
+padding:0 0 6px 0;
+border-bottom:1px solid #eee;
+}
+#gp_admin_boxc div#admin_box-date-values label span.label-text {
+display:inline-block;
+padding:4px 0;
+width:200px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+vertical-align:bottom;
 }
 
 

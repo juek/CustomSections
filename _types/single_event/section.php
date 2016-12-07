@@ -211,10 +211,10 @@ if( $section['values']['use_booking'] == '1' ){
       $section['content'] .=      '<a class="single-event-booking col-sm-6" href="{{booking_link|url}}" target="{{booking_link|target}}"><i class="fa fa-ticket"></i> {{booking_status}}</a>';
       break;
     case 'booked-out':
-      $section['content'] .=      '<span class="single-event-booking col-sm-6" text-muted><i class="fa fa-ban"></i> {{booking_status}}</span>';
+      $section['content'] .=      '<span class="single-event-booking col-sm-6"><i class="fa fa-ban"></i> {{booking_status}}</span>';
       break;
     case 'canceled':
-      $section['content'] .=      '<span class="single-event-booking col-sm-6" text-muted><i class="fa fa-exclamation-triangle"></i> {{booking_status}}</span>';
+      $section['content'] .=      '<span class="single-event-booking col-sm-6"><i class="fa fa-exclamation-triangle"></i> {{booking_status}}</span>';
       break;
   }
   $section['content'] .=      '</div>';
