@@ -1,9 +1,9 @@
 <?php 
 /*
-########################################################
-Editor definition for Custom Section type "Single Event"
+############################################################
+Editor definition for Custom Section type "Multi-Date Event"
 for Typesetter CMS developer plugin - 'Custom Sections'
-########################################################
+############################################################
 */
 
 

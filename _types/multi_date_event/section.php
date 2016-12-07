@@ -2,7 +2,7 @@
 defined('is_running') or die('Not an entry point...');
 
 /* ####################################################################################### */
-/* ############################# DEMO TYPE "MULTI DATE EVENT" ############################ */
+/* ############################# DEMO TYPE "MULTI-DATE EVENT" ############################ */
 /* ############################## CUSTOM SECTION DEFINITION ############################## */
 /* ####################################################################################### */
 /* ###    $sectionRelativeCode == relative path to this folder, e.g. to load images    ### */
@@ -79,7 +79,6 @@ $section['attributes'] = array(
 // use $section['values']['xyz'], e.g. for conditional rendering * whole elements 
 
 $section['content']  =  '<div class="multi-date-event-box" style="background-image:url(\'{{image}}\');">';
-//$section['content'] .=    '<img class="multi-date-event-main-image" alt="Image of {{title}}" src="{{image}}" />';
 $section['content'] .=    '<div class="multi-date-event-overlay" style="background-color:{{overlay_color}};"></div>';
 
 $section['content'] .=    '<div class="multi-date-event-content">';
