@@ -119,8 +119,11 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editor.selectUsingFinder = function(callback_fn, input_selector){
     gp_editor.FinderSelect = function(fileUrl){ 
       if (fileUrl != "") {
-        callback_fn(fileUrl, input_selector);
+        $.isFunction(callback_fn) ?  callback_fn(fileUrl, input_selector) : false;
       }
+      setTimeout(function(){
+      	  delete gp_editor.FinderSelect;
+      }, 150);
       return true;
     };
     var finderPopUp = window.open(gpFinderUrl, 'gpFinder', 'menubar=no,width=960,height=450');
@@ -128,7 +131,6 @@ function gp_init_inline_edit(area_id, section_object){
       finderPopUp.focus(); 
     }
   }; 
-
 
   gp_editor.setFile = function(fileUrl, input_selector){
     gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
