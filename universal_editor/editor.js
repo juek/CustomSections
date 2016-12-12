@@ -122,6 +122,7 @@ function gp_init_inline_edit(area_id, section_object){
         $.isFunction(callback_fn) ?  callback_fn(fileUrl, input_selector) : false;
       }
       setTimeout(function(){
+      	  delete gp_editor.FinderSelect;
       }, 150);
       return true;
     };
