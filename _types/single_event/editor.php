@@ -10,11 +10,11 @@ for Typesetter CMS developer plugin - 'Custom Sections'
 defined('is_running') or die('Not an entry point...');
 
 $editor = array(
-  'custom_scripts' => false,  // use a custom editor Javascript for this section type?
-  'custom_css' =>     false,  // use a custom editor CSS for this section type?
-  'modules' =>        false,  // NOT YET TESTED! when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clockpicker, datepicker
-                              // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
-                              // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
+  'custom_scripts' =>     false,  // use a custom editor Javascript for this section type?
+  'custom_css' =>         false,  // use a custom editor CSS for this section type?
+  'editor_components' =>  false,  // only when using custom editor script(s), we use this to load components like ck_editor, colorpicker, clockpicker, datepicker
+                                  // the components value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
+                                  // when the universal editor is used, we do not need to set this value, because components will be auto loaded with the respective control_type
   
   //*disabled */ 'js_on_content' => 'console.log( "js_on_content, JavaScript code defined in _types/shop_item/editor.php was executed: Editing section id = " + gp_editor.edit_section.attr("id") + " | Timestamp: " + new Date().toJSON() )',  
       // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
@@ -41,7 +41,7 @@ $editor = array(
     // value 'image' --start
     'image' => array(
       'label' => '<i class="fa fa-image"></i> Select Image',
-      'control_type' => 'finder-select',
+      'control_type' => 'finder_select',
       'attributes' => array(),
       'on' => array(
         // event handlers will be bound to the associated hidden input, not the button!
@@ -140,7 +140,7 @@ $editor = array(
     // value 'location_link' --start
     'location_link' => array(
       'label' => '<i class="fa fa-globe"></i> Location Link',
-      'control_type' => 'link-field',
+      'control_type' => 'link_field',
       'attributes' => array(
         // 'class' => '',
         'placeholder' => '#top, /MyPage or http://some.website.com',
@@ -157,7 +157,6 @@ $editor = array(
     'start_day' => array(
       'label' => '<i class="fa fa-calendar"></i> Start Day',
       'control_type' => 'datepicker',
-      'components' => 'datepicker', // comma seperated string. We need jQuery UI datepicker here for editing
       'attributes' => array(
         // 'class' => '',
         'placeholder' => 'Click me!',
@@ -263,7 +262,7 @@ $editor = array(
     // value 'booking_link' --start
     'booking_link' => array(
       'label' => '<i class="fa fa-globe"></i> Booking Link',
-      'control_type' => 'link-field',
+      'control_type' => 'link_field',
       'attributes' => array(
         // 'class' => '',
         'placeholder' => '#top, /MyPage or http://some.website.com',
@@ -295,7 +294,7 @@ $editor = array(
     // value 'readmore_link' --start
     'readmore_link' => array(
       'label' => '<i class="fa fa-globe"></i> &lsquo;Read More&rsquo; Link',
-      'control_type' => 'link-field',
+      'control_type' => 'link_field',
       'attributes' => array(
         // 'class' => '',
         'placeholder' => '#top, /MyPage or http://some.website.com',

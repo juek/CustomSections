@@ -12,11 +12,11 @@ Version 1.0b1
 defined('is_running') or die('Not an entry point...');
 
 $editor = array(
-  'custom_scripts' => false,  // use a custom editor Javascript for this section type?
-  'custom_css' =>     false,  // use a custom editor CSS for this section type?
-  'modules' =>        false,  // when using custom editor script(s), we use this to load modules like ck_editor, colorpicker, clickpicker, datepicker
-                              // the modules value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
-                              // with the universal editor, we do not need to set this value, because modules will be loaded with the control_type values
+  'custom_scripts' =>     false,  // use a custom editor Javascript for this section type?
+  'custom_css' =>         false,  // use a custom editor CSS for this section type?
+  'editor_components' =>  false,  // only when using custom editor script(s), we use this to load components like ck_editor, colorpicker, clockpicker, datepicker
+                                  // the components value can be a string 'ck_editor', a csv 'ck_editor,colorpicker' or an array('ck_editor','colorpicker');
+                                  // when the universal editor is used, we do not need to set this value, because components will be auto loaded with the respective control_type
   
   //*disabled */ 'js_on_content' => 'console.log( "js_on_content, JavaScript code defined in _types/shop_item/editor.php was executed: Editing section id = " + gp_editor.edit_section.attr("id") + " | Timestamp: " + new Date().toJSON() )',  
       // javascript code to be executed when the currently edited section is updated. Use e.g. for re-initing something.
@@ -57,7 +57,7 @@ $editor = array(
     // value 'images' --start
     'images' => array(
       'label' => '<i class="fa fa-image"></i> Carousel Images',
-      'control_type' => 'multi-image',
+      'control_type' => 'multi_image',
       'attributes' => array(),
       'on' => array(),
     ), 
@@ -77,7 +77,7 @@ $editor = array(
     // value 'badge_position' --start
     'badge_position' => array(
       'label' => '<i class="fa fa-arrows-alt"></i> Badge Position',
-      'control_type' => 'radio-group',
+      'control_type' => 'radio_group',
       'radio-buttons' => array( 
         // radio value => radio label
         'top-left' => 'top left',
@@ -185,7 +185,7 @@ $editor = array(
     // value 'button_link' --start
     'button_link' => array(
       'label' => '<i class="fa fa-globe"></i> Button Link',
-      'control_type' => 'link-field',
+      'control_type' => 'link_field',
       'attributes' => array(
         // 'class' => '',
         'placeholder' => '#top, /MyPage or http://some.website.com',

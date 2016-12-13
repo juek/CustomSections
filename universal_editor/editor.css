@@ -2,8 +2,8 @@
 ###################################################################################
 Universal Editor Stylesheet for Typesetter CMS developer plugin - 'Custom Sections'
 Author: J. Krausz and a2exfr
-Date: 2016-11-28
-Version 1.0b1
+Date: 2016-12-12
+Version 1.0b2
 ###################################################################################
 */
 
@@ -78,6 +78,14 @@ border-bottom:1px solid rgba(0,0,0,0.125);
 background:#f8f8f8;
 padding:4px;
 color:#555;
+}
+
+
+.editor-ctl-box.editor-ctl-missing span.label-text {
+display:block;
+background:#EDB442;
+padding:4px;
+color:#7F3300;
 }
 
 .editor-ctl-box input[type="color"],

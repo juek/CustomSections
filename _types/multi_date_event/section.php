@@ -179,8 +179,8 @@ foreach( $section['values']['dates'] as $key => $date ){
     $date_row .=   '<div class="row">';
 
 
-    $start_time_html  = !empty($date['start_time']) ? '<span class="multi-date-event-time">' . strftime($lang['time_format'], $start_datetime) . '</span>'  : ''; 
-    $end_time_html    = !empty($date['end_time'])   ? '<span class="multi-date-event-time">' . strftime($lang['time_format'], $end_datetime) . '</span>'    : ''; 
+    $start_time_html  = !empty($date['start_time']) ? '<span class="multi-date-event-time">' . utf8_encode(strftime($lang['time_format'], $start_datetime)) . '</span>'  : ''; 
+    $end_time_html    = !empty($date['end_time'])   ? '<span class="multi-date-event-time">' . utf8_encode(strftime($lang['time_format'], $end_datetime)) . '</span>'    : ''; 
 
     switch( $time_prefixing ){
       case 'at':
@@ -197,7 +197,7 @@ foreach( $section['values']['dates'] as $key => $date ){
         $date_row .=  '<div class="col-xs-12 multi-date-event-on">';
         $date_row .=    '<p>';
         $date_row .=      '<span class="multi-date-event-on-day">' . $lang['on_day'] . '</span> ';
-        $date_row .=      '<span class="multi-date-event-day">' . strftime($lang['day_format'], $start_datetime) . '</span>';
+        $date_row .=      '<span class="multi-date-event-day">' . utf8_encode(strftime($lang['day_format'], $start_datetime)) . '</span>';
         $date_row .=      $start_time_html . $end_time_html;
         $date_row .=    '</p>';
         $date_row .=  '</div>';
@@ -207,14 +207,14 @@ foreach( $section['values']['dates'] as $key => $date ){
         $date_row .=  '<div class="col-xs-12 multi-date-event-from">';
         $date_row .=    '<p>';
         $date_row .=      '<span class="multi-date-event-from-day">' . $lang['from_day'] . '</span> ';
-        $date_row .=      '<span class="multi-date-event-day">' . strftime($lang['day_format'], $start_datetime) . '</span>';
+        $date_row .=      '<span class="multi-date-event-day">' . utf8_encode(strftime($lang['day_format'], $start_datetime)) . '</span>';
         $date_row .=      $start_time_html;
         $date_row .=    '</p>';
         $date_row .=  '</div>';
         $date_row .=  '<div class="col-xs-12 multi-date-event-to">';
         $date_row .=    '<p>';
         $date_row .=      '<span class="multi-date-event-to-day">' . $lang['to_day'] . '</span> ';
-        $date_row .=      '<span class="multi-date-event-day">' . strftime($lang['day_format'], $end_datetime) . '</span>';
+        $date_row .=      '<span class="multi-date-event-day">' . utf8_encode(strftime($lang['day_format'], $end_datetime)) . '</span>';
         $date_row .=      $end_time_html;
         $date_row .=    '</p>';
         $date_row .=  '</div>';

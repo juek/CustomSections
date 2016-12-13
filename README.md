@@ -3,7 +3,7 @@
 
 ##About
 Developer plugin for rapid prototyping of custom section types. Simple section types can be built even without PHP and JS skills, using the 'universal editor' and {{value}} placeholders. 
-Current version 1.0b1 
+Current version 1.0b2 
 
 See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
 
