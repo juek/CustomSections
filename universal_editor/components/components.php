@@ -13,7 +13,7 @@ defined('is_running') or die('Not an entry point...');
 
 $components = array(
 
-  'ck_editor' => array(
+  'ckeditor' => array(
     'scripts' => array( 
       array( 'code' => 'CKEDITOR_BASEPATH = ' . \gp\tool\Output\Ajax::quote( \gp\tool::GetDir('/include/thirdparty/ckeditor_34/') ) . '; ' ),
       array( 'code' => 'var CS_ckconfig = ' . \gp\tool\Editing::CKConfig(array(), 'json', $plugins) . '; '),
@@ -33,7 +33,7 @@ $components = array(
     'stylesheets' =>  array( 'jquery_clockpicker/jquery-clockpicker.min.css', ),
   ),
 
-  'link_field' => array(
+  'autocomplete_pages' => array(
      'scripts' => array( 
         array( 'code' => \gp\tool\Editing::AutoCompleteValues(true) ), 
       ),

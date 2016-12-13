@@ -358,7 +358,7 @@ class CustomSections {
       // controls existing in universal_editor
       switch( $control_type ){
         case 'ck_editor':
-          $components[] = 'ck_editor';
+          $components[] = 'ckeditor';
           break;
         case 'colorpicker': // for rgba
           $components[] = 'colorpicker';
@@ -370,12 +370,11 @@ class CustomSections {
           $components[] = 'datepicker';
           break;
         case 'datetime_combo':
-        case 'multi_date':
           $components[] = 'clockpicker';
           $components[] = 'datepicker';
           break;
         case 'link_field':
-          $components[] = 'link_field';
+          $components[] = 'autocomplete_pages';
           break;
       }
       // editor_components defined in extra_controls
