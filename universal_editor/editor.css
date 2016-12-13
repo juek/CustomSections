@@ -115,7 +115,7 @@ box-shadow:none;
 background-color:none;
 border:none;
 padding:4px 6px;
-width:100%!important;
+width:100%;
 }
 
 .editor-ctl-box button {

@@ -307,15 +307,15 @@ class CustomSections {
     $scripts[] = array( 'code' => $code );
     
     foreach( $editor_scripts as $script ){
-      if( count($scripts) < count($editor_scripts)+1 ){
+      //if( count($scripts) < count($editor_scripts)+1 ){
         $scripts[] = $script;
-      }else{
+      //}else{
         // last key
-        $scripts[] = array(
-          'object' => 'gp_editing',
-          'file' => $script,
-        );
-      }
+        // $scripts[] = array(
+        //  'object' => 'gp_editing',
+        //  'file' => $script,
+        // );
+      // }
     }
 
     /* DEBUG level 2 */  if( self::$debug_level > 1 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/scripts.php','scripts',$scripts); }
