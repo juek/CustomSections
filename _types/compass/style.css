@@ -1,0 +1,26 @@
+.filetype-compass {} /* 'compass' derives from the folder name */
+
+.compass-wrapper {
+position:relative;
+background: #edf2f4;
+background: -moz-radial-gradient(center, ellipse cover,  #edf2f4 0%, #becfd8 72%, #afbec9 100%);
+background: -webkit-radial-gradient(center, ellipse cover,  #edf2f4 0%,#becfd8 72%,#afbec9 100%);
+background: radial-gradient(ellipse at center,  #edf2f4 0%,#becfd8 72%,#afbec9 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#edf2f4', endColorstr='#afbec9',GradientType=1 );
+}
+
+img.compass-dial,
+img.compass-needle {
+display:block;
+width:100%;
+height:auto;
+}
+
+img.compass-needle {
+position:absolute;
+top:0;
+left:0;
+-webkit-transition:all 1s cubic-bezier(0.175,0.885,0.32,1.275);
+transition:all 1s cubic-bezier(0.175,0.885,0.32,1.275); 
+z-index:10;
+}

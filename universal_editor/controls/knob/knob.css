@@ -1,0 +1,28 @@
+/*
+##############################################################################################################
+Universal Editor Extra Control "knob" Stylesheet for Typesetter CMS developer plugin - 'Custom Sections'
+Author: J. Krausz and a2exfr
+Date: 2016-12-12
+Version 1.0b2
+##############################################################################################################
+*/
+
+.editor-ctl-box.editor-ctl-knob label span.label-text {
+display:block;
+border-bottom:1px solid rgba(0,0,0,0.125);
+background:#f8f8f8;
+padding:4px;
+color:#555;
+}
+
+.editor-ctl-box.editor-ctl-knob div {
+position:relative;
+}
+
+.editor-ctl-box.editor-ctl-knob div>div {
+display:block!important;
+margin:6px auto;
+position:relative;
+}
+
+.editor-ctl-box.editor-ctl-knob label input {}
