@@ -1,0 +1,94 @@
+.filetype-compass_nav {} /* 'compass_nav' derives from the folder name */
+
+.compass-nav-wrapper {
+position:relative;
+background: #edf2f4;
+background: -moz-radial-gradient(center, ellipse cover, #edf2f4 0%, #becfd8 72%, #afbec9 100%);
+background: -webkit-radial-gradient(center, ellipse cover, #edf2f4 0%,#becfd8 72%, #afbec9 100%);
+background: radial-gradient(ellipse at center, #edf2f4 0%, #becfd8 72%, #afbec9 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#edf2f4', endColorstr='#afbec9',GradientType=1 );
+overflow:hidden;
+}
+
+.compass-nav-wrapper img.compass-dial,
+.compass-nav-wrapper img.compass-needle {
+display:block;
+width:100%;
+height:auto;
+}
+
+.compass-nav-wrapper img.compass-needle {
+position:absolute;
+top:0;
+left:0;
+-webkit-transition:all 1s cubic-bezier(0.175,0.885,0.32,1.275);
+transition:all 1s cubic-bezier(0.175,0.885,0.32,1.275); 
+z-index:10;
+}
+
+.compass-nav-wrapper .compass-nav {
+position:absolute;
+top:25%;
+right:25%;
+bottom:25%;
+left:25%;
+z-index:20;
+}
+
+.compass-nav-wrapper .compass-nav>div {
+position:absolute;
+text-align:center;
+width:100%;
+height:100%;
+}
+
+.compass-nav-wrapper .compass-nav>div.south-link-wrapper {
+-webkit-transform:rotate(180deg);
+-moz-transform:rotate(180deg);
+-ms-transform:rotate(180deg);
+transform:rotate(180deg);
+}
+
+.compass-nav-wrapper .compass-nav div.east-link-wrapper {
+-webkit-transform:rotate(90deg);
+-moz-transform:rotate(90deg);
+-ms-transform:rotate(90deg);
+transform:rotate(90deg);
+}
+
+.compass-nav-wrapper .compass-nav div.west-link-wrapper {
+-webkit-transform:rotate(270deg);
+-moz-transform:rotate(270deg);
+-ms-transform:rotate(270deg);
+transform:rotate(270deg);
+}
+
+.compass-nav-wrapper .compass-nav a {
+display:block;
+position:absolute;
+top:-45%;
+left:50%;
+-webkit-transform:translateX(-50%);
+transform:translateX(-50%);
+font-size:18px; /* will be adapted by FitText.js if needed */
+font-weight:bold;
+color:#00A2D3;
+text-transform:uppercase;
+text-decoration:none;
+outline:none!important;
+line-height:1em;
+min-height:1em;
+width:190%;
+}
+
+.compass-nav-wrapper .compass-nav>div.south-link-wrapper a {
+-webkit-transform:rotate(180deg) translateX(50%);
+-moz-transform:rotate(180deg) translateX(50%);
+-ms-transform:rotate(180deg) translateX(50%);
+transform:rotate(180deg) translateX(50%);
+}
+
+.compass-nav-wrapper .compass-nav a:hover {
+color:#0084C1;
+text-decoration:none;
+}
