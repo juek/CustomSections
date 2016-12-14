@@ -407,7 +407,7 @@ class CustomSections {
                 $scripts[] = $asset;
               }
               break;
-            case 'css':
+            case 'stylesheets':
               foreach( $assets as $asset ){
                 $css[] = $asset;
               }
