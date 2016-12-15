@@ -209,7 +209,7 @@ class CustomSections {
 
   public static function SectionToContent($section_data){
     $section_types  = self::SectionTypes();
-    if( array_key_exists($section_data['type'], $section_types) ){
+	if( array_key_exists($section_data['type'], $section_types) ){
       if( \gp\tool::LoggedIn() || !empty($section_data['always_process_values']) ){
         return self::GetSection($section_data);
       }
@@ -548,10 +548,12 @@ class CustomSections {
               // external source (e.g. CDN) -> keep it as it is
             }elseif( strpos($val, '/') === 0 ){
               // local ressource but not in current directory, check dirPrefix
-              if( strpos($val, $dirPrefix) !== 0 ){
-                $val = $dirPrefix . $val;
-              }
-            }else{
+              if($dirPrefix<>""){
+				  if( strpos($val, $dirPrefix) !== 0 ){
+					$val = $dirPrefix . $val;
+				  }
+			  }
+			}else{
               // local ressource in current subdirectory, needs prefix
               $val = $addonRelativeCode . '/universal_editor/components/' . $val;
             }
