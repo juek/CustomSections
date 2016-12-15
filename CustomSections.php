@@ -209,7 +209,6 @@ class CustomSections {
 
   public static function SectionToContent($section_data){
     $section_types  = self::SectionTypes();
-	global $dirPrefix;
 	if( array_key_exists($section_data['type'], $section_types) ){
       if( \gp\tool::LoggedIn() || !empty($section_data['always_process_values']) ){
         return self::GetSection($section_data);
