@@ -24,6 +24,17 @@ Demo section type "Shop Item" using the universal editor component.
 
 ![Screenshot](/screenshot-01.png?raw=true)
 
+## Currently available control types
+These control types are ready to be used in 'universal editor'
+
+| control_type | control_type | control_type |
+| :---: | :---: | :---: |
+| **`checkbox`**<br/><br/> ![Screenshot](/docs/controls/checkbox.png?raw=true) | **`ck_editor`**<br/><br/> ![Screenshot](/docs/controls/ck_editor.png?raw=true)<br/>pops up a CK Editor in a modal box | **`image`**<br/><br/>![Screenshot](/docs/controls/image.png?raw=true)<br/>opens a file manager |
+| **`text`**<br/><br/>![Screenshot](/docs/controls/text.png?raw=true) | **`select`**<br/><br/>![Screenshot](/docs/controls/link_field.png?raw=true) | **`link_field`**<br/><br/>![Screenshot](/docs/controls/link_field.png?raw=true)<br/>with autocomplete for <br>internal pages and button that<br/> opens a file manager |
+| **`clockpicker`**<br/><br/> ![Screenshot](/docs/controls/clockpicker.png?raw=true) | **`colorpicker`**<br/><br/>![Screenshot](/docs/controls/colorpicker.png?raw=true) | **`datepicker`**<br/><br/>![Screenshot](/docs/controls/datepicker.png?raw=true) |
+| **`multi_image`**<br/><br/>![Screenshot](/docs/controls/multi_image.png?raw=true)<br/>opens a file manager window | **`radio_group`**<br/><br/>![Screenshot](/docs/controls/radio_group.png?raw=true) |  |
+| **`knob`**(extra control)<br/><br/>![Screenshot](/docs/controls/knob.png?raw=true) | **`multi_date`**(extra control)<br/><br/>![Screenshot](/docs/controls/multi_date.png?raw=true)<br/>with sorting option, <br>dates are managed in modal boxes |  |
+
 ## A note for developers
 Building own section types normally requires in-depht knowledge of Typesetter CMS. This plugin will make things way easier, but it still hooks into the CMS at a rather low level. This implicates that Typesetter will not be able to catch and report all errors like it can do on higher levels. Especially errors in the editor components, which get loaded via AJAX, can be really tricky to debug. When you start creating your own section types using this plugin, frequent testing is a good idea. 
 
