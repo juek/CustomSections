@@ -36,7 +36,7 @@ These control types are ready to be used in 'universal editor'
 | **`knob`**(extra control)<br/><br/>![Screenshot](/docs/controls/knob.png?raw=true) | **`multi_date`**(extra control)<br/><br/>![Screenshot](/docs/controls/multi_date.png?raw=true)<br/>with sorting option, <br>dates are managed in modal boxes |  |
 
 ## A note for developers
-Building own section types normally requires in-depht knowledge of Typesetter CMS. This plugin will make things way easier, but it still hooks into the CMS at a rather low level. This implicates that Typesetter will not be able to catch and report all errors like it can do on higher levels. Especially errors in the editor components, which get loaded via AJAX, can be really tricky to debug. When you start creating your own section types using this plugin, frequent testing is a good idea. 
+Building own section types normally requires in-depht knowledge of Typesetter CMS. This plugin will make things way easier, but it still hooks into the CMS at a rather low level. This implicates that Typesetter will not be able to catch and report all errors like it can do on higher levels. Especially errors in the editor components, which are 'AJAXed', can be really tricky to debug. When you start creating your own section types using this plugin, frequent testing is a good idea. 
 
 ## Credits
 [a2exfr](http://my-sitelab.com/), [juergen](https://www.typesettercms.com/User/789)
