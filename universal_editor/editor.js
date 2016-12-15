@@ -85,10 +85,27 @@ function gp_init_inline_edit(area_id, section_object){
       cmd   : 'save_custom_section',
       type  : section_object.type,
     };
-    $.each(values_serialized, function(i,v){
+//	console.log(values_serialized);
+ /*  $.each(values_serialized, function(i,v){
       data[v['name']] = v['value'];
-    });
-    // console.log("data = ", data);
+    }); */
+	$.each(values_serialized, function(i, item) {
+	if( item.name.slice(-2) =="[]"){
+		var test=item.name.slice(0, -2);
+		data[test]=[];
+	}
+		});
+	
+	$.each(values_serialized, function(i, item) {
+ 		if( item.name.slice(-2) =="[]"){
+			var test=item.name.slice(0, -2);
+			data[test].push(item.value);
+		} else { 
+			data[item.name] = item.value;
+		}
+		});
+ //   console.log("data = ", data);
+	
     data = jQuery.param(data);
     $gp.postC(window.location.href, data);
   }; // gp_editor.updateSection --end
