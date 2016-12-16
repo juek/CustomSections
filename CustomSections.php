@@ -252,6 +252,16 @@ class CustomSections {
 
   public static function PageRunScript($cmd) {
     global $page; 
+	
+	if( \gp\tool::LoggedIn() ){
+		//need to check users permission to admin Customsection if no - not show command
+		$page->admin_links[] = array(common::GetUrl('Admin_CustomSections'),  '<i class="fa fa-refresh"></i>', 
+		'cmd=recreate_custom_sections&page_to_refresh='.$page->title.'', 
+        'title="Recreate_custom_sections"'
+      );
+	}
+	
+	
     if( $cmd != 'save_custom_section' ){
       return $cmd;
     }
