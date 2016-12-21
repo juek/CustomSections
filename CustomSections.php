@@ -163,7 +163,14 @@ class CustomSections {
     }
     $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
     $sectionCurrentValues = !empty($current_section['values']) ? $current_section['values'] : array();
-
+	
+	//bucnh-control support
+	foreach($sectionCurrentValues as $key =>$value){
+		if( is_array($value) ){ 
+			if(array_key_exists('bunch_control_order',$value)){unset ($sectionCurrentValues[$key]['bunch_control_order']); }	
+		}
+	}
+	
     include $section_file;
 
     // union $current_section with loaded $section -> this only overwrites undefined keys in $current_section
@@ -385,7 +392,34 @@ class CustomSections {
           break;
         case 'link_field':
           $components[] = 'autocomplete_pages';
-          break;
+          break;   
+		case 'bunch_control':
+				foreach ($control['sub_controls'] as $sub_control){
+					$type=$sub_control['control_type'];
+					switch( $type ){
+								case 'ck_editor':
+								  $components[] = 'ckeditor';
+								  break;
+								case 'colorpicker': // for rgba
+								  $components[] = 'colorpicker';
+								  break;
+								case 'clockpicker':
+								  $components[] = 'clockpicker';
+								  break;
+								case 'datepicker':
+								  $components[] = 'datepicker';
+								  break;
+								case 'datetime_combo':
+								  $components[] = 'clockpicker';
+								  $components[] = 'datepicker';
+								  break;
+								case 'link_field':
+								  $components[] = 'autocomplete_pages';
+								  break;   
+					}
+				}
+          
+		  break;
       }
       // editor_components defined in extra_controls
       if( !empty($extra_controls[$control_type]) ){

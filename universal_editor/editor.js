@@ -47,6 +47,13 @@ function gp_init_inline_edit(area_id, section_object){
     setImage              : function(){},
     isImage               : function(){},
 
+    saveBunchControlsOrder : function(){},
+    editBunchControl      : function(){},
+    addBunchControl       : function(){},
+    updateBunchControl    : function(){},
+    deleteBunchControl    : function(){},
+	
+
     buildEditorUI         : function(){},
     getControl            : function(){},
     controls              : {},
@@ -85,10 +92,7 @@ function gp_init_inline_edit(area_id, section_object){
       cmd   : 'save_custom_section',
       type  : section_object.type,
     };
-//	console.log(values_serialized);
- /*  $.each(values_serialized, function(i,v){
-      data[v['name']] = v['value'];
-    }); */
+
 	$.each(values_serialized, function(i, item) {
 	if( item.name.slice(-2) =="[]"){
 		var test=item.name.slice(0, -2);
@@ -104,7 +108,6 @@ function gp_init_inline_edit(area_id, section_object){
 			data[item.name] = item.value;
 		}
 		});
- //   console.log("data = ", data);
 	
     data = jQuery.param(data);
     $gp.postC(window.location.href, data);
@@ -175,7 +178,12 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.setFile = function(fileUrl, input_selector){
-    gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
+	//bunch control support
+	if (input_selector.endsWith('-bunch_box')){
+		$gp.div('gp_admin_box').find(input_selector).val(fileUrl).trigger("change");
+	}	else {
+		 gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
+	}
   }; // gp_editor.setFile --end
 
 
@@ -252,6 +260,155 @@ function gp_init_inline_edit(area_id, section_object){
     return true;
   }; // gp_editor.isImage --end
 
+  
+    gp_editor.saveBunchControlsOrder = function(container) {
+		var sort_order = container.sortable( "toArray", {attribute: 'data-sort'});
+		container.parent().find('#sort_order').val(sort_order);
+	}// gp_editor.saveBunchControlsOrder --end
+  
+
+  
+   gp_editor.editBunchControl = function(max_bunch=false,sub_controls) {
+		var bunch_label = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_label'];
+		var bunch_number = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_number'];
+		var boxHtml = '<div class="inline_box">';
+			boxHtml +='<h3>'+bunch_label+" "+bunch_number+'</h3>';
+			boxHtml +='<div class="sub_controls_cont"></div>';
+			
+			if(!max_bunch){
+			boxHtml +='<p><input class="gpsubmit" type="submit" name="updateBunchControl" value="' + gplang.up + '" /> ';
+			} else {
+			boxHtml +='<p><input class="gpsubmit" type="submit" name="addBunchControl" value="' + gplang.up + '" /> ';	
+			}
+			boxHtml +='<input class="gpcancel gp_admin_box_close" data-cmd="admin_box_close"  type="button" name="" value="' + gplang.ca + '" /></p>';
+			boxHtml +='</div>';
+		$gp.AdminBoxC(boxHtml);
+		//sub controls adding   (ck_editor goes separeted)
+		var contr_types =["color","date","datetime","datetime-local","email","number","month","password","range","search","tel","text","time","url","week"];
+		$.each(sub_controls, function(item, value){ 
+			if( jQuery.inArray(value['control_type'], contr_types) !== -1 ){
+				 value['control_type']='input_field';
+			 }
+		
+			if (value['control_type']=="ck_editor") {
+				var ck_field ='<textarea id="editor-ctl-' + item + '" name="values[' + value.item + ']" cols="50" rows="3">' + $gp.htmlchars(value.value) + '</textarea>';
+				$gp.div('gp_admin_box').find(".sub_controls_cont").append(ck_field);
+						if( typeof(gp_add_plugins) == 'object' ){
+								$.each(gp_add_plugins,function(name,path){
+								CKEDITOR.plugins.addExternal(name,path);
+								});
+						}
+						CKEDITOR.config.baseFloatZIndex = 12000;
+						CKEDITOR.replace('editor-ctl-' + item, CS_ckconfig);
+						CKEDITOR.instances['editor-ctl-' + item].on('change', function() { CKEDITOR.instances['editor-ctl-' + item].updateElement() })
+			} else {
+				var control = gp_editor.getControl(value['control_type'], value);
+				$gp.div('gp_admin_box').find(".sub_controls_cont").append(control);
+			}
+			
+		})
+		
+		$gp.div('gp_admin_box').find("[name='updateBunchControl']").on("click", function(){
+			gp_editor.updateBunchControl();
+		  });	
+		 $gp.div('gp_admin_box').find("[name='addBunchControl']").on("click", function(){
+			gp_editor.addBunchControl(sub_controls);
+		  });
+   }// gp_editor.editBunchControl --end
+	
+	
+	
+	gp_editor.addBunchControl = function(sub_controls){
+		var bunch_data=$(".sub_controls_cont").find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea").serializeArray();
+		var i = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_number'];//from first property it's same everywhere
+		var bunch_name = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_name'];
+		var bunch_label = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_label'];
+	
+		var new_bunch = '<div id="bunch-item-'+bunch_name+'-'+i+'" data-sort="'+i+'" class="bunch_item" ><p>'+bunch_label+i+'</p>';
+		$.each(bunch_data,function(a,item){
+			var temp = item.name.replace('values[','');
+			temp=temp.slice(0, -1);
+			sub_controls[temp]['value'] = item.value;
+		});
+		$.each(sub_controls,function(a,map){ 
+			 var sub_control_data=JSON.stringify(map).replace(/'/g, "\\'");;
+			new_bunch +='<input data-item="'+bunch_name+i+map.sub_name+'-bunch_box" data-subname="'+map.sub_name+'" data-control=\''+sub_control_data+'\' type="hidden" name="values[' + bunch_name + ']['+i+']['+map.sub_name+']" value="' + map.value + '"/>';
+			
+			//changes to use sub_controls, for edit new added bunch-control
+			map['item'] = map.bunch_name+i+map.sub_name+'-bunch_box';
+			
+		});
+		new_bunch += '<div title="Edit" class="edit-bc-btn"><i class="fa fa-pencil"></i></div>';
+		new_bunch += '<div title="Remove" class="remove-bc-btn"><i class="fa fa-times"></i></div>';
+		new_bunch +="</div>";
+		
+		//change subcontrols to be ready for new bunch control edit ( rename properties - adding number to property )
+		$.each(sub_controls,function(a,map){ 
+			var new_prop_name = map.bunch_name+i+map.sub_name+'-bunch_box';
+			sub_controls[new_prop_name]=map;
+			delete sub_controls[a];
+		})
+
+		$(new_bunch).appendTo("."+bunch_name+"_bunch_items_container")
+			.find(".edit-bc-btn, .remove-bc-btn").each(function() {
+				$(this).on('click', function(e) {	
+					 var target = $( e.currentTarget );
+					if (target.is('div.edit-bc-btn')) { 
+							$(this).parent().find("input").each(function(){
+								var key = $(this).data('item');
+								sub_controls[key]['value'] = $(this).val();
+							});
+						gp_editor.editBunchControl('',sub_controls);
+					
+						} else {
+						gp_editor.deleteBunchControl($(this));
+						}
+				
+				})	
+			})
+		gp_editor.ui.controls.find('#dummy-'+bunch_name).data("bunchcount", i);
+		$gp.CloseAdminBox();
+	}// gp_editor.addBunchControl --end
+  
+  
+  
+	gp_editor.updateBunchControl = function(){
+		var bunch_data=$(".sub_controls_cont").find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea").serializeArray();
+		$.each(bunch_data,function(i,item){
+			var temp = item.name.replace('values[','');
+			temp=temp.slice(0, -1);
+			gp_editor.ui.controls.find('input[data-item='+temp+']').val(item.value);
+			$gp.CloseAdminBox();
+		
+		});
+	}// gp_editor.updateBunchControl --end
+	
+	
+	
+	gp_editor.deleteBunchControl =function(e){
+		if( confirm("Really delete?") ){
+/* 			var count = e.parent().parent().parent().find(".bunch-ctr-dummy");
+			var  count_data =  count.data("bunchcount") - 1;
+			count.data("bunchcount",count_data) */
+			e.parent().remove(); 
+		  } 
+	}// gp_editor.deleteBunchControl --end
+	
+	
+	
+	function escapeHtml(unsafe) {
+		return unsafe
+			 .replace(/&/g, "&amp;")
+			 .replace(/</g, "&lt;")
+			 .replace(/>/g, "&gt;")
+			 .replace(/"/g, "&quot;")
+			 .replace(/'/g, "&#039;");
+	}
+	
+		
+	function log(a){
+		console.log(a);
+	}
 
 
   gp_editor.buildEditorUI = function(){
@@ -571,18 +728,18 @@ function gp_init_inline_edit(area_id, section_object){
       var attributes  = control_map['attributes'];
       var add_classes = control_map['add_classes'];
 
-      var control = $(
-            '<div class="editor-ctl-box editor-ctl-ckedit' + add_classes + '">'
-          +   '<label>'
-          +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
-          +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" />'
-          +   '</label>' 
-          + '</div>'
-        );
-      control.find("#editor-ctl-"+ item).val(value);
-      control.find("#editor-btn-ckedit-"+ item).on("click", function(){
-        gp_editor.CKfield(gp_editor.setFile, "editor-ctl-" + item, control_map['label']);
-      });
+   	  var control = $(
+				'<div class="editor-ctl-box editor-ctl-ckedit' + add_classes + '">'
+			  +   '<label>'
+			  +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
+			  +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" />'
+			  +   '</label>' 
+			  + '</div>'
+			);
+		  control.find("#editor-ctl-"+ item).val(value);
+		  control.find("#editor-btn-ckedit-"+ item).on("click", function(){
+			gp_editor.CKfield(gp_editor.setFile, "editor-ctl-" + item, control_map['label']);
+		  });
       return control;
     }, // ck_editor --end
 
@@ -745,10 +902,116 @@ function gp_init_inline_edit(area_id, section_object){
       });
       return control;
     }, // colorpicker --end
+	
+	bunch_control: function(control_map){
+		var item        = control_map['item'];
+		var value       = control_map['value'];
+		var add_classes = control_map['add_classes'];
+		var sub_controls= control_map['sub_controls'];
+		
+		//ordering values
+		var new_val=[];
+		if(value.bunch_control_order !== undefined && value.bunch_control_order !=="") {
+			var order = value['bunch_control_order'].split(',');
+			$.each(order,function(q,w){
+				new_val.push(value[w]);
+			})
+		value=new_val;
+		}
+							
+		var bunch_ctrl = '<div class="editor-ctl-box editor-ctl-bunch-ctr' + add_classes + '">';
+			bunch_ctrl +=   '<label><span class="label-text">' + control_map['label'] + '</span></label>';
+			//values render
+			bunch_ctrl += '<div class="'+item+'_bunch_items_container">';
+			
+		$.each(value, function(i, bunch_item){
+			if( $.isPlainObject(bunch_item )){ 			
+				bunch_ctrl += '<div id="bunch-item-'+item+'-'+i+'" data-sort="'+i+'" class="bunch_item"><p>'+control_map['label']+i+'</p>';
+						$.each(bunch_item, function(sub_item_name, sub_item_val){
+						//	\''+JSON.stringify(dataObj).replace(/'/g, "\\'");+'\' // way to store json in data
+						 var sub_control_data = JSON.stringify(sub_controls[sub_item_name]).replace(/'/g, "\\'");
+						 bunch_ctrl +=   '<input data-item="'+item+i+sub_item_name+'-bunch_box" data-subname="'+sub_item_name+'" data-control=\''+sub_control_data+'\' type="hidden" name="values[' + item + ']['+i+']['+sub_item_name+']" value="' + escapeHtml(sub_item_val) + '"/>';
+						});
+				
+				bunch_ctrl += '<div title="Edit" class="edit-bc-btn"><i class="fa fa-pencil"></i></div>';
+				bunch_ctrl += '<div title="Remove" class="remove-bc-btn"><i class="fa fa-times"></i></div>';
+				bunch_ctrl +='</div>';
+			}
+		  });
+			bunch_ctrl +='</div>';
+						
+			//dummy bunch-control for adding
+			bunch_ctrl +='<div id="dummy-'+item+'" class="bunch-ctr-dummy" data-bunchcount="">';
+			$.each(sub_controls, function(sub_name, sub_map){ 
+				var temp=JSON.stringify(sub_map).replace(/'/g, "\\'");
+				bunch_ctrl += '<p data-item="'+item+sub_name+'-bunch_box" data-subname="'+sub_name+'" data-control=\''+temp+'\' ></p>';
+			 })
+			bunch_ctrl +='</div>';
+			//
+			//input for order
+			bunch_ctrl += '<input type="hidden" id="sort_order" name="values[' + item + '][bunch_control_order]" val="'+value['bunch_control_order']+'"/>'
+			
+			bunch_ctrl +=   '<label>';
+			bunch_ctrl +=     '<button id="editor-btn-bunch-ctr-'+ item +'"><i class="fa fa-plus"></i> Add</button>';
+			bunch_ctrl +=   '</label>';
+			bunch_ctrl += '</div>';
+	var control = $(bunch_ctrl);
+	
+	//set count
+	var bunchcount = control.find(".bunch_item").map(function(){return $(this).data("sort");}).get();
+	bunchcount = Math.max.apply( Math, bunchcount );
+	control.find(".bunch-ctr-dummy").data("bunchcount", bunchcount);
+	
+	control.find("#editor-btn-bunch-ctr-" + item).on("click", function(){
+				var subcontrols={};
+				control.find(".bunch-ctr-dummy p").each(function(){
+					var sn= $(this).data('item');
+					var temp_control =$(this).data('control');
+					temp_control['value'] = "";
+					temp_control['item'] = $(this).data('item');
+					temp_control['attributes'] = {"class":"sub_control"};
+					temp_control['bunch_name'] =item;
+					temp_control['bunch_label'] =control_map['label'];
+					temp_control['bunch_number'] =control.find(".bunch-ctr-dummy").data('bunchcount')+1;
+					temp_control['sub_name'] =$(this).data('subname');
+					subcontrols[sn] = temp_control; 
+				})
+			gp_editor.editBunchControl(true,subcontrols);//add
+      });
 
+	 control.find(".edit-bc-btn").on("click", function(){	
+		var subcontrols={};
+		$(this).parent().find("input").each(function(){
+			var sn= $(this).data('subname');
+			var temp_control = $(this).data('control');
+			temp_control['value'] = $(this).val();
+			temp_control['item'] = $(this).data('item');
+			temp_control['attributes'] = {"class":"sub_control"};
+			temp_control['bunch_label'] =control_map['label'];
+			temp_control['bunch_number'] =$(this).parent().data('sort');
+			subcontrols[sn] = temp_control;
+		})
+				
+       gp_editor.editBunchControl('',subcontrols);
+      });
+	 
+	 control.find(".remove-bc-btn").on("click", function(){
+		gp_editor.deleteBunchControl($(this));
+	 });
+	  
+	control.find("."+item+"_bunch_items_container").sortable({
+        update  : function(event, ui){
+                 var current_list = $(event.target);
+				 gp_editor.saveBunchControlsOrder(current_list);
+                  }
+    });
+	
+	return control;	
+	}// bunch_control --end
 
   }; // gp_editor.controls --end
-
+ 
+ 
 
 
   /* ################################################ */
