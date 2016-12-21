@@ -72,6 +72,7 @@ border-top:1px solid rgba(0,0,0,0.125);
 .editor-ctl-box.editor-ctl-link-field>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-radio-group>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-multi-img>label:first-child span.label-text,
+.editor-ctl-box.editor-ctl-bunch-ctr>label:first-child span.label-text,
 .editor-ctl-box.editor-ctl-multi-date>label:first-child span.label-text {
 display:block;
 border-bottom:1px solid rgba(0,0,0,0.125);
@@ -446,4 +447,49 @@ a.ui-datepicker-next .ui-icon.ui-icon-circle-triangle-e:before {
 content:"\f054";
 }
 
+/**Bunch control - 
+overiding styles for subcontrols
+all subcontrolls have class sub_control**/
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item{
+	width: 23%;
+	cursor:move;
+	float:left;
+	position: relative;
+	background-color: rgba(0, 0, 0, 0.125);
+    border: 1px solid #ccc;
+    border-radius: 3px;
+	margin: 0 3px 3px 0;
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item p{
+margin-top: 5px!important;
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch-ctr-dummy{
+	display:none;
+}
 
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item .edit-bc-btn,
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item .remove-bc-btn {
+display:none;
+position:absolute;
+bottom:0;
+width:16px;
+height:16px;
+line-height:16px!important;
+text-align:center;
+background:rgba(255,255,255,0.33);
+cursor:pointer;
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item .remove-bc-btn  {
+right:0;
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item .edit-bc-btn {
+left:0;
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item:hover > .edit-bc-btn,
+.editor-ctl-box.editor-ctl-bunch-ctr .bunch_item:hover > .remove-bc-btn {
+display:block;
+background:rgba(255,255,255,1);
+}
+.editor-ctl-box.editor-ctl-bunch-ctr .multi-date-list li:only-child .remove-date-btn {
+display:none!important; /* we need at least one date */
+}
