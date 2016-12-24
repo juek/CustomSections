@@ -180,7 +180,7 @@ class CustomSections_Admin {
 		$grey = imagecolorallocate($im, 77, 77, 77);
 		//$text = str_replace(" ","\n", $label);
 		$text = $label;
-		$font = $addonPathCode.'/image/arial.ttf';
+		$font = $addonPathCode.'/image/Roboto-Regular.ttf';
 		$fontSize = ($img_width) / mb_strlen($text) * 1.3;
 
 		imagettftext($im, $fontSize, 0, 0, 40, $grey, $font, $text);
