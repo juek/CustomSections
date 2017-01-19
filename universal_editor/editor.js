@@ -178,12 +178,19 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.setFile = function(fileUrl, input_selector){
-	//bunch control support
-	if (input_selector.endsWith('-bunch_box')){
-		$gp.div('gp_admin_box').find(input_selector).val(fileUrl).trigger("change");
-	}	else {
-		 gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
-	}
+    // console.log("setFile: ", fileUrl, input_selector);
+    if( input_selector instanceof jQuery ){
+      // console.log("setFile: input_selector = jQuery object");
+      input_selector.val(fileUrl).trigger("change");
+    }else{
+      // console.log("setFile: input_selector = string");
+      if( input_selector.endsWith('-bunch_box') ){
+        //bunch control support
+        $gp.div('gp_admin_box').find(input_selector).val(fileUrl).trigger("change");
+      }else{
+        gp_editor.ui.controls.find(input_selector).val(fileUrl).trigger("change");
+      }
+    }
   }; // gp_editor.setFile --end
 
 
