@@ -121,6 +121,7 @@ class CustomSections_Admin {
 
 
 	function Recreate_custom_sections(){
+		global $addonPathCode;
 		includeFile('tool/SectionContent.php');
 		$title = $_REQUEST['page_to_refresh'];
 		$page_file = \gp\tool\Files::PageFile($title);
@@ -140,6 +141,13 @@ class CustomSections_Admin {
 					$section_options = array('type' => $val['type'], 'values' => $val['values'],);
 					$sc = \gp\tool\Output\Sections::SectionToContent($section_options, '');
 					$file_sections[$key]['content']=$sc;
+					
+					//in case of more values added(only overwrites undefined keys)
+					$sectionCurrentValues=array();
+					$sectionRelativeCode="";
+					$section_file = $addonPathCode . '/_types/' . $val['type']  . '/section.php';
+					include $section_file;
+					$file_sections[$key]['values'] +=$section['values'];
 					$i++;
 				}
 				if( $i > 0 ){
