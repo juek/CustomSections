@@ -77,7 +77,6 @@ class CustomSections {
 
 
 
-
   public static function LoadSectionCssJs(){
     global $page, $addonPathCode, $addonRelativeCode;
     $types = self::SectionTypes();
@@ -163,14 +162,16 @@ class CustomSections {
     }
     $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
     $sectionCurrentValues = !empty($current_section['values']) ? $current_section['values'] : array();
-	
-	//bucnh-control support
-	foreach($sectionCurrentValues as $key =>$value){
-		if( is_array($value) ){ 
-			if(array_key_exists('bunch_control_order',$value)){unset ($sectionCurrentValues[$key]['bunch_control_order']); }	
-		}
-	}
-	
+  
+    //bucnh-control support
+    foreach($sectionCurrentValues as $key =>$value){
+      if( is_array($value) ){ 
+        if( array_key_exists('bunch_control_order', $value) ){
+          unset ($sectionCurrentValues[$key]['bunch_control_order']); 
+        }
+      }
+    }
+  
     include $section_file;
 
     // union $current_section with loaded $section -> this only overwrites undefined keys in $current_section
@@ -216,7 +217,7 @@ class CustomSections {
 
   public static function SectionToContent($section_data){
     $section_types  = self::SectionTypes();
-	if( array_key_exists($section_data['type'], $section_types) ){
+    if( array_key_exists($section_data['type'], $section_types) ){
       if( \gp\tool::LoggedIn() || !empty($section_data['always_process_values']) ){
         return self::GetSection($section_data);
       }
@@ -248,6 +249,7 @@ class CustomSections {
     if( array_key_exists($type, $section_types) ){ 
       global $page;
       $page->file_sections[$section]['values'] = & $_POST['values'];
+      $page->file_sections[$section]['attributes'] = & $_POST['attributes'];
       $page->file_sections[$section]['content'] = & $_POST['gpcontent'];
       return true;
     }
@@ -259,16 +261,16 @@ class CustomSections {
 
   public static function PageRunScript($cmd) {
     global $page; 
-	
-	if( \gp\tool::LoggedIn() ){
-		//need to check users permission to admin Customsection if no - not show command
-		$page->admin_links[] = array(common::GetUrl('Admin_CustomSections'),  '<i class="fa fa-refresh"></i>', 
-		'cmd=recreate_custom_sections&page_to_refresh='.$page->title.'', 
-        'title="Recreate_custom_sections"'
+    
+    if( \gp\tool::LoggedIn() && \gp\admin\Tools::HasPermission('Admin_CustomSection') ){
+      $page->admin_links[] = array(
+        common::GetUrl('Admin_CustomSections'),  
+        '<i class="fa fa-refresh"></i>', 
+        'cmd=recreate_custom_sections&page_to_refresh=' . $page->title, 
+        'title="Recreate Custom Sections"'
       );
-	}
-	
-	
+    }
+    
     if( $cmd != 'save_custom_section' ){
       return $cmd;
     }
@@ -279,6 +281,10 @@ class CustomSections {
       'type' => $type, 
       'values' => $values,
     );
+    if( isset($_REQUEST['attributes']) ){
+      // msg("Section attributess = " . pre( $_REQUEST['attributes']) );
+      $section_options['attributes'] = $_REQUEST['attributes'];
+    }
     $arg_value = \gp\tool\Output\Sections::SectionToContent($section_options, '');
     $page->ajaxReplace[] = array('updateContent', 'arg', $arg_value);
     return 'return';
@@ -393,33 +399,32 @@ class CustomSections {
         case 'link_field':
           $components[] = 'autocomplete_pages';
           break;   
-		case 'bunch_control':
-				foreach ($control['sub_controls'] as $sub_control){
-					$type=$sub_control['control_type'];
-					switch( $type ){
-								case 'ck_editor':
-								  $components[] = 'ckeditor';
-								  break;
-								case 'colorpicker': // for rgba
-								  $components[] = 'colorpicker';
-								  break;
-								case 'clockpicker':
-								  $components[] = 'clockpicker';
-								  break;
-								case 'datepicker':
-								  $components[] = 'datepicker';
-								  break;
-								case 'datetime_combo':
-								  $components[] = 'clockpicker';
-								  $components[] = 'datepicker';
-								  break;
-								case 'link_field':
-								  $components[] = 'autocomplete_pages';
-								  break;   
-					}
-				}
-          
-		  break;
+        case 'bunch_control':
+          foreach ($control['sub_controls'] as $sub_control){
+            $type=$sub_control['control_type'];
+            switch( $type ){
+              case 'ck_editor':
+                $components[] = 'ckeditor';
+                break;
+              case 'colorpicker': // for rgba
+                $components[] = 'colorpicker';
+                break;
+              case 'clockpicker':
+                $components[] = 'clockpicker';
+                break;
+              case 'datepicker':
+                $components[] = 'datepicker';
+                break;
+              case 'datetime_combo':
+                $components[] = 'clockpicker';
+                $components[] = 'datepicker';
+                break;
+              case 'link_field':
+                $components[] = 'autocomplete_pages';
+                break;   
+            }
+          }
+          break;
       }
       // editor_components defined in extra_controls
       if( !empty($extra_controls[$control_type]) ){
@@ -592,12 +597,10 @@ class CustomSections {
               // external source (e.g. CDN) -> keep it as it is
             }elseif( strpos($val, '/') === 0 ){
               // local ressource but not in current directory, check dirPrefix
-              if($dirPrefix<>""){
-				  if( strpos($val, $dirPrefix) !== 0 ){
-					$val = $dirPrefix . $val;
-				  }
-			  }
-			}else{
+              if( $dirPrefix != "" && strpos($val, $dirPrefix) !== 0 ){
+                $val = $dirPrefix . $val;
+              }
+            }else{
               // local ressource in current subdirectory, needs prefix
               $val = $addonRelativeCode . '/universal_editor/components/' . $val;
             }

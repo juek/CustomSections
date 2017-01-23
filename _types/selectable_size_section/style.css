@@ -1,0 +1,15 @@
+/* #### custom styles for demo section type 'Selectable Size Section' ### */
+
+.filetype-selectable_size_section {
+background-color:#064090;
+text-align:center;
+}
+
+.filetype-selectable_size_section>div:first-child {
+padding:2em 1.5em;
+}
+
+.filetype-selectable_size_section * {
+color:#fff!important;
+}
+
