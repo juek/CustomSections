@@ -249,7 +249,9 @@ class CustomSections {
     if( array_key_exists($type, $section_types) ){ 
       global $page;
       $page->file_sections[$section]['values'] = & $_POST['values'];
-      $page->file_sections[$section]['attributes'] = & $_POST['attributes'];
+      if( !empty($_POST['attributes']) && is_array($_POST['attributes']) ){
+        $page->file_sections[$section]['attributes'] = & $_POST['attributes'];
+      }
       $page->file_sections[$section]['content'] = & $_POST['gpcontent'];
       return true;
     }
