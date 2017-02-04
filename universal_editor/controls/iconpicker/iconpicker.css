@@ -1,0 +1,61 @@
+/*
+############################################################################################################################
+Universal Editor Extra Control "Icon Picker" Stylesheet for Typesetter CMS developer plugin - 'Custom Sections'
+Author: J. Krausz and a2exfr
+Date: 2017-02-04
+Version 1.0b2
+############################################################################################################################
+*/
+
+.editor-ctl-box.editor-ctl-iconpicker>label:first-child span.label-text {
+display:block;
+border-bottom:1px solid rgba(0,0,0,0.125);
+background:#f8f8f8;
+padding:4px;
+color:#555;
+}
+
+#gp_admin_html .iconpicker-popover.popover{
+width:200px;
+border:1px solid rgba(0,0,0,0.25);
+z-index:10005;
+}
+
+#gp_admin_html .iconpicker .iconpicker-items {
+max-height:224px;
+padding:4px 0 0 4px;
+}
+
+#gp_admin_html .iconpicker a.iconpicker-item {
+font-size:24px;
+line-height:1;
+width:24px;
+height:24px;
+margin:0 3px 3px 0;
+padding:4px;
+}
+
+#gp_admin_html .iconpicker a.iconpicker-item,
+#gp_admin_html .iconpicker a.iconpicker-item:hover{
+color:#333;
+}
+
+#gp_admin_html .iconpicker a.iconpicker-item.iconpicker-selected, 
+#gp_admin_html .iconpicker a.iconpicker-item.iconpicker-selected:hover{
+color:#fff;
+background-color:#1EA076; /* font awesome CI color */
+}
+
+#gp_admin_html .iconpicker-popover.popover .popover-title .form-control.iconpicker-search{
+background:#fff;
+border:1px solid rgba(0,0,0,0.125);
+border-radius:3px;
+color:#555;
+font-family:inherit;
+font-size:inherit;
+line-height:inherit;
+text-shadow:none;
+height:24px;
+padding:0 6px;
+box-shadow:none;
+}
