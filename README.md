@@ -1,16 +1,16 @@
-#Custom Sections plugin for Typesetter CMS#
+# Custom Sections plugin for Typesetter CMS #
 
 
-##About
+## About ##
 Developer plugin for rapid prototyping of custom section types. Simple section types can be built even without PHP and JS skills, using the 'universal editor' and {{value}} placeholders. 
 Current version 1.0b2 
 
 See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
 
-##Requirements##
+## Requirements ##
 * Typesetter CMS 5.0+
 
-##Manual Installation##
+## Manual Installation ##
 Until the plugin is released on typesettercms.com, you need to download and install it manually:
 
 1. Download the [master ZIP Archive](https://github.com/juek/CustomSections/archive/master.zip)
