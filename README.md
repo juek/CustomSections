@@ -1,16 +1,16 @@
-#Custom Sections plugin for Typesetter CMS#
+# Custom Sections plugin for Typesetter CMS #
 
 
-##About
+## About ##
 Developer plugin for rapid prototyping of custom section types. Simple section types can be built even without PHP and JS skills, using the 'universal editor' and {{value}} placeholders. 
 Current version 1.0b2 
 
 See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
 
-##Requirements##
+## Requirements ##
 * Typesetter CMS 5.0+
 
-##Manual Installation##
+## Manual Installation ##
 Until the plugin is released on typesettercms.com, you need to download and install it manually:
 
 1. Download the [master ZIP Archive](https://github.com/juek/CustomSections/archive/master.zip)
@@ -33,7 +33,7 @@ These control types are ready to be used in 'universal editor'
 | **`text`**<br/><br/>![Screenshot](/docs/controls/text.png?raw=true) | **`select`**<br/><br/>![Screenshot](/docs/controls/select.png?raw=true) | **`link_field`**<br/><br/>![Screenshot](/docs/controls/link_field.png?raw=true)<br/>with autocomplete for <br>internal pages and button that<br/> opens a file manager |
 | **`clockpicker`**<br/><br/> ![Screenshot](/docs/controls/clockpicker.png?raw=true) | **`colorpicker`**<br/><br/>![Screenshot](/docs/controls/colorpicker.png?raw=true) | **`datepicker`**<br/><br/>![Screenshot](/docs/controls/datepicker.png?raw=true) |
 | **`multi_image`**<br/><br/>![Screenshot](/docs/controls/multi_image.png?raw=true)<br/>opens a file manager window | **`radio_group`**<br/><br/>![Screenshot](/docs/controls/radio_group.png?raw=true) |  |
-| **`knob`**(extra control)<br/><br/>![Screenshot](/docs/controls/knob.png?raw=true) | **`multi_date`**(extra control)<br/><br/>![Screenshot](/docs/controls/multi_date.png?raw=true)<br/>with sorting option, <br>dates are managed in modal boxes |  |
+| **`iconpicker`**(extra control)<br/><br/>![Screenshot](/docs/controls/iconpicker.png?raw=true) | **`knob`**(extra control)<br/><br/>![Screenshot](/docs/controls/knob.png?raw=true) | **`multi_date`**(extra control)<br/><br/>![Screenshot](/docs/controls/multi_date.png?raw=true)<br/>with sorting option, <br>dates are managed in modal boxes |
 
 ## A note for users/admins
 Custom Sections is a developer/designer plugin. To make use of it, you will need to have at least basic coding skills, namely HTML and CSS. You won't necessarily have to know much about PHP or JavaScript but you must not produce syntax errors (such as missing quotes, brackets, etc.) when building upon the demo types. Required coding skills grow with the complexity of things you're planning to do. The bundled section types, whichever they might eventually be, are merely meant as examples and they certainly won't be of any practical use unless you figure out how to adapt them. We will subsequently try to make the plugin as fail-safe as possible and to provide decent documentation. For the time being (beta stage) some parts will be hard to understand and are subject to change. 
