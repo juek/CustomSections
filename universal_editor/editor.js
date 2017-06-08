@@ -11,7 +11,7 @@ Version 1.0b2
 function gp_init_inline_edit(area_id, section_object){
 
   /* DEBUG level 2 */ if( CustomSections_editor.debug_level > 1) { console.log("section_object = ", section_object); }
- 
+
   $.each(CustomSections_editor.css, function(i, css_file){
     $gp.LoadStyle( css_file, true ); // true for (boolean)alreadyprefixed
   });
@@ -58,7 +58,7 @@ function gp_init_inline_edit(area_id, section_object){
     getControl              : function(){},
     controls                : {},
     ui                      : {}
-  }; 
+  };
 
 
 
@@ -153,16 +153,16 @@ function gp_init_inline_edit(area_id, section_object){
         data[test]=[];
       }
     });
-    
+
     $.each(values_serialized, function(i, item){
       if( item.name.slice(-2) == "[]" ){
         var test = item.name.slice(0, -2);
         data[test].push(item.value);
-      } else { 
+      } else {
         data[item.name] = item.value;
       }
     });
-  
+
     data = $.param(data);
     $gp.postC(window.location.href, data);
   }; // gp_editor.updateSection --end
@@ -214,7 +214,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.selectUsingFinder = function(callback_fn, input_selector){
-    gp_editor.FinderSelect = function(fileUrl){ 
+    gp_editor.FinderSelect = function(fileUrl){
       if (fileUrl != "") {
         $.isFunction(callback_fn) ? callback_fn(fileUrl, input_selector) : false;
       }
@@ -224,8 +224,8 @@ function gp_init_inline_edit(area_id, section_object){
       return true;
     };
     var finderPopUp = window.open(gpFinderUrl, 'gpFinder', 'menubar=no,width=960,height=450');
-    if( window.focus ){ 
-      finderPopUp.focus(); 
+    if( window.focus ){
+      finderPopUp.focus();
     }
   }; // gp_editor.selectUsingFinder --end
 
@@ -288,7 +288,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.addImage = function(fileUrl, item){
-    if( gp_editor.isImage(fileUrl.toString()) ){ 
+    if( gp_editor.isImage(fileUrl.toString()) ){
       var list_item = $('<li style="background-image:url(\'' + fileUrl + '\');">'
        +    '<div class="remove-img-btn" title="Remove Image"><i class="fa fa-times"></i></div>'
        +    '<input type="hidden" name="values[' + item + '][]" value="' + fileUrl + '"/>'
@@ -313,7 +313,7 @@ function gp_init_inline_edit(area_id, section_object){
     if( !filetype.match(/jpg|jpeg|png|gif|svg|svgz|mng|apng|webp|bmp|ico/i) ){
       window.setTimeout(
         function() {
-        alert("Please choose an image file! " 
+        alert("Please choose an image file! "
           + "\nValid file formats are: *.jpg/jpeg, *.png/mng/apng, "
           + "*.gif, *.svg/svgz, *.webp, *.bmp, *.ico");
         }, 300
@@ -329,7 +329,7 @@ function gp_init_inline_edit(area_id, section_object){
     var sort_order = container.sortable( "toArray", { attribute : 'data-sort' });
     container.parent().find('#sort_order').val(sort_order);
   }; // gp_editor.saveBunchControlsOrder --end
-  
+
 
 
   gp_editor.editBunchControl = function(max_bunch=false,sub_controls) {
@@ -338,11 +338,11 @@ function gp_init_inline_edit(area_id, section_object){
     var boxHtml = '<div class="inline_box">';
     boxHtml += '<h3>' + bunch_label + ' ' + bunch_number + '</h3>';
     boxHtml += '<div class="sub_controls_cont"></div>';
-    
+
     if( !max_bunch ){
       boxHtml += '<p><input class="gpsubmit" type="submit" name="updateBunchControl" value="' + gplang.up + '" /> ';
     }else{
-      boxHtml += '<p><input class="gpsubmit" type="submit" name="addBunchControl" value="' + gplang.up + '" /> ';	
+      boxHtml += '<p><input class="gpsubmit" type="submit" name="addBunchControl" value="' + gplang.up + '" /> ';
     }
     boxHtml += '<input class="gpcancel gp_admin_box_close" data-cmd="admin_box_close"  type="button" name="" value="' + gplang.ca + '" /></p>';
     boxHtml += '</div>';
@@ -351,7 +351,7 @@ function gp_init_inline_edit(area_id, section_object){
 
     //sub controls adding (ck_editor goes separeted)
     var contr_types = ["color", "date", "datetime", "datetime-local", "email", "number", "month", "password", "range", "search", "tel", "text", "time", "url", "week"];
-    $.each(sub_controls, function(item, value){ 
+    $.each(sub_controls, function(item, value){
       if( jQuery.inArray(value['control_type'], contr_types) !== -1 ){
          value['control_type'] = 'input_field';
        }
@@ -371,7 +371,10 @@ function gp_init_inline_edit(area_id, section_object){
         $gp.div('gp_admin_box').find(".sub_controls_cont").append(control);
       }
     });
-    
+
+    // callback: Bunch control loaded
+    $(document).trigger('CustomSection:bunchControlLoaded');
+
     $gp.div('gp_admin_box').find("[name='updateBunchControl']").on("click", function(){
       gp_editor.updateBunchControl();
      });
@@ -379,9 +382,9 @@ function gp_init_inline_edit(area_id, section_object){
       gp_editor.addBunchControl(sub_controls);
     });
   }// gp_editor.editBunchControl --end
-  
-  
-  
+
+
+
   gp_editor.addBunchControl = function(sub_controls){
     var bunch_data = $(".sub_controls_cont")
       .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
@@ -389,18 +392,18 @@ function gp_init_inline_edit(area_id, section_object){
     var i = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_number'];//from first property it's same everywhere
     var bunch_name = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_name'];
     var bunch_label = sub_controls[[Object.keys(sub_controls)[0]]]['bunch_label'];
-  
-    var new_bunch = '<div id="bunch-item-' 
-      + bunch_name + '-' + i + '" data-sort="' + i 
-      + '" class="bunch_item" ><p>' 
-      + bunch_label + i 
+
+    var new_bunch = '<div id="bunch-item-'
+      + bunch_name + '-' + i + '" data-sort="' + i
+      + '" class="bunch_item" ><p>'
+      + bunch_label + i
       + '</p>';
     $.each(bunch_data, function(a, item){
       var temp = item.name.replace('values[','');
       temp = temp.slice(0, -1);
       sub_controls[temp]['value'] = item.value;
     });
-    $.each(sub_controls, function(a,map){ 
+    $.each(sub_controls, function(a,map){
       var sub_control_data = JSON.stringify(map).replace(/'/g, "\\'");;
       new_bunch += '<input data-item="' + bunch_name + i + map.sub_name + '-bunch_box" '
         + 'data-subname="' + map.sub_name + '" '
@@ -413,9 +416,9 @@ function gp_init_inline_edit(area_id, section_object){
     new_bunch += '<div title="Edit" class="edit-bc-btn"><i class="fa fa-pencil"></i></div>';
     new_bunch += '<div title="Remove" class="remove-bc-btn"><i class="fa fa-times"></i></div>';
     new_bunch += '</div>';
-    
+
     //change subcontrols to be ready for new bunch control edit ( rename properties - adding number to property )
-    $.each(sub_controls,function(a,map){ 
+    $.each(sub_controls,function(a,map){
       var new_prop_name = map.bunch_name+i+map.sub_name+'-bunch_box';
       sub_controls[new_prop_name]=map;
       delete sub_controls[a];
@@ -425,7 +428,7 @@ function gp_init_inline_edit(area_id, section_object){
       .find(".edit-bc-btn, .remove-bc-btn").each(function() {
         $(this).on('click', function(e){
           var target = $( e.currentTarget );
-          if( target.is('div.edit-bc-btn') ){ 
+          if( target.is('div.edit-bc-btn') ){
             $(this).parent().find("input").each(function(){
               var key = $(this).data('item');
               sub_controls[key]['value'] = $(this).val();
@@ -437,11 +440,15 @@ function gp_init_inline_edit(area_id, section_object){
         });
       });
     gp_editor.ui.controls.find('#dummy-' + bunch_name).data("bunchcount", i);
+
+    // Callback
+    $(document).trigger('CustomSection:bunchControlAdded');
+
     $gp.CloseAdminBox();
   }// gp_editor.addBunchControl --end
-  
-  
-  
+
+
+
   gp_editor.updateBunchControl = function(){
     var bunch_data = $(".sub_controls_cont")
       .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
@@ -450,6 +457,10 @@ function gp_init_inline_edit(area_id, section_object){
       var temp = item.name.replace('values[','');
       temp=temp.slice(0, -1);
       gp_editor.ui.controls.find('input[data-item=' + temp + ']').val(item.value);
+
+      // Callback
+      $(document).trigger('CustomSection:bunchControlUpdated');
+
       $gp.CloseAdminBox();
     });
   };// gp_editor.updateBunchControl --end
@@ -458,13 +469,16 @@ function gp_init_inline_edit(area_id, section_object){
 
   gp_editor.deleteBunchControl = function(e){
     if( confirm("Really delete?") ){
-      /* 
+      /*
       var count = e.parent().parent().parent().find(".bunch-ctr-dummy");
       var  count_data =  count.data("bunchcount") - 1;
-      count.data("bunchcount",count_data) 
+      count.data("bunchcount",count_data)
       */
-      e.parent().remove(); 
-    } 
+      e.parent().remove();
+
+      // Callback
+      $(document).trigger('CustomSection:bunchControlDeleted');
+    }
   }// gp_editor.deleteBunchControl --end
 
 
@@ -478,7 +492,7 @@ function gp_init_inline_edit(area_id, section_object){
     .replace(/'/g, "&#039;");
   }
 
-    
+
   function log(a){
     console.log(a);
   }
@@ -537,20 +551,20 @@ function gp_init_inline_edit(area_id, section_object){
     // 'serialize' attributes array to a ' a="b" x="y" ' string
     var attributes = '';
     var add_classes = '';
-    if( $.isPlainObject(control_map['attributes']) ){ 
+    if( $.isPlainObject(control_map['attributes']) ){
       $.each(control_map['attributes'], function(attribute_name, attribute_value){
-        if( attribute_name == "id" ){ 
+        if( attribute_name == "id" ){
           attributes += (' data-control-id="' + attribute_value + '" ');
           return; // id is reserved!
-        } 
-        if( attribute_name == "class" ){ 
+        }
+        if( attribute_name == "class" ){
           add_classes += (' ' + attribute_value);
-          return; 
+          return;
         }
         attributes += (' ' + attribute_name + '="' + attribute_value + '" ');
       });
     }
-    // replace original attributes property with string 
+    // replace original attributes property with string
     control_map['attributes'] = attributes;
     control_map['add_classes'] = add_classes;
 
@@ -560,12 +574,12 @@ function gp_init_inline_edit(area_id, section_object){
     }else{
       // control is undefined -> render warning control dummy
       var control = $('<div class="editor-ctl-box editor-ctl-missing">'
-        + '<label><span class="label-text"><i class="fa fa-warning"></i> Unknown control type <em>' + use_control + '</em></span></label>' 
+        + '<label><span class="label-text"><i class="fa fa-warning"></i> Unknown control type <em>' + use_control + '</em></span></label>'
         + '</div>');
     }
 
     // bind possibles events: we might axe this in future versions for unflexibility and the use of eval()?
-    if( $.isPlainObject(control_map['on']) ){ 
+    if( $.isPlainObject(control_map['on']) ){
       $.each(control_map['on'], function(event, handler_str){
         control.find("input, select, textarea")
           .on(event, eval('(' + handler_str + ')') );
@@ -583,7 +597,7 @@ function gp_init_inline_edit(area_id, section_object){
   /* #####                                      ##### */
   /* ################################################ */
 
-  gp_editor.controls = { 
+  gp_editor.controls = {
 
     input_field : function(control_map){
       var item        = control_map['item'];
@@ -596,7 +610,7 @@ function gp_init_inline_edit(area_id, section_object){
           '<div class="editor-ctl-box editor-ctl-input' + add_classes + '">'
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<input id="editor-ctl-' + item + '" type="' + input_type + '" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       return control;
@@ -611,7 +625,7 @@ function gp_init_inline_edit(area_id, section_object){
       var add_classes = control_map['add_classes'];
 
       var options = '';
-      if( $.isPlainObject(control_map['options']) ){ 
+      if( $.isPlainObject(control_map['options']) ){
         $.each(control_map['options'], function(option_value, option_text){
           var selected = (option_value == value ? ' selected="selected"' : '');
           options += ('<option value="' + option_value + '"' + selected + '>' + option_text + '</option>');
@@ -624,8 +638,8 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<select id="editor-ctl-' + item + '" name="values[' + item + ']"' + attributes + '>'
         +       options
-        +     '</select>' 
-        +   '</label>' 
+        +     '</select>'
+        +   '</label>'
         + '</div>'
       );
       return control;
@@ -643,7 +657,7 @@ function gp_init_inline_edit(area_id, section_object){
           '<div class="editor-ctl-box editor-ctl-textarea' + add_classes + '">'
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<textarea id="editor-ctl-' + item + '" name="values[' + item + ']"' + attributes + '>' + value + '</textarea>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       return control;
@@ -664,7 +678,7 @@ function gp_init_inline_edit(area_id, section_object){
         +     '<input id="editor-ctl-' + item + '-checkbox" type="checkbox" name="values[' + item + ']" value="' + value + '"' + checked  + attributes + '/><span></span> '
         +     '<span class="label-text">' + control_map['label'] + '</span>'
         +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("input[type='checkbox']").on("change", function(){
@@ -684,7 +698,7 @@ function gp_init_inline_edit(area_id, section_object){
 
       var radio_group = '<div class="editor-ctl-box editor-ctl-radio-group' + add_classes + '" id="editor-ctl-' + item + '-radio-group">';
       radio_group +=  '<label><span class="label-text">' + control_map['label'] + '</span></label>';
-      if( $.isPlainObject(control_map['radio-buttons']) ){ 
+      if( $.isPlainObject(control_map['radio-buttons']) ){
         $.each(control_map['radio-buttons'], function(radio_value, radio_label){
           var checked = radio_value == value ? ' checked="checked"' : '';
           radio_group +=  '<label>';
@@ -719,7 +733,7 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label>'
         +     '<button>' + control_map['label'] + '</button>'
         +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("button").on("click", function(){
@@ -742,11 +756,11 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<input id="editor-ctl-' + item + '-url" type="text" name="values[' + item + '][url]" value="' + value['url'] + '"/>'
         +     '<button title="Select File"><i class="fa fa-file-o"></i></button>'
-        +   '</label>' 
-        +   '<label>' 
+        +   '</label>'
+        +   '<label>'
         +     '<input type="checkbox"' + checked + '/><span></span> <span class="label-text">open in new tab\/window</span>'
         +     '<input id="editor-ctl-' + item + '-target" type="hidden" name="values[' + item + '][target]" value="' + value['target'] + '"/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
 
@@ -774,7 +788,7 @@ function gp_init_inline_edit(area_id, section_object){
         .autocomplete({
           source    : gptitles,
           appendTo  : "#gp_admin_html",
-          delay     : 100, 
+          delay     : 100,
           minLength : 0,
           select    : function(event,ui){
                         if( ui.item ){
@@ -806,7 +820,7 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label>'
         +     '<button id="editor-btn-ckedit-'+ item +'">' + control_map['label'] + '</button>'
         +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" />'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("#editor-ctl-" + item).val(value);
@@ -827,7 +841,7 @@ function gp_init_inline_edit(area_id, section_object){
       var multi_img_ctl = '<div class="editor-ctl-box editor-ctl-multi-img' + add_classes + '">';
       multi_img_ctl +=   '<label><span class="label-text">' + control_map['label'] + '</span></label>';
       multi_img_ctl +=   '<ul id="multi-img-list-' + item + '" class="multi-img-list cf">';
-      $.each(value, function(i, img){ 
+      $.each(value, function(i, img){
         multi_img_ctl +=    '<li style="background-image:url(\'' + img + '\');">';
         multi_img_ctl +=      '<div title="Remove Image" class="remove-img-btn"><i class="fa fa-times" ></i></div>';
         multi_img_ctl +=      '<input type="hidden" name="values[' + item + '][]" value="' + img + '"/>';
@@ -858,7 +872,7 @@ function gp_init_inline_edit(area_id, section_object){
           '<div class="editor-ctl-box editor-ctl-datepicker' + add_classes + '">'
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("input").datepicker({
@@ -882,7 +896,7 @@ function gp_init_inline_edit(area_id, section_object){
           '<div class="editor-ctl-box editor-ctl-clockpicker' + add_classes + '">'
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("input").clockpicker({
@@ -918,10 +932,10 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label><span class="label-text">' + control_map['label'] + '</span></label>'
         +   '<label class="ctl-half-width">'
         +     '<input class="editor-ctl-date" id="editor-ctl-' + item + '-date" type="text" value="' + date + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         +   '<label class="ctl-half-width">'
         +     '<input class="editor-ctl-time" id="editor-ctl-' + item + '-time" type="text" value="' + time + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         +   '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"/>'
         + '</div>'
       );
@@ -963,7 +977,7 @@ function gp_init_inline_edit(area_id, section_object){
           '<div class="editor-ctl-box editor-ctl-colorpicker' + add_classes + '">'
         +   '<label><span class="label-text">' + control_map['label'] + '</span> '
         +     '<input id="editor-ctl-' + item + '" type="text" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
-        +   '</label>' 
+        +   '</label>'
         + '</div>'
       );
       control.find("input").colorpicker({
@@ -983,7 +997,7 @@ function gp_init_inline_edit(area_id, section_object){
       var value       = control_map['value'];
       var add_classes = control_map['add_classes'];
       var sub_controls= control_map['sub_controls'];
-      
+
       //ordering values
       var new_val=[];
       if( value.bunch_control_order !== undefined && value.bunch_control_order !== "" ){
@@ -993,12 +1007,12 @@ function gp_init_inline_edit(area_id, section_object){
         });
         value = new_val;
       }
-      
+
       var bunch_ctrl = '<div class="editor-ctl-box editor-ctl-bunch-ctr' + add_classes + '">';
       bunch_ctrl +=   '<label><span class="label-text">' + control_map['label'] + '</span></label>';
       // values render
       bunch_ctrl += '<div class="'+item+'_bunch_items_container">';
-      
+
       $.each(value, function(i, bunch_item){
         if( $.isPlainObject(bunch_item) ){
           bunch_ctrl += '<div id="bunch-item-'+item+'-'+i+'" data-sort="'+i+'" class="bunch_item"><p>'+control_map['label']+i+'</p>';
@@ -1007,17 +1021,17 @@ function gp_init_inline_edit(area_id, section_object){
             var sub_control_data = JSON.stringify(sub_controls[sub_item_name]).replace(/'/g, "\\'");
             bunch_ctrl +=   '<input data-item="'+item+i+sub_item_name+'-bunch_box" data-subname="'+sub_item_name+'" data-control=\''+sub_control_data+'\' type="hidden" name="values[' + item + ']['+i+']['+sub_item_name+']" value="' + escapeHtml(sub_item_val) + '"/>';
           });
-          
+
           bunch_ctrl += '<div title="Edit" class="edit-bc-btn"><i class="fa fa-pencil"></i></div>';
           bunch_ctrl += '<div title="Remove" class="remove-bc-btn"><i class="fa fa-times"></i></div>';
           bunch_ctrl +='</div>';
         }
       });
       bunch_ctrl += '</div>';
-            
+
       // dummy bunch-control for adding
       bunch_ctrl += '<div id="dummy-' + item + '" class="bunch-ctr-dummy" data-bunchcount="">';
-      $.each(sub_controls, function(sub_name, sub_map){ 
+      $.each(sub_controls, function(sub_name, sub_map){
         var temp = JSON.stringify(sub_map).replace(/'/g, "\\'");
         bunch_ctrl += '<p data-item="' + item + sub_name + '-bunch_box" data-subname="' + sub_name + '" data-control=\'' + temp + '\' ></p>';
       });
@@ -1030,12 +1044,12 @@ function gp_init_inline_edit(area_id, section_object){
       bunch_ctrl +=   '</label>';
       bunch_ctrl += '</div>';
       var control = $(bunch_ctrl);
-    
+
       //set count
       var bunchcount = control.find(".bunch_item").map(function(){return $(this).data("sort");}).get();
       bunchcount = Math.max.apply( Math, bunchcount );
       control.find(".bunch-ctr-dummy").data("bunchcount", bunchcount);
-    
+
       control.find("#editor-btn-bunch-ctr-" + item).on("click", function(){
         var subcontrols = {};
         control.find(".bunch-ctr-dummy p").each(function(){
@@ -1048,7 +1062,7 @@ function gp_init_inline_edit(area_id, section_object){
           temp_control['bunch_label'] = control_map['label'];
           temp_control['bunch_number'] = control.find(".bunch-ctr-dummy").data('bunchcount')+1;
           temp_control['sub_name'] = $(this).data('subname');
-          subcontrols[sn] = temp_control; 
+          subcontrols[sn] = temp_control;
         });
         gp_editor.editBunchControl(true,subcontrols); //add
       });
@@ -1064,27 +1078,27 @@ function gp_init_inline_edit(area_id, section_object){
           temp_control['bunch_label'] = control_map['label'];
           temp_control['bunch_number'] = $(this).parent().data('sort');
           subcontrols[sn] = temp_control;
-        }); 
+        });
         gp_editor.editBunchControl('',subcontrols);
       });
-       
+
       control.find(".remove-bc-btn").on("click", function(){
         gp_editor.deleteBunchControl($(this));
       });
-      
+
       control.find("."+item+"_bunch_items_container").sortable({
         update : function(event, ui){
                    var current_list = $(event.target);
                    gp_editor.saveBunchControlsOrder(current_list);
                  }
       });
-      
+
       return control;
     } // bunch_control --end
 
   }; // gp_editor.controls --end
- 
- 
+
+
 
 
   /* ################################################ */
