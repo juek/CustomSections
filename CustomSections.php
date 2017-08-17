@@ -18,6 +18,7 @@ class CustomSections {
   public static $custom_types = false;        // will be set at first call of SectionTypes()
   public static $defined_components = false;  // will be set at first call of getDefinedComponents()
   public static $extra_controls = false;      // will be set at first call of LoadSectionCssJs()->getEditorComponents($type)
+  public static $i18n = false;                // possible internationalization (i18n) array of terms, based on Admin UI language or Multi-Language Manager page language if installed
 
   public static function SectionTypes( $section_types=array() ){
     global $addonRelativeCode, $addonPathCode, $addonPathData;
