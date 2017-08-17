@@ -144,8 +144,11 @@ class CustomSections {
        return array(
         'type' => 'text',
         'content' => '<h2>Error: No section type passed!</h2>',
-        'gp_label' => 'Error', 'gp_color' => '#D32625',
-        'attributes' => array( 'class' => 'alert alert-danger' ),
+        'gp_label' => 'Error', 
+        'gp_color' => '#D32625',
+        'attributes' => array( 
+          'class' => 'alert alert-danger' 
+         ),
       );
     }
     $type = $current_section['type'];
@@ -156,10 +159,14 @@ class CustomSections {
       return array(
         'type' => 'text',
         'content' => '<h2>Error: Section file for type <em>' . $type . '</em> is not defined!</h2>',
-        'gp_label' => 'Error', 'gp_color' => '#D32625',
-        'attributes' => array( 'class' => 'alert alert-danger' ),
+        'gp_label' => 'Error', 
+        'gp_color' => '#D32625',
+        'attributes' => array( 
+          'class' => 'alert alert-danger' 
+        ),
       );
     }
+    self::setLanguage($current_section['type']);
     $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
     $sectionCurrentValues = !empty($current_section['values']) ? $current_section['values'] : array();
   
@@ -301,15 +308,16 @@ class CustomSections {
     if( !array_key_exists($type, $section_types) ){ 
       return $scripts;
     }
-    // $scripts = array();
+    self::setLanguage($type);
     $editor_file = $addonPathCode . '/_types/' . $type . '/editor.php';
     if( !file_exists($editor_file) ){
       $scripts[] = array( 'code' => 'alert(\'Custom Sections Error: Editor definition file for type ' . $type .  ' was not found!\')' );
       return $scripts;
     }
-    include $addonPathCode . '/_types/' . $type . '/editor.php';
+    include $editor_file;
 
     $editor_components = self::getEditorComponents($type); // returns array( 'ts_components' => (string)csv of Typesetter components, 'scripts' => array( scripts ), 'css' => array( files ) )
+    $editor_lang = self::$i18n['editor']['lang'];
     $editor_css = $editor_components['css'];
     $editor_scripts = $editor_components['scripts'];
 
@@ -325,6 +333,7 @@ class CustomSections {
       $code .=  'js_on_content : ' . json_encode($editor['js_on_content']) . ', ';
     }
     $code .=  'css : ' . json_encode($editor_css) . ', ';
+    $code .=  'lang : ' . json_encode($editor_lang) . ', ';
     $code .=  'extensions : {}, ';
     $code .=  'debug_level : "' . self::$debug_level . '" ';
 
@@ -617,5 +626,62 @@ class CustomSections {
     return $defined_components;
   }
 
+
+  public static function setLanguage($type, $lang=false) {
+    global $page, $dataDir, $addonPathCode, $languages, $config, $ml_object;
+    $lang = $lang ? $lang : $config["language"]; // Typesetter UI language
+
+    self::$i18n = array(
+      'editor'  => array( 'lang' => array(), 'langmessage' => array() ),
+      'section' => array( 'lang' => array(), 'langmessage' => array() ),
+    );
+    
+    if( !empty($ml_object) ){ // only if Multi-Language Manager ist installed
+      $ml_list = $ml_object->GetList($page->gp_index);
+      $ml_lang = is_array($ml_list) && ($ml_lang = array_search($page->gp_index, $ml_list)) !== false ? $ml_lang : false;
+    }else{
+      $ml_lang = false;
+    }
+
+    $page_lang = $ml_lang ? $ml_lang : $lang;
+
+    if( $ml_lang && $ml_lang != $lang && array_key_exists($ml_lang, $languages) ){
+      // page language != admin language AND page language exists in Typesetter's admin languages
+      $langmessage_file = $dataDir . "/include/languages/" . $ml_lang . ".main.inc";
+      if( file_exists($langmessage_file) ){
+        include $langmessage_file;
+        self::$i18n['section']['langmessage'] = $langmessage;
+        unset($langmessage);
+      }
+    }else{
+      global $langmessage;
+      self::$i18n['section']['langmessage'] = $langmessage;
+    }
+
+    if( $ml_lang && $ml_lang != $lang ){
+      // page language != admin language
+      self::$i18n['section']['lang'] = self::getLanguage($type, $ml_lang);
+    }else{
+      // page language == admin language
+      self::$i18n['section']['lang'] = self::getLanguage($type, $lang);
+    }
+    global $langmessage;
+    self::$i18n['editor']['lang'] = self::getLanguage($type, $lang);
+    self::$i18n['editor']['langmessage'] = $langmessage;
+  }
+
+
+  public static function getLanguage($type, $lang) {
+    global $addonPathCode;
+    $section_lang = array();
+    $sectiontype_defaultlang_file = $addonPathCode . '/_types/' . $type . '/i18n/en.php';
+    $sectiontype_lang_file        = $addonPathCode . '/_types/' . $type . '/i18n/' . $lang . '.php';
+    if( file_exists($sectiontype_lang_file) ){
+      include $sectiontype_lang_file; // overwrites $section_lang
+    }elseif( file_exists($sectiontype_defaultlang_file) ){
+      include $sectiontype_defaultlang_file; // overwrites $section_lang
+    }
+    return $section_lang;
+  }
 
 }  

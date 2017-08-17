@@ -1,0 +1,12 @@
+.i18n-section h1,
+.i18n-section h2,
+.i18n-section h3,
+.i18n-section h4,
+.i18n-section h5,
+.i18n-section h6 {
+  text-align:center;
+  padding:1.6em 2.2em;
+  border:3px dashed rgb(0,173,238);
+  background:rgba(0,173,238,0.33);
+  margin:0.5em 0;
+}
