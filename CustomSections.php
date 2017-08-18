@@ -96,6 +96,7 @@ class CustomSections {
         $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
         $sectionCurrentValues = array();
         // needed to avoid warning --end
+        self::setLanguage($type);
         include $section_file;
         // load components required at user runtime
         if( !empty($components) ){
@@ -126,10 +127,10 @@ class CustomSections {
           }
         }
         if( !empty($javascript) ){
-          $page->head_script .= "\n<!-- from Custom Section [" . $type . "]: -->\n" . $javascript . "\n";
+          $page->head_script .= "\n/* from Custom Section [" . $type . "]: */\n" . $javascript . "\n";
         }
         if( !empty($jQueryCode) ){
-          $page->jQueryCode .= "\n/* -- from Custom Section [" . $type . "]: */\n" . $jQueryCode . "\n"; 
+          $page->jQueryCode .= "\n/* from Custom Section [" . $type . "]: */\n" . $jQueryCode . "\n"; 
         }
       }
       unset($components, $css_files, $style, $js_files, $javascript, $jQueryCode);

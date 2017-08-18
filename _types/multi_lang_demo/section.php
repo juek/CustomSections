@@ -17,6 +17,9 @@ defined('is_running') or die('Not an entry point...');
 
 $section_lang = self::$i18n['section']['lang'];
 
+/* for debugging show language array in message bar */
+// msg('Section type <em>' . $type .'</em> &rarr; $i18n = ' . pre(self::$i18n));
+
 $section = array();
 $section['values'] = array_merge(array(
   'heading'       => $section_lang['default_heading'],
@@ -39,5 +42,5 @@ $section['always_process_values'] = false;
 $css_files = array( 'style.css' );
 // $style = 'body { background:red!important; }';
 // $js_files = array( 'script.js', );
-// $javascript = 'var hello_world = "Hello World!";';
+$javascript = 'var mld_section_lang = ' . json_encode($section_lang) . ';';
 // $jQueryCode = '$(".hello").on("click", function(){ alert("Click: " + hello_world); });';
