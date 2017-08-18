@@ -215,7 +215,7 @@ class CustomSections {
   public static function DefaultContent($default_content, $type){
     $section_types = self::SectionTypes();  
     if( array_key_exists($type, $section_types) ){ 
-      return self::GetSection(array('type'=>$type));
+      return self::GetSection(array('type'=>$type, 'is_new'=>true));
     }
     return $default_content;
   }
@@ -226,7 +226,7 @@ class CustomSections {
   public static function SectionToContent($section_data){
     $section_types  = self::SectionTypes();
     if( array_key_exists($section_data['type'], $section_types) ){
-      if( \gp\tool::LoggedIn() || !empty($section_data['always_process_values']) ){
+      if( \gp\tool::LoggedIn() || !empty($section_data['is_new']) || !empty($section_data['always_process_values']) ){
         return self::GetSection($section_data);
       }
     }
@@ -257,6 +257,7 @@ class CustomSections {
     if( array_key_exists($type, $section_types) ){ 
       global $page;
       $page->file_sections[$section]['values'] = & $_POST['values'];
+      unset($page->file_sections[$section]['is_new']);
       if( !empty($_POST['attributes']) && is_array($_POST['attributes']) ){
         $page->file_sections[$section]['attributes'] = & $_POST['attributes'];
       }
