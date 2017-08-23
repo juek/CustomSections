@@ -7,7 +7,7 @@ $(function(){
       e.preventDefault();
       var href = window.location.href;
       var data = 'cmd=custom_sections_cmd' // MANDATORY!
-                  + '&type=run_custom_scripts'  // MANDATORY!
+                  + '&type=run_custom_scripts'  // MANDATORY! Specify name of your custom section type
                   + '&form_id=' + form_id
                   // + possible additional parameters
                   ;
