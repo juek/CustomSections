@@ -23,12 +23,28 @@ defined('is_running') or die('Not an entry point...');
 $form_id = htmlspecialchars($_POST['form_id']);
 
 if( !empty($form_id) ){
+  $client_ip = cs_get_client_ip();
+
   $page->ajaxReplace = array();
   $do       = 'inner';
   $selector = 'form#' . $form_id . '>h3';
-  $content  = 'My IP Address is <strong>' . cs_get_client_ip() . '</strong>';
-
+  $content  = 'My IP Address is <strong>' . $client_ip . '</strong>';
   $page->ajaxReplace[] = array($do, $selector, $content);
+
+  // log the last 10 lient IPs
+  $log_file = $sectionPathData . '/client_ips.php';
+  if( file_exists($log_file) ){
+    include $log_file;
+    if( count($log) > 10 ){
+      $log = array_slice($log, 1, 9, false);
+    }
+  }else{
+    $log = array();
+  }
+  $log[] = $client_ip . ' - [' . date('Y-m-d H:i:s') . ']';
+  \gp\tool\Files::CheckDir($sectionPathData); 
+  \gp\tool\Files::SaveData($log_file, 'log', $log);
+
   return 'return';
 }
 
