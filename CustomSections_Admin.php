@@ -12,6 +12,7 @@ defined('is_running') or die('Not an entry point...');
 
 class CustomSections_Admin {
 
+  static $i18n;
 
 	function __construct(){
 		$this->CommandHandle();
