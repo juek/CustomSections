@@ -272,8 +272,27 @@ class CustomSections {
 
 
   public static function PageRunScript($cmd) {
-    global $page; 
-    
+    global $page, $addonPathCode, $addonRelativeCode, $addonPathData, $addonRelativeData; 
+    //msg('CustomSections::PageRunScript - $cmd = ' .$cmd );
+    if( $_REQUEST['cmd'] == 'custom_sections_cmd' && !empty($_REQUEST['type']) ){
+      $type = htmlspecialchars($_REQUEST['type']);
+      $script_file = $addonPathCode . '/_types/' . $type . '/script.php';
+      // msg('$script_file = ' . $script_file );
+      if( file_exists($script_file) ){
+        $types = self::SectionTypes();
+        if( array_key_exists($type, $types) ){
+          self::setLanguage($type);
+          $sectionRelativeCode  = $addonRelativeCode . '/_types/' . $type;
+          $sectionRelativeData  = $addonRelativeData . '/_types/' . $type;
+          $sectionPathCode      = $addonPathCode . '/_types/' . $type;
+          $sectionPathData      = $addonPathData . '/' . $type;
+          include $script_file;
+        }else{
+          msg("Custom Sections Error: Bad type request <em>" . $type . "</em>");
+        }
+      }
+    }
+
     if( \gp\tool::LoggedIn() && \gp\admin\Tools::HasPermission('Admin_CustomSection') ){
       $page->admin_links[] = array(
         common::GetUrl('Admin_CustomSections'),  

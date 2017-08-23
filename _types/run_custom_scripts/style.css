@@ -1,0 +1,31 @@
+/* #### custom styles for demo section type 'Run Custom Script' ### */
+
+.filetype-run_custom_scripts {
+background:#eee;
+border:1px solid #ccc;
+border-radius:3px;
+padding:1.5em 2em;
+text-align:center;
+}
+
+.filetype-run_custom_scripts form > h3 {
+margin:0 0 0.5em 0;
+}
+
+.filetype-run_custom_scripts form.cs-get-my-ip input[type="submit"] {
+display:block;
+width:100%;
+font-size:22px;
+border:none;
+padding:0.6em 1.2em;
+border-radius:3px;
+background:#1579a4;
+color:#ccc;
+}
+
+.filetype-run_custom_scripts form.cs-get-my-ip input[type="submit"]:hover {
+background:#1b86b5;
+color:#fff;
+}
+
+
