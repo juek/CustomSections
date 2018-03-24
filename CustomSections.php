@@ -82,21 +82,21 @@ class CustomSections {
     global $page, $addonPathCode, $addonRelativeCode;
     $types = self::SectionTypes();
     foreach( $types as $type => $type_arr ){
-      // load components required for editing
-      if( \gp\tool::LoggedIn() ){
-        $editor_components = self::getEditorComponents($type);
-        $ts_components = $editor_components['ts_components']; // already 'stringified'
-        if( !empty($ts_components) ){
-          \gp\tool::LoadComponents($ts_components); 
-        }
-      }
       $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
       if( file_exists($section_file) ){
+        self::setLanguage($type);
+        // load components required for editing
+        if( \gp\tool::LoggedIn() ){
+          $editor_components = self::getEditorComponents($type);
+          $ts_components = $editor_components['ts_components']; // already 'stringified'
+          if( !empty($ts_components) ){
+            \gp\tool::LoadComponents($ts_components); 
+          }
+        }
         // needed to avoid warnings -start
         $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
         $sectionCurrentValues = array();
         // needed to avoid warning --end
-        self::setLanguage($type);
         include $section_file;
         // load components required at user runtime
         if( !empty($components) ){
