@@ -73,10 +73,10 @@ while( $i < $number ){
 } 
 $section['content'] .=    '</ol>';
 $section['content'] .=    '<div class="carousel-inner" role="listbox">';
-$section['content'] .=      '<div class="item active"><img src="{{images|0}}" ></div>';
+$section['content'] .=      '<div class="item carousel-item active"><img src="{{images|0}}" ></div>';
 $i = 1;
 while ($i < $number) { 
-  $section['content'] .=    '<div class="item"><img src="{{images|' . $i . '}}" ></div>';
+  $section['content'] .=    '<div class="item carousel-item"><img src="{{images|' . $i . '}}" ></div>';
   $i++;
 }
 $section['content'] .=  '</div>';
