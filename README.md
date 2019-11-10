@@ -5,7 +5,7 @@
 Developer plugin for easy prototyping and creation of custom section types. Simple section types can be built even without PHP and JS skills, using the 'universal editor' and {{value}} placeholders. 
 Current version 1.0b2 
 
-See also [Typesetter Home](http://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
+See also [Typesetter Home](https://www.typesettercms.com), [Typesetter on GitHub](https://github.com/Typesetter/Typesetter)
 
 ## Requirements ##
 * Typesetter CMS 5.0+
@@ -43,7 +43,7 @@ So, to come to the point, if you're not into coding at all, this one is not for 
 Building own section types normally requires in-depht knowledge of Typesetter CMS. This plugin will make things way easier, but it still hooks into the CMS at a rather low level. This implicates that Typesetter will not be able to catch and report all errors like it can do on higher levels. Especially errors in the editor components, which are 'AJAXed' in a combined form togehter with other script components required for editing, can be quite tricky to debug. When you start creating your own section types using this plugin, frequent testing is a good idea. 
 
 ## Credits
-[a2exfr](http://my-sitelab.com/), [juergen](https://www.typesettercms.com/User/789)
+a2exfr, [juergen](https://www.typesettercms.com/User/789)
 
 ## License
 GPL License, same as Typesetter CMS. For bundled thirdparty components see the respective subdirectories.
