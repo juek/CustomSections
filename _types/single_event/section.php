@@ -141,10 +141,12 @@ if( !empty($section['values']['start_day']) ){
   // msg("current_lang: " . $current_lang);
   // msg("lang: " . pre($lang));
   // msg("locale: " . pre($lang['locale']));
-  $setLoc = setlocale(LC_TIME, $lang['locale']);
-  if( \gp\tool::LoggedIn() && !$setLoc ){ 
-    msg("setLocale() failed! The locale '" . $lang['locale'] . "' is probably not available on your server."); 
-  }
+
+  // Usually, nowadays locales like en_US.UTF-8  or de_DE.UTF-8 work, depending on server OS, configuration and installed software
+  // $setLoc = setlocale(LC_TIME, $lang['locale']);
+  // if( \gp\tool::LoggedIn() && !$setLoc ){ 
+  //  msg("setLocale() failed! The locale '" . $lang['locale'] . "' is probably not available on your server."); 
+  // }
 
   $date_row = '<div class="single-event-date-row row" data-start-date="' . $start_datetime . '" data-end-date="' . $end_datetime . '">';
 
