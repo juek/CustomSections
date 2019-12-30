@@ -25,7 +25,7 @@ $form_id = htmlspecialchars($_POST['form_id']);
 if( !empty($form_id) ){
   $client_ip = cs_get_client_ip();
 
-  $page->ajaxReplace = array();
+  $page->ajaxReplace = array(); // clear the array to prevent already set response actions
   $do       = 'inner';
   $selector = 'form#' . $form_id . '>h3';
   $content  = 'My IP Address is <strong>' . $client_ip . '</strong>';
