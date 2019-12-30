@@ -11,14 +11,16 @@ Version 1.0b2
 
 defined('is_running') or die('Not an entry point...');
 
+$ckeditor_dir = version_compare(gpversion, '5.1') > 0 ? 'ckeditor' : 'ckeditor_34';
+
 $components = array(
 
   'ckeditor' => array(
     'scripts' => array( 
-      array( 'code' => 'CKEDITOR_BASEPATH = ' . \gp\tool\Output\Ajax::quote( \gp\tool::GetDir('/include/thirdparty/ckeditor_34/') ) . '; ' ),
+      array( 'code' => 'CKEDITOR_BASEPATH = ' . \gp\tool\Output\Ajax::quote( \gp\tool::GetDir('/include/thirdparty/' . $ckeditor_dir . '/') ) . '; ' ),
       array( 'code' => 'var CS_ckconfig = ' . \gp\tool\Editing::CKConfig(array(), 'json', $plugins) . '; '),
       array( 'code' => 'var gp_add_plugins = ' . json_encode( $plugins ) . '; '),
-      '/include/thirdparty/ckeditor_34/ckeditor.js',
+      '/include/thirdparty/' . $ckeditor_dir . '/ckeditor.js',
       '/include/js/ckeditor_config.js',
     ),
   ),
