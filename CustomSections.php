@@ -293,7 +293,7 @@ class CustomSections {
       }
     }
 
-    if( \gp\tool::LoggedIn() && \gp\admin\Tools::HasPermission('Admin_CustomSection') ){
+    if( \gp\tool::LoggedIn() && \gp\admin\Tools::HasPermission('Admin_CustomSections') ){
       $page->admin_links[] = array(
         common::GetUrl('Admin_CustomSections'),  
         '<i class="fa fa-refresh"></i>', 
