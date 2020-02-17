@@ -302,6 +302,7 @@ function gp_init_inline_edit(area_id, section_object){
 
 
   gp_editor.removeImage = function(e){
+  	if ( $(this).closest("li").siblings("li").length > 0 )
     $(this).closest("li").remove();
     // possible re-inits here
   }; // gp_editor.removeImage --end
