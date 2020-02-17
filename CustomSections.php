@@ -295,7 +295,7 @@ class CustomSections {
 
     if( \gp\tool::LoggedIn() && \gp\admin\Tools::HasPermission('Admin_CustomSections') ){
       $page->admin_links[] = array(
-        common::GetUrl('Admin_CustomSections'),  
+        'Admin_CustomSections',  
         '<i class="fa fa-refresh"></i>', 
         'cmd=recreate_custom_sections&page_to_refresh=' . $page->title, 
         'title="Recreate Custom Sections"'
