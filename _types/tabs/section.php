@@ -2,6 +2,11 @@
 defined('is_running') or die('Not an entry point...');
 
 
+global $page, $config, $gpLayouts;
+$layout_arr = $gpLayouts[isset($page->TitleInfo['gpLayout']) ?  $page->TitleInfo['gpLayout'] :  $config['gpLayout']];
+$bs4 = strtolower($layout_arr['framework']['name']) == 'bootstrap' &&
+	  preg_replace('/[^0-9]/', '', explode('.', $layout_arr['framework']['version'])[0]) == 4;
+
 $section = array(); 
 
 
@@ -21,24 +26,25 @@ $section['attributes'] = array(
 );
 
 
-
-
-
-$ti = crc32(uniqid("",true)); 
-$a='class="active"';
-$section['content'] = '<ul class="nav nav-tabs">';
+$ti = 't'.crc32(uniqid("",true)); 
+$a=' active';
+$s='true';
+$section['content'] = '<ul class="nav nav-tabs" role="tablist">';
 
  foreach ($section['values']['tabs'] as $key=>$tab){
-	
-		$section['content'] .= '<li><a '.$a.' data-toggle="tab" href="#'.$ti.$key.'">'.$tab['title'].'</a></li>';
+		$section['content'] .= '<li class="nav-item"><a class="nav-link'.$a.'" data-toggle="tab" href="#'.$ti.$key.'" role="tab" aria-controls="'.$tab['title'].'" aria-selected="'.$s.'">'.$tab['title'].'</a></li>';
 		$a =""; 
+		$s='false';
  }
 	$section['content'] .= '</ul>';
-$a='in active';	
+	
+$a = $bs4 ?
+	' show active' :	// Bootstrap 4
+	' in active';  // Bootstrap 3
+	
 	$section['content'] .= '<div class="tab-content">';
  foreach ($section['values']['tabs'] as $key=>$tab){
-
-	$section['content'] .='<div id="'.$ti.$key.'" class="tab-pane fade '.$a.'">';
+	$section['content'] .='<div id="'.$ti.$key.'" class="tab-pane fade'.$a.'" role="tabpanel" aria-labelledby="'.$tab['title'].'-tab">';
 	$section['content'] .= $tab['tab_content'];
 	$section['content'] .= '</div>';
 	$a="";
