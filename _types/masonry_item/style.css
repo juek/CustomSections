@@ -1,0 +1,265 @@
+/**
+ * Runtime CSS stylesheet for Custom Section type 'Masonry Item'
+ * for Typesetter CMS developer plugin 'Custom Sections'
+ *
+ */
+
+
+
+/**
+ * horizontal masonry
+ * use flexbox
+ */
+.masonry-h {
+  margin: -4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.masonry-h .filetype-masonry_item {
+  padding: 4px;
+  /*
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  */
+  -webkit-flex: auto;
+  -moz-flex: auto;
+  -ms-flex: auto;
+  flex: auto;
+}
+
+/* mobile-first xs */
+.masonry-h {}
+/* sm */
+@media (min-width:576px) {
+  .masonry-h .filetype-masonry_item {
+    
+  }
+}
+/* md */
+@media (min-width:768px) {
+  .masonry-h .filetype-masonry_item {
+  }
+}
+/* lg */
+@media (min-width:992px) {
+  .masonry-h .filetype-masonry_item {
+  }
+}
+/* xl */
+@media (min-width:1200px) {
+  .masonry-h .filetype-masonry_item {
+  }
+}
+
+.masonry-h .filetype-masonry_item {
+ 
+}
+
+.masonry-h .filetype-masonry_item .masonry-item-inner-wrapper {
+  position: relative;
+  background: rgba(127,127,127,0.3333);
+  padding: 8px;
+}
+
+.masonry-h .filetype-masonry_item .masonry-item-thumbnail-wrapper {
+  position: relative;
+  height: 165px;
+  margin: -8px -8px 8px -8px;
+}
+
+.masonry-h .filetype-masonry_item img.masonry-item-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover; /* browser-support: https://caniuse.com/#search=object-fit, basically the only real problem is IE11 */
+}
+
+/* prevent last-item grow full-width */
+.masonry-h:after {
+  content: '';
+  -webkit-box-flex: 3;
+  -webkit-flex-grow: 3;
+  -moz-flex-grow: 3;
+  -ms-flex-positive: 3;
+  flex-grow: 3;
+}
+
+
+
+
+
+
+/**
+ * vertical masonry
+ * use multi-columns
+ */
+
+/* mobile-first xs */
+.masonry-v {}
+/* sm */
+@media (min-width:576px) {
+  .masonry-v {
+    -webkit-columns: 2;
+    columns: 2;
+    -webkit-column-gap: 8px;
+    column-gap: 8px;
+  }
+}
+/* md */
+@media (min-width:768px) {
+  .masonry-v {
+    -webkit-columns: 3;
+    columns: 3;
+  }
+}
+/* lg */
+@media (min-width:992px) {
+  .masonry-v {
+    -webkit-columns: 4;
+    columns: 4;
+  }
+}
+/* xl */
+@media (min-width:1200px) {
+  .masonry-v {
+    -webkit-columns: 5;
+    columns: 5;
+  }
+}
+
+.masonry-v .filetype-masonry_item {
+  display: inline-block;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+
+
+.masonry-v .filetype-masonry_item .masonry-item-inner-wrapper {
+  position: relative;
+  background: rgba(127,127,127,0.3333);
+  padding: 8px;
+}
+
+.masonry-v .filetype-masonry_item .masonry-item-thumbnail-wrapper {
+  position: relative;
+  margin: -8px -8px 8px -8px;
+}
+
+.masonry-v .filetype-masonry_item img.masonry-item-thumbnail {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* aspect-portrait */
+.masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-landscape .masonry-item-thumbnail-wrapper{
+  overflow: hidden;
+  padding-bottom: 75%;
+}
+.masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-portrait .masonry-item-thumbnail-wrapper{
+  overflow: hidden;
+  padding-bottom: 133.333%;
+}
+
+.masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-portrait .masonry-item-thumbnail,
+.masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-landscape .masonry-item-thumbnail{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover; /* browser-support: https://caniuse.com/#search=object-fit, basically the only real problem is IE11 */
+}
+
+/* IE hack */
+@media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+  .masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-portrait .masonry-item-thumbnail,
+  .masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-landscape .masonry-item-thumbnail{
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .masonry-v .filetype-masonry_item .masonry-item-inner-wrapper.aspect-portrait .masonry-item-thumbnail{
+    width: auto;
+    height: 100%;
+  }
+}
+
+
+/* ##### COMMON ##### */
+
+/* thumbnail wrapper */
+a.masonry-item-thumbnail-wrapper {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* vignette */
+.filetype-masonry_item .masonry-item-inner-wrapper.image-vignette .masonry-item-thumbnail-wrapper:after{
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#26000000', GradientType=1);
+}
+
+
+/* text */
+.masonry-item-title{
+  font-size: 1.25em;
+}
+.masonry-item-text{}
+.masonry-item-price{}
+
+.filetype-masonry_item {
+  position: relative;
+}
+
+/* out of wrapper warning */
+.gpAdmin .filetype-masonry_item:before {
+  content: '(!) This section needs to be placed inside a wrapper with either masonry-v or masonry-h css class';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 4px;
+  background: rgba(127, 24, 24, 0.85);
+  color: #fff;
+  text-align: center;
+}
+
+.gpAdmin .masonry-v .filetype-masonry_item:before,
+.gpAdmin .masonry-h .filetype-masonry_item:before {
+  content: '';
+  display: none;
+}
+
+
+
