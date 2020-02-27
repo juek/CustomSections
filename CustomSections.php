@@ -271,7 +271,7 @@ class CustomSections {
 
 
 
-  public static function PageRunScript($cmd) {
+  static function PageRunScript($cmd) {
     global $page, $addonPathCode, $addonRelativeCode, $addonPathData, $addonRelativeData; 
     //msg('CustomSections::PageRunScript - $cmd = ' .$cmd );
     if( isset($_REQUEST['cmd']) && $_REQUEST['cmd'] == 'custom_sections_cmd' && !empty($_REQUEST['type']) ){
