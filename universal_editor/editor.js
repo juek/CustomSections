@@ -678,13 +678,13 @@ function gp_init_inline_edit(area_id, section_object){
         +   '<label>'
         +     '<input id="editor-ctl-' + item + '-checkbox" type="checkbox" name="values[' + item + ']" value="' + value + '"' + checked  + attributes + '/><span></span> '
         +     '<span class="label-text">' + control_map['label'] + '</span>'
-        +     '<input id="editor-ctl-' + item + '" type="hidden" name="values[' + item + ']" value="' + value + '"' + attributes + '/>'
+        +     '<input id="editor-ctl-' + item + '" type="hidden" ' + attributes + '/>'
         +   '</label>'
         + '</div>'
       );
       control.find("input[type='checkbox']").on("change", function(){
         var v = this.checked ? '1' : '0';
-        $("#editor-ctl-" + item).val(v);
+        $("#editor-ctl-" + item + "-checkbox").val(v);
       });
       return control;
     }, // checkbox --end
