@@ -149,6 +149,7 @@ class CustomSections_Admin {
 					$section_file = $addonPathCode . '/_types/' . $val['type']  . '/section.php';
 					include $section_file;
 					$file_sections[$key]['values'] +=$section['values'];
+					$file_sections[$key]['always_process_values'] =$section['always_process_values'];
 					$i++;
 				}
 				if( $i > 0 ){
