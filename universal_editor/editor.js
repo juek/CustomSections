@@ -685,6 +685,7 @@ function gp_init_inline_edit(area_id, section_object){
       control.find("input[type='checkbox']").on("change", function(){
         var v = this.checked ? '1' : '0';
         $("#editor-ctl-" + item).val(v);
+        $("#editor-ctl-" + item + "-checkbox").val(v);
       });
       return control;
     }, // checkbox --end
