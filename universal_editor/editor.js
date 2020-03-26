@@ -81,8 +81,7 @@ function gp_init_inline_edit(area_id, section_object){
   gp_editor.getFormElements = function(){
     var form_elements = gp_editor.ui.controls
       //.find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio'], [data-applyto]), select:not([data-applyto]), textarea");
-      .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea")
-      .trigger("CustomSection:formElementsLoaded");
+      .find("input:not(.editor-ctl-no-submit, [type='checkbox'], [type='radio']), select, textarea");
     return form_elements;
   }; // gp_editor.getFormElements --end
 
@@ -540,6 +539,8 @@ function gp_init_inline_edit(area_id, section_object){
       gp_editor.ui.controls.append(control);
 
     }); // each section_object.values --end
+
+		gp_editor.getFormElements().trigger("CustomSection:formElementsLoaded");
   }; // gp_editor.buildEditorUI --end
 
 
