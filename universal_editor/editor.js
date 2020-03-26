@@ -371,6 +371,7 @@ function gp_init_inline_edit(area_id, section_object){
         var control = gp_editor.getControl(value['control_type'], value);
         $gp.div('gp_admin_box').find(".sub_controls_cont").append(control);
       }
+	    $('#editor-ctl-'+value['item']).trigger('CustomSection:bunchControlLoaded');
     });
 
     // callback: Bunch control loaded
