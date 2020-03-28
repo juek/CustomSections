@@ -181,7 +181,8 @@ class CustomSections {
       }
     }
   
-    include $section_file;
+		$GettingSection = true;
+		include $section_file;
 
     // union $current_section with loaded $section -> this only overwrites undefined keys in $current_section
     $current_section += $section;
