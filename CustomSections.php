@@ -205,7 +205,9 @@ class CustomSections {
       $replace[] =  $val;
      }
    }
+   if ( isset($section['content']) ) {
     $current_section['content'] = str_replace($search, $replace, $section['content']);
+   }    
     /* DEBUG level 3 */ if( self::$debug_level > 2 ){ global $addonPathCode; \gp\tool\Files::SaveData($addonPathCode.'/!debug/current_section.php', 'current_section', $current_section); }
     return $current_section;
   }
