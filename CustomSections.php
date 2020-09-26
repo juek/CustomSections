@@ -40,6 +40,7 @@ class CustomSections {
         $section_file = $addonPathCode . '/_types/' . $type . '/section.php';
         if( file_exists($section_file) && strpos($type, '!') !== 0 ){
           // needed to avoid warnings -start
+          self::setLanguage($type);
           $sectionRelativeCode = $addonRelativeCode . '/_types/' . $type;
           $sectionCurrentValues = array();
           // needed to avoid warning --end
